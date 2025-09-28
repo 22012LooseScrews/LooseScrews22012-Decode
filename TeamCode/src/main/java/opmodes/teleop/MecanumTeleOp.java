@@ -8,12 +8,18 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp
 public class MecanumTeleOp extends LinearOpMode {
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         // Declare our motors using the hardware map
-        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
-        DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
-        DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
-        DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
+        DcMotor frontLeftMotor;
+        DcMotor backLeftMotor;
+        DcMotor frontRightMotor;
+        DcMotor backRightMotor;
+
+
+        frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
+        backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
+        frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
+        backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
 
         // Reverse the right side motors.
         // If your robot moves backwards when commanded to go forwards,
