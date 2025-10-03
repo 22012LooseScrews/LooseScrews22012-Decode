@@ -25,7 +25,7 @@ public class AprilTagTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        
+
         // Initialize AprilTag detection
         initAprilTag();
 
@@ -34,15 +34,15 @@ public class AprilTagTest extends LinearOpMode {
         telemetry.addData("AprilTag Family", "36h11");
         telemetry.addData(">", "Touch START to begin detection");
         telemetry.update();
-        
+
         waitForStart();
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                
+
                 // Display detected AprilTags
                 displayAprilTags();
-                
+
                 // Push telemetry to the Driver Station
                 telemetry.update();
 
@@ -54,7 +54,6 @@ public class AprilTagTest extends LinearOpMode {
         // Clean up resources
         visionPortal.close();
     }
-
     /**
      * Initialize the AprilTag processor with 36h11 family
      */
