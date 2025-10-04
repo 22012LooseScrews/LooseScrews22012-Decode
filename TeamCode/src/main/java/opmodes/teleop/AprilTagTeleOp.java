@@ -1,4 +1,4 @@
-package opmodes.testing;
+package opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -17,8 +17,8 @@ import java.util.List;
  * 
  * Make sure your Logitech C920 is configured as "Webcam 1" in the robot configuration.
  */
-@TeleOp(name = "AprilTag Test", group = "Testing")
-public class AprilTagTest extends LinearOpMode {
+@TeleOp
+public class AprilTagTeleOp extends LinearOpMode {
 
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
