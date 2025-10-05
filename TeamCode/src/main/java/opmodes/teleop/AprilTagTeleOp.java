@@ -1,4 +1,4 @@
-package opmodes.testing;
+package opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -17,15 +17,15 @@ import java.util.List;
  * 
  * Make sure your Logitech C920 is configured as "Webcam 1" in the robot configuration.
  */
-@TeleOp(name = "AprilTag Test", group = "Testing")
-public class AprilTagTest extends LinearOpMode {
+@TeleOp
+public class AprilTagTeleOp extends LinearOpMode {
 
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
 
     @Override
     public void runOpMode() {
-        
+
         // Initialize AprilTag detection
         initAprilTag();
 
@@ -34,15 +34,15 @@ public class AprilTagTest extends LinearOpMode {
         telemetry.addData("AprilTag Family", "36h11");
         telemetry.addData(">", "Touch START to begin detection");
         telemetry.update();
-        
+
         waitForStart();
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                
+
                 // Display detected AprilTags
                 displayAprilTags();
-                
+
                 // Push telemetry to the Driver Station
                 telemetry.update();
 
@@ -54,7 +54,6 @@ public class AprilTagTest extends LinearOpMode {
         // Clean up resources
         visionPortal.close();
     }
-
     /**
      * Initialize the AprilTag processor with 36h11 family
      */
