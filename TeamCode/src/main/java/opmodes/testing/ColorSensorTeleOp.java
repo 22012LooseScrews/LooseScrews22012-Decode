@@ -109,10 +109,20 @@ class MyPipeline extends OpenCvPipeline{
             Point bottom_right = new Point(rect.x+rect.width, rect.y+rect.height);
             Imgproc.rectangle(input, top_left, bottom_right, new Scalar(255,0,255), 2);
             color_detected = "Purple";
+
+
         }
         else{
             color_detected = "No Color Found";
         }
+        hsv.release();
+        green_binary_mask.release();
+        purple_binary_mask.release();
+        eroded_green.release();
+        dilated_green.release();
+        eroded_purple.release();
+        dilated_purple.release();
+
         return input;
     }
 }
