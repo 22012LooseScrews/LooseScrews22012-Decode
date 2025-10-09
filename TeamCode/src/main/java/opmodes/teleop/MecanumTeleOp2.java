@@ -34,33 +34,35 @@ public class MecanumTeleOp2 extends OpMode {
         double frontRightPower = (right_x - right_y - leftstick_y) / denominator;
         double backRightPower = (right_x + right_y - leftstick_y) / denominator;
 
-        if (gamepad1.left_stick_x < 0) {
+        if (gamepad1.left_stick_x < -0.7) {
             frontRightMotor.setPower(-frontRightPower);
             backRightMotor.setPower(backRightPower);
             frontLeftMotor.setPower(frontLeftPower);
             backLeftMotor.setPower(-backLeftPower);
+            telemetry.addLine("going right");
         }
-        else if(gamepad1.left_stick_x > 0){
+        else if(gamepad1.left_stick_x > 0.7){
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(-backRightPower);
             frontLeftMotor.setPower(-frontLeftPower);
             backLeftMotor.setPower(backLeftPower);
+            telemetry.addLine("going left");
         }
         else {
             frontLeftMotor.setPower(frontLeftPower);
             backLeftMotor.setPower(backLeftPower);
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
+            telemetry.addLine("poopy");
 
         }
 
-        frontLeftMotor.setPower(frontLeftPower);
+ /*     frontLeftMotor.setPower(frontLeftPower);
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
-        backRightMotor.setPower(backRightPower);
+        backRightMotor.setPower(backRightPower);*/
         telemetry.addData("Y value",right_x);
         telemetry.addData("X value", right_y);
         telemetry.addData("RX value", leftstick_x);
-
     }
 }

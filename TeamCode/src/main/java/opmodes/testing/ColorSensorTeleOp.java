@@ -1,3 +1,4 @@
+// FIX GREEN HUES LATER
 package opmodes.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -27,7 +28,7 @@ public class ColorSensorTeleOp extends OpMode {
     @Override
     public void init() {
         int webcam_ID = hardwareMap.appContext.getResources().getIdentifier("webcamMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 2"), webcam_ID);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), webcam_ID);
         pipeline = new MyPipeline();
         webcam.setPipeline(pipeline);
         webcam.openCameraDevice();

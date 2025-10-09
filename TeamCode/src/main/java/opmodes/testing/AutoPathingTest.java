@@ -1,16 +1,24 @@
+/*
 package opmodes.testing;
 
+import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierCurve;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.PathBuilder;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 // PedroPathing imports
-import org.firstinspires.ftc.teamcode.pedropathing.follower.Follower;
-import org.firstinspires.ftc.teamcode.pedropathing.localization.Pose;
-import org.firstinspires.ftc.teamcode.pedropathing.pathgeneration.BezierCurve;
-import org.firstinspires.ftc.teamcode.pedropathing.pathgeneration.PathBuilder;
+//import org.firstinspires.ftc.teamcode.pedropathing.follower.Follower;
+//import org.firstinspires.ftc.teamcode.pedropathing.localization.Pose;
+//import org.firstinspires.ftc.teamcode.pedropathing.pathgeneration.BezierCurve;
+//import org.firstinspires.ftc.teamcode.pedropathing.pathgeneration.PathBuilder;
 
+@Disabled
 @Autonomous
 public class AutoPathingTest extends OpMode {
 
@@ -97,9 +105,11 @@ public class AutoPathingTest extends OpMode {
                 stopMotors();
                 pathFinished = true;
             }
-        } else if (pathFinished) {
+        }
+        else if (pathFinished) {
             telemetry.addLine("✅ Path complete!");
             telemetry.update();
         }
     }
 }
+*/
