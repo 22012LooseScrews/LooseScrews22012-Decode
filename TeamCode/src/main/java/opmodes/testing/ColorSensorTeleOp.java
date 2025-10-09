@@ -1,3 +1,4 @@
+// WHEN DONE TESTING REMOVE ALL THE EXTRA MAT OBJECTS
 package opmodes.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -41,17 +42,17 @@ public class ColorSensorTeleOp extends OpMode {
     }
 }
 
-class MyPipeline extends OpenCvPipeline {
+class MyPipeline extends OpenCvPipeline{
     public String color_detected = "None";
     @Override
     public Mat processFrame(Mat input) {
         Mat hsv = new Mat();
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV);
 
-        Scalar green_lower_bound = new Scalar(48,110,80);
-        Scalar green_upper_bound = new Scalar(72,255,255);
-        Scalar purple_lower_bound = new Scalar(140,100,60);
-        Scalar purple_upper_bound = new Scalar(165,255,255);
+        Scalar green_lower_bound = new Scalar(40,50,50);
+        Scalar green_upper_bound = new Scalar(80,255,255);
+        Scalar purple_lower_bound = new Scalar(130,50,50);
+        Scalar purple_upper_bound = new Scalar(160,255,255);
 
         Mat green_binary_mask = new Mat();
         Mat purple_binary_mask = new Mat();
@@ -112,16 +113,6 @@ class MyPipeline extends OpenCvPipeline {
         else{
             color_detected = "No Color Found";
         }
-        hsv.release();
-        green_binary_mask.release();
-        purple_binary_mask.release();
-        eroded_green.release();
-        dilated_green.release();
-        eroded_purple.release();
-        dilated_purple.release();
-        green_hierarchy.release();
-        purple_hierarchy.release();
-
         return input;
     }
 }
