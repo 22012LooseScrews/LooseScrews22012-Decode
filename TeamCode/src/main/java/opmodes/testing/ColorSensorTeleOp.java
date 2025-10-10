@@ -49,8 +49,8 @@ class MyPipeline extends OpenCvPipeline {
         Mat hsv = new Mat();
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV);
 
-        Scalar green_lower_bound = new Scalar(48,110,80);
-        Scalar green_upper_bound = new Scalar(72,255,255);
+        Scalar green_lower_bound = new Scalar(38,40,40);
+        Scalar green_upper_bound = new Scalar(90,255,255);
         Scalar purple_lower_bound = new Scalar(140,100,60);
         Scalar purple_upper_bound = new Scalar(165,255,255);
 
@@ -63,7 +63,7 @@ class MyPipeline extends OpenCvPipeline {
         Mat dilated_green = new Mat();
         Mat eroded_purple = new Mat();
         Mat dilated_purple = new Mat();
-        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5,5));
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3,3));
         Imgproc.erode(green_binary_mask, eroded_green, kernel);
         Imgproc.dilate(eroded_green, dilated_green, kernel);
         Imgproc.erode(purple_binary_mask, eroded_purple, kernel);
