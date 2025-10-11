@@ -26,7 +26,7 @@ public class BigTriangleBlueAuto extends LinearOpMode {
 
     static final double DRIVE_SPEED = 0.5;
     static final double TARGET_DISTANCE_INCHES = 27.0;
-    static final double TIMEOUT_SECONDS = 10.0;
+    static final double TIMEOUT_SECONDS = 0.5 ;
     @Override
     public void runOpMode() {
 
@@ -35,10 +35,10 @@ public class BigTriangleBlueAuto extends LinearOpMode {
         telemetry.update();
 
         // Map hardware names (must match your robot configuration)
-        frontLeftMotor  = hardwareMap.get(DcMotor.class, "frontLeftMotor");
-        backLeftMotor   = hardwareMap.get(DcMotor.class, "backLeftMotor");
+        frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
+        backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
-        backRightMotor  = hardwareMap.get(DcMotor.class, "backRightMotor");
+        backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
 
         // Reverse right side motors so all wheels move forward together
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -109,10 +109,7 @@ public class BigTriangleBlueAuto extends LinearOpMode {
         runtime.reset();
 
         // Run until target reached or timeout
-        while (opModeIsActive()
-                && (runtime.seconds() < timeoutS)
-                && (frontLeftMotor.isBusy() && frontRightMotor.isBusy()
-                && backLeftMotor.isBusy() && backRightMotor.isBusy())) {
+        while (opModeIsActive() && (runtime.seconds()<timeoutS) && (frontLeftMotor.isBusy() && frontRightMotor.isBusy() && backLeftMotor.isBusy() && backRightMotor.isBusy())) {
 
             telemetry.addData("Target (ticks)", "%7d | %7d", newLeftTarget, newRightTarget);
             telemetry.addData("Current (ticks)", "%7d | %7d",

@@ -1,4 +1,4 @@
-package opmodes.teleop;
+package opmodes.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -6,11 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
-public class MecanumTeleOp2 extends OpMode {
-    DcMotor frontLeftMotor;
-    DcMotor backLeftMotor;
-    DcMotor frontRightMotor;
-    DcMotor backRightMotor;
+public class MecanumTeleOpUseless2 extends OpMode {
+    DcMotor frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor;
     @Override
     public void init() {
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
@@ -53,8 +50,6 @@ public class MecanumTeleOp2 extends OpMode {
             backLeftMotor.setPower(backLeftPower);
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
-            telemetry.addLine("poopy");
-
         }
 
  /*     frontLeftMotor.setPower(frontLeftPower);

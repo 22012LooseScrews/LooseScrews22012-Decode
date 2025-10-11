@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes.teleop;
+package opmodes.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @Disabled
 @TeleOp
-public class MecanumTeleOp extends LinearOpMode {
+public class MecanumTeleOpUseless extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Declare our motors using the hardware map
