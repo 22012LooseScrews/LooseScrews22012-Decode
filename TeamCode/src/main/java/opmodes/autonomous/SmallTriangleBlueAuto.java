@@ -10,25 +10,25 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import mechanisms.Constants;
 @Autonomous
-public class BigTriangleBlueAuto extends LinearOpMode {
+public class SmallTriangleBlueAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Follower follower = Constants.createFollower(hardwareMap);
         PathBuilder builder = new PathBuilder(follower, Constants.path_constraints);
 
-        PathChain big_triangle_blue_path = builder
+        PathChain small_triangle_blue_path = builder
                 .addPath(new BezierLine(
-                        new Pose(22.5, 126),
-                        new Pose(22.5, 99)
+                        new Pose(56.0, 8.0),
+                        new Pose(56.0, 35.0)
                 ))
                 .setLinearHeadingInterpolation(
-                        Math.toRadians(323.5),
-                        Math.toRadians(270)
+                        Math.toRadians(90.0),
+                        Math.toRadians(90.0)
                 )
                 .build();
 
         waitForStart();
-        follower.followPath(big_triangle_blue_path, true);
+        follower.followPath(small_triangle_blue_path);
         if(isStopRequested()){
             return;
         }

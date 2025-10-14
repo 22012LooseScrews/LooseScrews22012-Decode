@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class MecanumTeleOp4 extends OpMode {
-    DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakemotor;
+    DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor;
 
     @Override
     public void init() {
@@ -15,7 +15,7 @@ public class MecanumTeleOp4 extends OpMode {
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
         backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
-        intakemotor = hardwareMap.get(DcMotor.class, "intakemotor");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -40,9 +40,9 @@ public class MecanumTeleOp4 extends OpMode {
 
         // Intake motor control - runs when button A is held down
         if (gamepad1.a) {
-            intakemotor.setPower(1.0);
+            intakeMotor.setPower(1.0);
         } else {
-            intakemotor.setPower(0.0);
+            intakeMotor.setPower(0.0);
         }
 
         telemetry.addData("Y",-gamepad1.left_stick_y);

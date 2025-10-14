@@ -7,16 +7,22 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class MecanumTeleOp extends OpMode {
-    DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor;
+    DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor;
     @Override
     public void init() {
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
         backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
@@ -36,8 +42,15 @@ public class MecanumTeleOp extends OpMode {
         frontRightMotor.setPower(frontRightPower);
         backRightMotor.setPower(backRightPower);
 
+        if (gamepad1.a) {
+            intakeMotor.setPower(1.0);
+        } else {
+            intakeMotor.setPower(0.0);
+        }
+
         telemetry.addData("Y",-gamepad1.left_stick_y);
         telemetry.addData("X",-gamepad1.left_stick_x * 1.1);
         telemetry.addData("RX",gamepad1.right_stick_x);
+        telemetry.addData("Intake Active", gamepad1.a);
     }
 }
