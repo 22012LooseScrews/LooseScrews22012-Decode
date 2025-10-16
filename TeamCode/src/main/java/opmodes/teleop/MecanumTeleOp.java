@@ -42,15 +42,18 @@ public class MecanumTeleOp extends OpMode {
         frontRightMotor.setPower(frontRightPower);
         backRightMotor.setPower(backRightPower);
 
-        if (gamepad1.a) {
+        if (gamepad1.cross) {
             intakeMotor.setPower(1.0);
-        } else {
+        }
+        else if(gamepad1.circle){
+            intakeMotor.setPower(-1.0);
+        }
+        else{
             intakeMotor.setPower(0.0);
         }
 
         telemetry.addData("Y",-gamepad1.left_stick_y);
         telemetry.addData("X",-gamepad1.left_stick_x * 1.1);
         telemetry.addData("RX",gamepad1.right_stick_x);
-        telemetry.addData("Intake Active", gamepad1.a);
     }
 }
