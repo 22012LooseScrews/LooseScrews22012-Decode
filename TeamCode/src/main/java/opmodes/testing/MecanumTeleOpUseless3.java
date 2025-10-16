@@ -1,12 +1,13 @@
-package opmodes.teleop;
+package opmodes.testing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
+@Disabled
 @TeleOp
-public class MecanumTeleOp4 extends OpMode {
+public class MecanumTeleOpUseless3 extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor;
 
     @Override
@@ -39,15 +40,10 @@ public class MecanumTeleOp4 extends OpMode {
         backRightMotor.setPower(backRightPower);
 
         // Intake motor control - runs when button A is held down
-        if (gamepad1.a) {
-            intakeMotor.setPower(1.0);
-        } else {
-            intakeMotor.setPower(0.0);
-        }
+
 
         telemetry.addData("Y",-gamepad1.left_stick_y);
         telemetry.addData("X",-gamepad1.left_stick_x * 1.1);
         telemetry.addData("RX",gamepad1.right_stick_x);
-        telemetry.addData("Intake Active", gamepad1.a);
     }
 }
