@@ -8,7 +8,7 @@ import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Constants {
+public class  Constants {
     public static MecanumConstants drive_constants = new MecanumConstants()
             .rightFrontMotorName("frontRightMotor")
             .rightRearMotorName("backRightMotor")
@@ -18,7 +18,7 @@ public class Constants {
             .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .maxPower(1.0);
     public static FollowerConstants follower_constants = new FollowerConstants()
-            .mass(5.0);
+            .mass(7.0);
     public static PathConstraints path_constraints = new PathConstraints(
             1.0,
             10.0
