@@ -59,10 +59,10 @@ public class AprilTagTracking extends OpMode {
         // Initialize AprilTag detection
         initAprilTag();
 
-        telemetry.addData("Status", "Initialized");
-        telemetry.addData("Target Tag", "ID " + TARGET_TAG_ID + " (36h11 family)");
-        telemetry.addData("Controls", "Hold A to track and face the tag");
-        telemetry.update();
+//        telemetry.addData("Status", "Initialized");
+//        telemetry.addData("Target Tag", "ID " + TARGET_TAG_ID + " (36h11 family)");
+//        telemetry.addData("Controls", "Hold A to track and face the tag");
+//        telemetry.update();
     }
 
     @Override
@@ -95,8 +95,8 @@ public class AprilTagTracking extends OpMode {
         }
 
         // Display telemetry
-        displayTelemetry();
-        telemetry.update();
+        //displayTelemetry();
+        //telemetry.update();
     }
 
     /**
@@ -187,42 +187,42 @@ public class AprilTagTracking extends OpMode {
     /**
      * Display telemetry information
      */
-    private void displayTelemetry() {
-        telemetry.addData("Tracking Active", isTracking);
-
-        if (targetDetection != null) {
-            telemetry.addData("Target Tag", "ID " + TARGET_TAG_ID + " DETECTED");
-            telemetry.addData("Bearing", "%.1f degrees", targetDetection.ftcPose.bearing);
-            telemetry.addData("Range", "%.1f inches", targetDetection.ftcPose.range);
-            telemetry.addData("Elevation", "%.1f degrees", targetDetection.ftcPose.elevation);
-
-            // Show turn direction
-            if (Math.abs(targetDetection.ftcPose.bearing) > TOLERANCE_DEGREES) {
-                if (targetDetection.ftcPose.bearing > 0) {
-                    telemetry.addData("Action", "Turning RIGHT");
-                } else {
-                    telemetry.addData("Action", "Turning LEFT");
-                }
-            } else {
-                telemetry.addData("Action", "FACING TARGET");
-            }
-        } else {
-            telemetry.addData("Target Tag", "ID " + TARGET_TAG_ID + " NOT DETECTED");
-            telemetry.addData("Action", "Searching...");
-        }
-
-        telemetry.addLine("---");
-        telemetry.addData("Total Tags Detected", aprilTag.getDetections().size());
-
-        // Show all detected tags
-        List<AprilTagDetection> allDetections = aprilTag.getDetections();
-        if (!allDetections.isEmpty()) {
-            telemetry.addLine("All Detected Tags:");
-            for (AprilTagDetection detection : allDetections) {
-                telemetry.addLine(String.format("  ID %d (%.1f° bearing)", detection.id, detection.ftcPose.bearing));
-            }
-        }
-    }
+//    private void displayTelemetry() {
+//        telemetry.addData("Tracking Active", isTracking);
+//
+//        if (targetDetection != null) {
+//            telemetry.addData("Target Tag", "ID " + TARGET_TAG_ID + " DETECTED");
+//            telemetry.addData("Bearing", "%.1f degrees", targetDetection.ftcPose.bearing);
+//            telemetry.addData("Range", "%.1f inches", targetDetection.ftcPose.range);
+//            telemetry.addData("Elevation", "%.1f degrees", targetDetection.ftcPose.elevation);
+//
+//            // Show turn direction
+//            if (Math.abs(targetDetection.ftcPose.bearing) > TOLERANCE_DEGREES) {
+//                if (targetDetection.ftcPose.bearing > 0) {
+//                    telemetry.addData("Action", "Turning RIGHT");
+//                } else {
+//                    telemetry.addData("Action", "Turning LEFT");
+//                }
+//            } else {
+//                telemetry.addData("Action", "FACING TARGET");
+//            }
+//        } else {
+//            telemetry.addData("Target Tag", "ID " + TARGET_TAG_ID + " NOT DETECTED");
+//            telemetry.addData("Action", "Searching...");
+//        }
+//
+//        telemetry.addLine("---");
+//        telemetry.addData("Total Tags Detected", aprilTag.getDetections().size());
+//
+//        // Show all detected tags
+//        List<AprilTagDetection> allDetections = aprilTag.getDetections();
+//        if (!allDetections.isEmpty()) {
+//            telemetry.addLine("All Detected Tags:");
+//            for (AprilTagDetection detection : allDetections) {
+//                telemetry.addLine(String.format("  ID %d (%.1f° bearing)", detection.id, detection.ftcPose.bearing));
+//            }
+//        }
+//    }
 
     @Override
     public void stop() {

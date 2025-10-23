@@ -4,19 +4,24 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.CRServo;
+
 
 @TeleOp
 public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor, outtakeMotor;
+    CRServo spinServo;
     @Override
     public void init() {
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
         backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
-        -/
-                intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         outtakeMotor = hardwareMap.get(DcMotor.class, "outtakeMotor");
+
+        spinServo = hardwareMap.get(CRServo.class, "spinServo");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -50,6 +55,11 @@ public class MecanumTeleOp extends OpMode {
             intakeMotor.setPower(-1.0);
         } else{
             intakeMotor.setPower(0.0);
+        }
+        if (gamepad1.triangleWasPressed()) {
+            spinServo.setPower(1.0);
+        } else if(gamepad1.triangleWasReleased()){
+            spinServo.setPower(0.0);
         }
 
 //        if(gamepad1.a || gamepad1.cross){
