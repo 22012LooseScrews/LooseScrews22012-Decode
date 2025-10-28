@@ -1,5 +1,7 @@
 package opmodes.teleop;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -16,6 +18,8 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,7 @@ import java.util.List;
 public class ColorSensorTeleOp extends OpMode {
     OpenCvCamera webcam;
     MyPipeline pipeline;
+    DcMotor intakeMotor;
     @Override
     public void init() {
         int webcam_ID = hardwareMap.appContext.getResources().getIdentifier("webcamMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -32,7 +37,10 @@ public class ColorSensorTeleOp extends OpMode {
         webcam.setPipeline(pipeline);
         webcam.openCameraDevice();
         webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
+
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
     }
+
 
     @Override
     public void loop(){
@@ -42,6 +50,7 @@ public class ColorSensorTeleOp extends OpMode {
 }
 
 class MyPipeline extends OpenCvPipeline {
+
     public String color_detected = "None";
     @Override
     public Mat processFrame(Mat input) {
@@ -100,7 +109,9 @@ class MyPipeline extends OpenCvPipeline {
             Point top_left = new Point(rect.x, rect.y);
             Point bottom_right = new Point(rect.x+rect.width, rect.y+rect.height);
             Imgproc.rectangle(input, top_left, bottom_right, new Scalar(0,255,0), 2);
+
             color_detected = "Green";
+            //intakeMotor.setPower(-1.0);
         }
         else if(largest_purple_area>largest_green_area && largest_purple_contour!=null){
             Rect rect = Imgproc.boundingRect(largest_purple_contour);
