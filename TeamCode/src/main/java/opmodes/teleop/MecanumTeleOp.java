@@ -5,12 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 
 
 @TeleOp
 public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor, outtakeMotor;
-    CRServo spinServo;
+    Servo spinServo;
     @Override
     public void init() {
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
@@ -21,7 +22,7 @@ public class MecanumTeleOp extends OpMode {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         outtakeMotor = hardwareMap.get(DcMotor.class, "outtakeMotor");
 
-        spinServo = hardwareMap.get(CRServo.class, "spinServo");
+        spinServo = hardwareMap.get(Servo.class, "spinServo");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -30,6 +31,8 @@ public class MecanumTeleOp extends OpMode {
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
     }
 
     @Override
@@ -57,9 +60,14 @@ public class MecanumTeleOp extends OpMode {
             intakeMotor.setPower(0.0);
         }
         if (gamepad1.triangleWasPressed()) {
-            spinServo.setPower(1.0);
+            spinServo.setPosition((x+120) % 360);
         } else if(gamepad1.triangleWasReleased()){
-            spinServo.setPower(0.0);
+            spinServo.setPosition((x-120) % 360);
+        }
+        if (gamepad1.squareWasPressed()) {
+            outtakeMotor.setPower(1.0);
+        } else if(gamepad1.squareWasReleased()){
+            outtakeMotor.setPower(0);
         }
         if (gamepad1.circleWasPressed()) {
             spinServo.setPower(-1.0);

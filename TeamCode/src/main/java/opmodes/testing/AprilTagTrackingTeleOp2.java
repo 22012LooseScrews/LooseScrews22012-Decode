@@ -1,7 +1,5 @@
 package opmodes.testing;
 
-import static android.os.SystemClock.sleep;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -90,10 +88,6 @@ public class AprilTagTrackingTeleOp2 extends OpMode {
 
         // Add small sleep to prevent overwhelming the control hub
         sleep(10);
-    }
-
-    private boolean opModeIsActive() {
-
     }
 
     /**
@@ -220,4 +214,3 @@ public class AprilTagTrackingTeleOp2 extends OpMode {
         }
     }
 }
-
