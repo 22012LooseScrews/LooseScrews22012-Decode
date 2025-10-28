@@ -18,12 +18,14 @@ public class Constants {
             .leftRearMotorName("backLeftMotor")
             .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
             .maxPower(1.0);
     public static FollowerConstants follower_constants = new FollowerConstants()
-            .mass(5.0);
+            .mass(7);
     public static PathConstraints path_constraints = new PathConstraints(
-            1.0,
-            10.0
+            0.995,
+            0.1
     );
     public static ThreeWheelConstants odo_wheel_constants = new ThreeWheelConstants()
             .forwardTicksToInches(0.001979)
@@ -36,7 +38,7 @@ public class Constants {
             .rightPodY(-8.5)
             .strafePodX(-9.0)
             .leftEncoderDirection(Encoder.FORWARD)
-            .rightEncoderDirection(Encoder.FORWARD)
+            .rightEncoderDirection(Encoder.REVERSE)
             .strafeEncoderDirection(Encoder.FORWARD);
     public static Follower createFollower(HardwareMap hardwareMap){
         return new FollowerBuilder(follower_constants, hardwareMap)

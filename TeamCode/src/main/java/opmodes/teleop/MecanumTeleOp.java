@@ -61,6 +61,12 @@ public class MecanumTeleOp extends OpMode {
         } else if(gamepad1.triangleWasReleased()){
             spinServo.setPower(0.0);
         }
+        if (gamepad1.circleWasPressed()) {
+            spinServo.setPower(-1.0);
+        } else if(gamepad1.circleWasReleased()){
+            spinServo.setPower(0.0);
+        }
+
 
 //        if(gamepad1.a || gamepad1.cross){
 //            outtakeMotor.setPower(1.0);
