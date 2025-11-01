@@ -1,7 +1,5 @@
 package opmodes.teleop;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -19,21 +17,20 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp
-public class ColorSensorTeleOp extends OpMode {
+public class WebcamColorSensorTeleOp extends OpMode {
     OpenCvCamera webcam;
-    MyPipeline pipeline;
+    WebcamPipeline pipeline;
     DcMotor intakeMotor;
     @Override
     public void init() {
         int webcam_ID = hardwareMap.appContext.getResources().getIdentifier("webcamMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), webcam_ID);
-        pipeline = new MyPipeline();
+        pipeline = new WebcamPipeline();
         webcam.setPipeline(pipeline);
         webcam.openCameraDevice();
         webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
@@ -49,7 +46,7 @@ public class ColorSensorTeleOp extends OpMode {
     }
 }
 
-class MyPipeline extends OpenCvPipeline {
+class WebcamPipeline extends OpenCvPipeline {
 
     public String color_detected = "None";
     @Override
