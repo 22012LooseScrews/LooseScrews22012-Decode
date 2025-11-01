@@ -5,13 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.Servo;
-
 
 @TeleOp
 public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor, outtakeMotor;
-    Servo spinServo;
+    CRServo spinServo;
     @Override
     public void init() {
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
@@ -22,7 +20,7 @@ public class MecanumTeleOp extends OpMode {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         outtakeMotor = hardwareMap.get(DcMotor.class, "outtakeMotor");
 
-        spinServo = hardwareMap.get(Servo.class, "spinServo");
+        spinServo = hardwareMap.get(CRServo.class, "spinServo");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -31,8 +29,7 @@ public class MecanumTeleOp extends OpMode {
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-
+        outtakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
@@ -40,6 +37,7 @@ public class MecanumTeleOp extends OpMode {
         double y = gamepad1.left_stick_y;
         double x = -gamepad1.left_stick_x * 1.1;
         double rx = -gamepad1.right_stick_x;
+
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
         double frontLeftPower = (y + x + rx) / denominator;
@@ -59,31 +57,18 @@ public class MecanumTeleOp extends OpMode {
         } else{
             intakeMotor.setPower(0.0);
         }
-        if (gamepad1.triangleWasPressed()) {
-            spinServo.setPosition((x+120) % 360);
-        } else if(gamepad1.triangleWasReleased()){
-            spinServo.setPosition((x-120) % 360);
+
+        if (gamepad1.triangleWasPressed() || gamepad1.bWasPressed()) {
+            spinServo.setPower(1);
+        } else if(gamepad1.triangleWasReleased() || gamepad1.bWasReleased()){
+            spinServo.setPower(0);
         }
-        if (gamepad1.squareWasPressed()) {
-            outtakeMotor.setPower(1.0);
-        } else if(gamepad1.squareWasReleased()){
+
+        if (gamepad1.crossWasPressed() || gamepad1.aWasPressed()) {
+            outtakeMotor.setPower(0.8);
+        } else if(gamepad1.crossWasReleased() || gamepad1.aWasReleased()){
             outtakeMotor.setPower(0);
         }
-        if (gamepad1.circleWasPressed()) {
-            spinServo.setPower(-1.0);
-        } else if(gamepad1.circleWasReleased()){
-            spinServo.setPower(0.0);
-        }
-
-
-//        if(gamepad1.a || gamepad1.cross){
-//            outtakeMotor.setPower(1.0);
-//        }
-//        else if(gamepad1.b || gamepad1.circle){
-//            outtakeMotor.setPower(-1.0);
-//        } else{
-//            outtakeMotor.setPower(0.0);
-//        }
 
         telemetry.addData("Y",-gamepad1.left_stick_y);
         telemetry.addData("X",-gamepad1.left_stick_x * 1.1);
