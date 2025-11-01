@@ -1,17 +1,22 @@
 package opmodes.teleop;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+// import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.CRServo;
 
 @TeleOp
+@Config
 public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor, outtakeMotor;
     CRServo spinServo;
     @Override
     public void init() {
+        FtcDashboard dashboard = FtcDashboard.getInstance();
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
@@ -58,9 +63,9 @@ public class MecanumTeleOp extends OpMode {
             intakeMotor.setPower(0.0);
         }
 
-        if (gamepad1.triangleWasPressed() || gamepad1.bWasPressed()) {
+        if (gamepad1.circleWasPressed() || gamepad1.bWasPressed()) {
             spinServo.setPower(1);
-        } else if(gamepad1.triangleWasReleased() || gamepad1.bWasReleased()){
+        } else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased()){
             spinServo.setPower(0);
         }
 

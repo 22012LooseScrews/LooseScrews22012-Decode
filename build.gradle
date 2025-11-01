@@ -23,6 +23,7 @@ allprojects {
         mavenCentral()
         maven {url = "https://mymaven.bylazar.com/releases"}
         maven {url = "https://jitpack.io"}
+        maven {url = "https://maven.brott.dev/"}
     }
 }
 
