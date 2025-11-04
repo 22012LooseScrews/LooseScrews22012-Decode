@@ -12,7 +12,6 @@ public class RevColorSensorTeleOp extends OpMode {
     @Override
     public void init() {
         color_sensor.init(hardwareMap);
-
     }
 
     @Override

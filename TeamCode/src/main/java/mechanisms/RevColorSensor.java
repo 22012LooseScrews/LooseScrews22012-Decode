@@ -15,9 +15,9 @@ public class RevColorSensor {
     }
     public void init(HardwareMap hardwareMap){
         revColorSensor = hardwareMap.get(NormalizedColorSensor.class, "revColorSensor");
-        /* revColorSensor.setGain(8);
-           - .setGain() is for adjusting lighting, more lighting means more sensitivity to light
-         */
+        //revColorSensor.setGain(8);
+           //- .setGain() is for adjusting lighting, more lighting means more sensitivity to light
+
     }
     public DetectedColor getDetectedColor(Telemetry telemetry){
         NormalizedRGBA colors = revColorSensor.getNormalizedColors();
@@ -31,15 +31,17 @@ public class RevColorSensor {
         telemetry.addData("Blue: ", normBlue);
         telemetry.addData("Green", normGreen);
 
-        if((normGreen > normRed) && (normGreen > normBlue)){
-            return DetectedColor.GREEN;
+        if(normBlue > 0.03 && normGreen > 0.03){
+            return DetectedColor.UNKNOWN;
         }
-        else if((normRed > normGreen) && (normBlue > normGreen)){
+        else if(normBlue>0.03 && normGreen > 0.02){
             return DetectedColor.PURPLE;
         }
-        else {
+        else if(normBlue > 0.02 && normGreen>0.03){
+            return DetectedColor.GREEN;
+        }
+        else{
             return DetectedColor.UNKNOWN;
         }
     }
-
 }
