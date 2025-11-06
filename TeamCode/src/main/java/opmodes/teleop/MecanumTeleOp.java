@@ -1,9 +1,11 @@
 package opmodes.teleop;
+import static android.os.SystemClock.sleep;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -11,7 +13,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @Config
 public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor, outtakeMotor;
-    CRServo spinServo;
+    Servo spinServo;
     @Override
     public void init() {
         FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -23,7 +25,7 @@ public class MecanumTeleOp extends OpMode {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         outtakeMotor = hardwareMap.get(DcMotor.class, "outtakeMotor");
 
-        spinServo = hardwareMap.get(CRServo.class, "spinServo");
+        spinServo = hardwareMap.get(Servo.class, "spinServo");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -32,6 +34,9 @@ public class MecanumTeleOp extends OpMode {
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        outtakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
@@ -60,20 +65,26 @@ public class MecanumTeleOp extends OpMode {
         }
 
         if (gamepad1.circleWasPressed() || gamepad1.bWasPressed()) {
-            spinServo.setPower(1);
-        } else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased()){
-            spinServo.setPower(0);
+            spinServo.setPosition(1);
+            sleep(240);
+            spinServo.setPosition(0.5);
+        }
+        if(gamepad1.squareWasReleased() || gamepad1.aWasReleased()){
+            spinServo.setPosition(0);
+            sleep(480);
+            spinServo.setPosition(0.5);
         }
 
+
         if (gamepad1.left_trigger > 0.1) {
-            outtakeMotor.setPower(1.0);
+            outtakeMotor.setPower(-0.85);
         }
         else{
             outtakeMotor.setPower(0.0);
         }
 
-        if(gamepad1.right_trigger>0.1){
-            outtakeMotor.setPower(1.0);
+        if(gamepad1.right_trigger > 0.1){
+            outtakeMotor.setPower(-1.0);
         }
         else{
             outtakeMotor.setPower(0.0);
