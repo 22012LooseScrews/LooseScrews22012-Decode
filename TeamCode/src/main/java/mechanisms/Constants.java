@@ -21,11 +21,14 @@ public class Constants {
             .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
             .maxPower(1.0);
+
     public static FollowerConstants follower_constants = new FollowerConstants()
-            .mass(7);
+            .mass(11.34);
+
+
     public static PathConstraints path_constraints = new PathConstraints(
-            0.995,
-            0.1
+            3.4,
+            10
     );
     public static ThreeWheelConstants odo_wheel_constants = new ThreeWheelConstants()
             .forwardTicksToInches(0.001979)
@@ -34,11 +37,11 @@ public class Constants {
             .leftEncoder_HardwareMapName("frontLeftMotor")
             .rightEncoder_HardwareMapName("backLeftMotor")
             .strafeEncoder_HardwareMapName("frontRightMotor")
-            .leftPodY(8.5)
-            .rightPodY(-8.5)
-            .strafePodX(-9.0)
+            .leftPodY(7.25)
+            .rightPodY(-7.25)
+            .strafePodX(-5.5)
             .leftEncoderDirection(Encoder.FORWARD)
-            .rightEncoderDirection(Encoder.REVERSE)
+            .rightEncoderDirection(Encoder.FORWARD)
             .strafeEncoderDirection(Encoder.FORWARD);
     public static Follower createFollower(HardwareMap hardwareMap){
         return new FollowerBuilder(follower_constants, hardwareMap)
