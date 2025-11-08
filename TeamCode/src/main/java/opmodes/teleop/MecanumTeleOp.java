@@ -1,31 +1,35 @@
 package opmodes.teleop;
 import static android.os.SystemClock.sleep;
 
-import com.acmerobotics.dashboard.FtcDashboard;
+//import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 @Config
 public class MecanumTeleOp extends OpMode {
-    DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor, outtakeMotor;
-    Servo spinServo;
+    DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor;
+    DcMotorEx outtakeMotor;
+    CRServo spinServo;
+    double P, I, D, F;
+    double max_outtake_power;
     @Override
     public void init() {
-        FtcDashboard dashboard = FtcDashboard.getInstance();
+        //FtcDashboard dashboard = FtcDashboard.getInstance();
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
         backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
 
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        outtakeMotor = hardwareMap.get(DcMotor.class, "outtakeMotor");
+        outtakeMotor = hardwareMap.get(DcMotorEx.class, "outtakeMotor");
 
-        spinServo = hardwareMap.get(Servo.class, "spinServo");
+        spinServo = hardwareMap.get(CRServo.class, "spinServo");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -36,11 +40,18 @@ public class MecanumTeleOp extends OpMode {
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        outtakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        outtakeMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        P = 10.0;
+        I = 0.0;
+        D = 0.5;
+        F = 15.0;
+        outtakeMotor.setVelocityPIDFCoefficients(P, I, D, F);
     }
 
     @Override
     public void loop() {
+        //max_outtake_power = 1.0 + 0.85;
         double y = gamepad1.left_stick_y;
         double x = -gamepad1.left_stick_x * 1.1;
         double rx = -gamepad1.right_stick_x;
@@ -50,6 +61,9 @@ public class MecanumTeleOp extends OpMode {
         double backLeftPower = (y - x + rx) / denominator;
         double frontRightPower = (y - x - rx) / denominator;
         double backRightPower = (y + x - rx) / denominator;
+
+        double close_rpm = 5700;
+        double far_rpm = 6000;
 
         frontLeftMotor.setPower(frontLeftPower);
         backLeftMotor.setPower(backLeftPower);
@@ -65,29 +79,26 @@ public class MecanumTeleOp extends OpMode {
         }
 
         if (gamepad1.circleWasPressed() || gamepad1.bWasPressed()) {
-            spinServo.setPosition(1);
-            sleep(240);
-            spinServo.setPosition(0.5);
+            spinServo.setPower(1.0);
         }
-        if(gamepad1.squareWasReleased() || gamepad1.aWasReleased()){
-            spinServo.setPosition(0);
-            sleep(480);
-            spinServo.setPosition(0.5);
+        else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased()){
+            spinServo.setPower(0.0);
+        }
+        else if(gamepad1.triangleWasPressed() || gamepad1.aWasPressed()){
+            spinServo.setPower(-1.0);
+        }
+        else if(gamepad1.triangleWasReleased() || gamepad1.aWasReleased()){
+            spinServo.setPower(0.0);
         }
 
-
-        if (gamepad1.left_trigger > 0.1) {
-            outtakeMotor.setPower(-0.85);
+        if(gamepad1.left_trigger > 0.2){
+            outtakeMotor.setVelocity(-close_rpm);
+        }
+        else if(gamepad1.right_trigger > 0.2){
+            outtakeMotor.setVelocity(-far_rpm);
         }
         else{
-            outtakeMotor.setPower(0.0);
-        }
-
-        if(gamepad1.right_trigger > 0.1){
-            outtakeMotor.setPower(-1.0);
-        }
-        else{
-            outtakeMotor.setPower(0.0);
+            outtakeMotor.setVelocity(0);
         }
 
         telemetry.addData("Y",-gamepad1.left_stick_y);
@@ -95,5 +106,6 @@ public class MecanumTeleOp extends OpMode {
         telemetry.addData("RX",gamepad1.right_stick_x);
         telemetry.addData("Left Bumper", gamepad1.left_bumper);
         telemetry.addData("Right Bumper", gamepad1.right_bumper);
+        telemetry.addData("Outtake Motor RPM", outtakeMotor.getVelocity());
     }
 }

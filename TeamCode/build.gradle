@@ -33,6 +33,6 @@ dependencies {
     //noinspection Aligned16KB
     implementation "org.openftc:easyopencv:1.7.3"
     implementation "com.pedropathing:ftc:2.0.2"
-    implementation "com.bylazar:panels:1.0.3"
+    implementation "com.bylazar:fullpanels:1.0.9"
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.5'
 }
