@@ -20,7 +20,7 @@ public class SmallTriangleRedAuto extends LinearOpMode {
         PathChain small_triangle_red_path = builder
                 .addPath(new BezierLine(
                         new Pose(88.0, 8.0),
-                        new Pose(88.0, 36.0)
+                        new Pose(88.0, 35.0)
                 ))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(90.0),

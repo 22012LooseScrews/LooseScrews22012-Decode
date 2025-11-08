@@ -1,3 +1,4 @@
+/*
 package opmodes.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -12,6 +13,7 @@ import org.opencv.core.Size;
 
 import java.util.List;
 
+*/
 /**
  * AprilTag Tracking TeleOp for testing.
  *
@@ -19,7 +21,8 @@ import java.util.List;
  * The robot will automatically turn to face the detected AprilTag.
  *
  * Make sure your Logitech C920 is configured as "Webcam 1" in the robot configuration.
- */
+ *//*
+
 @TeleOp(name = "AprilTag Tracking Test", group = "Testing")
 public class AprilTagTrackingTeleOp2 extends OpMode {
 
@@ -90,9 +93,11 @@ public class AprilTagTrackingTeleOp2 extends OpMode {
         sleep(10);
     }
 
-    /**
+    */
+/**
      * Initialize the AprilTag processor with 36h11 family (optimized for performance)
-     */
+     *//*
+
     private void initAprilTag() {
         // Create the AprilTag processor with 36h11 family and optimized settings
         aprilTag = new AprilTagProcessor.Builder()
@@ -114,9 +119,11 @@ public class AprilTagTrackingTeleOp2 extends OpMode {
                 .build();
     }
 
-    /**
+    */
+/**
      * Track the target AprilTag and face it
-     */
+     *//*
+
     private void trackAprilTag() {
         // Only get detections if we don't have a current target or it's been a while
         if (targetDetection == null || !aprilTag.getDetections().contains(targetDetection)) {
@@ -154,9 +161,11 @@ public class AprilTagTrackingTeleOp2 extends OpMode {
         }
     }
 
-    /**
+    */
+/**
      * Turn the robot right
-     */
+     *//*
+
     private void turnRight(double power) {
         frontLeftMotor.setPower(power);
         backLeftMotor.setPower(power);
@@ -164,9 +173,11 @@ public class AprilTagTrackingTeleOp2 extends OpMode {
         backRightMotor.setPower(-power);
     }
 
-    /**
+    */
+/**
      * Turn the robot left
-     */
+     *//*
+
     private void turnLeft(double power) {
         frontLeftMotor.setPower(-power);
         backLeftMotor.setPower(-power);
@@ -174,9 +185,11 @@ public class AprilTagTrackingTeleOp2 extends OpMode {
         backRightMotor.setPower(power);
     }
 
-    /**
+    */
+/**
      * Stop all drive motors
-     */
+     *//*
+
     private void stopMotors() {
         frontLeftMotor.setPower(0);
         backLeftMotor.setPower(0);
@@ -184,9 +197,11 @@ public class AprilTagTrackingTeleOp2 extends OpMode {
         backRightMotor.setPower(0);
     }
 
-    /**
+    */
+/**
      * Display telemetry information (optimized for performance)
-     */
+     *//*
+
     private void displayTelemetry() {
         telemetry.addData("Tracking", isTracking ? "ON" : "OFF");
 
@@ -214,3 +229,4 @@ public class AprilTagTrackingTeleOp2 extends OpMode {
         }
     }
 }
+*/

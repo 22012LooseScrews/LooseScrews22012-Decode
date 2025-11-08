@@ -18,8 +18,8 @@ public class BigTriangleRedAuto extends LinearOpMode {
 
         PathChain big_triangle_red_path = builder
                 .addPath(new BezierLine(
-                        new Pose(121.500, 126.000),
-                        new Pose(121.500, 99.000)
+                        new Pose(121.500, 126),
+                        new Pose(121.500, 99)
                 ))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(216.5),

@@ -1,13 +1,16 @@
+/*
 package opmodes.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import mechanisms.ColorSensor;
 
+*/
 /**
  * Test teleop for Rev Color Sensor
  * Displays detected ball color: "Green", "Purple", or "none"
- */
+ *//*
+
 @TeleOp(name = "Color Sensor Test", group = "Testing")
 public class ColorSensorTestTeleOp extends LinearOpMode {
 
@@ -42,3 +45,4 @@ public class ColorSensorTestTeleOp extends LinearOpMode {
     }
 }
 
+*/

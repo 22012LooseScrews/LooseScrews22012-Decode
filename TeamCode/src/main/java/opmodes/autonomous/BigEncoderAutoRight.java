@@ -3,7 +3,6 @@ package opmodes.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous
 public class BigEncoderAutoRight extends LinearOpMode {
@@ -14,12 +13,10 @@ public class BigEncoderAutoRight extends LinearOpMode {
     private DcMotor frontRightMotor = null;
     private DcMotor backRightMotor = null;
 
-    private ElapsedTime runtime = new ElapsedTime();
-
     // --- Encoder & Movement Constants ---
     static final double COUNTS_PER_MOTOR_REV = 384.5 * 4;   // ≈1538 ticks per revolution (RS-555)
-    static final double DRIVE_GEAR_REDUCTION = 1.0;         // No external gearing
-    static final double WHEEL_DIAMETER_INCHES = 4.0;        // Wheel diameter
+    static final double DRIVE_GEAR_REDUCTION = 1.0;
+    static final double WHEEL_DIAMETER_INCHES = 4.0;
     static final double COUNTS_PER_INCH =
             (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                     (WHEEL_DIAMETER_INCHES * Math.PI);
@@ -29,27 +26,20 @@ public class BigEncoderAutoRight extends LinearOpMode {
     @Override
     public void runOpMode() {
 
+        // --- Hardware Mapping ---
+        frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
+        backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
+        frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
+        backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
 
-        frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeft");
-        backLeftMotor = hardwareMap.get(DcMotor.class, "backLeft");
-        frontRightMotor = hardwareMap.get(DcMotor.class, "frontRight");
-        backRightMotor = hardwareMap.get(DcMotor.class, "backRight");
-
+        // --- Motor Directions ---
         frontLeftMotor.setDirection(DcMotor.Direction.FORWARD);
         backLeftMotor.setDirection(DcMotor.Direction.FORWARD);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
-
-        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        // --- Reset Encoders ---
+        resetEncoders();
 
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
@@ -58,21 +48,19 @@ public class BigEncoderAutoRight extends LinearOpMode {
 
         if (opModeIsActive()) {
 
-            // --- STEP 1: Drive diagonally forward-right (~15 inches total) ---
-            encoderDrive(DRIVE_SPEED, 15, 3.0);
+            // --- STEP 1: Drive forward 15 inches ---
+            encoderDrive(DRIVE_SPEED, 15);
 
-            // --- STEP 2: Strafe left (~12 inches) ---
-            encoderStrafe(DRIVE_SPEED, -12, 3.0);
+            // --- STEP 2: Strafe right 12 inches ---
+            encoderStrafeRight(DRIVE_SPEED, 12);
 
             stopAllMotors();
-
         }
-
     }
 
-    // --- ENCODER DRIVE FUNCTION (FORWARD/BACKWARD) ---
-    public void encoderDrive(double speed, double inches, double timeoutS) {
-        int moveCounts = (int)(inches * COUNTS_PER_INCH);
+    // --- DRIVE FORWARD/BACKWARD ---
+    public void encoderDrive(double speed, double inches) {
+        int moveCounts = (int) (inches * COUNTS_PER_INCH);
 
         int newFrontLeftTarget = frontLeftMotor.getCurrentPosition() + moveCounts;
         int newBackLeftTarget = backLeftMotor.getCurrentPosition() + moveCounts;
@@ -85,46 +73,46 @@ public class BigEncoderAutoRight extends LinearOpMode {
         backRightMotor.setTargetPosition(newBackRightTarget);
 
         setRunToPosition();
-
-        runtime.reset();
         setMotorPower(speed);
 
-        while (opModeIsActive() && runtime.seconds() < timeoutS &&
-                (frontLeftMotor.isBusy() && frontRightMotor.isBusy())) {
+        while (opModeIsActive() &&
+                (frontLeftMotor.isBusy() && frontRightMotor.isBusy() &&
+                        backLeftMotor.isBusy() && backRightMotor.isBusy())) {
             telemetry.addData("Path", "Driving forward...");
             telemetry.update();
         }
 
         stopAllMotors();
+        resetEncoders();
     }
 
-    // --- ENCODER STRAFE FUNCTION ---
-    public void encoderStrafe(double speed, double inches, double timeoutS) {
-        int moveCounts = (int)(inches * COUNTS_PER_INCH);
+    // --- STRAFE RIGHT ---
+    public void encoderStrafeRight(double speed, double inches) {
+        int moveCounts = (int) (inches * COUNTS_PER_INCH);
 
-        // Strafing requires opposite wheel directions
+        // Strafing right = FL +, FR -, BL -, BR +
         int frontLeftTarget = frontLeftMotor.getCurrentPosition() + moveCounts;
-        int backLeftTarget = backLeftMotor.getCurrentPosition() - moveCounts;
         int frontRightTarget = frontRightMotor.getCurrentPosition() - moveCounts;
+        int backLeftTarget = backLeftMotor.getCurrentPosition() - moveCounts;
         int backRightTarget = backRightMotor.getCurrentPosition() + moveCounts;
 
         frontLeftMotor.setTargetPosition(frontLeftTarget);
-        backLeftMotor.setTargetPosition(backLeftTarget);
         frontRightMotor.setTargetPosition(frontRightTarget);
+        backLeftMotor.setTargetPosition(backLeftTarget);
         backRightMotor.setTargetPosition(backRightTarget);
 
         setRunToPosition();
-
-        runtime.reset();
         setMotorPower(Math.abs(speed));
 
-        while (opModeIsActive() && runtime.seconds() < timeoutS &&
-                (frontLeftMotor.isBusy() && frontRightMotor.isBusy())) {
-            telemetry.addData("Path", "Strafing...");
+        while (opModeIsActive() &&
+                (frontLeftMotor.isBusy() && frontRightMotor.isBusy() &&
+                        backLeftMotor.isBusy() && backRightMotor.isBusy())) {
+            telemetry.addData("Path", "Strafing right...");
             telemetry.update();
         }
 
         stopAllMotors();
+        resetEncoders();
     }
 
     // --- HELPER FUNCTIONS ---
@@ -135,6 +123,18 @@ public class BigEncoderAutoRight extends LinearOpMode {
         backRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+    private void resetEncoders() {
+        frontLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
     private void setMotorPower(double power) {
         frontLeftMotor.setPower(power);
         backLeftMotor.setPower(power);
@@ -143,10 +143,9 @@ public class BigEncoderAutoRight extends LinearOpMode {
     }
 
     private void stopAllMotors() {
-        setMotorPower(0);
-        frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+       frontLeftMotor.setPower(0);
+       backLeftMotor.setPower(0);
+       frontRightMotor.setPower(0);
+       backRightMotor.setPower(0);
     }
 }
