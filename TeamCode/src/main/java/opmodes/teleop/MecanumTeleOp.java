@@ -1,6 +1,4 @@
 package opmodes.teleop;
-import static android.os.SystemClock.sleep;
-
 //import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
