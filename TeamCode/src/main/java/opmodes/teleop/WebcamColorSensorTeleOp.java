@@ -47,6 +47,7 @@ public class WebcamColorSensorTeleOp extends OpMode {
 }
 
 class WebcamPipeline extends OpenCvPipeline {
+
     public String color_detected = "None";
     @Override
     public Mat processFrame(Mat input) {
