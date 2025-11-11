@@ -1,4 +1,4 @@
-package mechanisms;
+package opmodes.testing;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
@@ -10,7 +10,7 @@ import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Constants {
+public class ConstantsUseless {
     public static MecanumConstants drive_constants = new MecanumConstants()
             .rightFrontMotorName("frontRightMotor")
             .rightRearMotorName("backRightMotor")
