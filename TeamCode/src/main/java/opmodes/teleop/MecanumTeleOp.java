@@ -14,6 +14,7 @@ public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor;
     DcMotorEx outtakeMotor;
     CRServo spinServo;
+    CRServo vectorServo;
     double P, I, D, F;
     double max_outtake_power;
     @Override
@@ -28,6 +29,7 @@ public class MecanumTeleOp extends OpMode {
         outtakeMotor = hardwareMap.get(DcMotorEx.class, "outtakeMotor");
 
         spinServo = hardwareMap.get(CRServo.class, "spinServo");
+        vectorServo = hardwareMap.get(CRServo.class, "vectorServo");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -60,8 +62,8 @@ public class MecanumTeleOp extends OpMode {
         double frontRightPower = (y - x - rx) / denominator;
         double backRightPower = (y + x - rx) / denominator;
 
-        double close_rpm = 5700;
-        double far_rpm = 6000;
+        double close_rpm = 4000;
+        double far_rpm = 5400;
 
         frontLeftMotor.setPower(frontLeftPower);
         backLeftMotor.setPower(backLeftPower);
@@ -87,6 +89,13 @@ public class MecanumTeleOp extends OpMode {
         }
         else if(gamepad1.triangleWasReleased() || gamepad1.aWasReleased()){
             spinServo.setPower(0.0);
+        }
+
+        if(gamepad1.dpadUpWasPressed()){
+            vectorServo.setPower(1.0);
+        }
+        else if(gamepad1.dpadUpWasReleased()){
+            vectorServo.setPower(0.0);
         }
 
         if(gamepad1.left_trigger > 0.2){

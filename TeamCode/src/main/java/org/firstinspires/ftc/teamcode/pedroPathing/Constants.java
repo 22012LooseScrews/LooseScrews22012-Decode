@@ -18,10 +18,10 @@ public class Constants {
             .rightRearMotorName("backRightMotor")
             .leftFrontMotorName("frontLeftMotor")
             .leftRearMotorName("backLeftMotor")
-            .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .maxPower(1.0);
     // Change this later        .xVelocity(78.884)
     // Change this later        .yVelocity(28.054);
@@ -35,10 +35,10 @@ public class Constants {
     // Change this later        .forwardZeroPowerAcceleration(-26.146);
     // Change this later        .lateralZeroPowerAcceleration(-92.162)
 
-    public static PathConstraints path_constraints = new PathConstraints(
-            3.4,
-            10
-    );
+//    public static PathConstraints path_constraints = new PathConstraints(
+//            3.4,
+//            10
+//    );
     public static ThreeWheelConstants odo_wheel_constants = new ThreeWheelConstants()
             .forwardTicksToInches(0.001979)
             .strafeTicksToInches(0.001979)
@@ -46,15 +46,14 @@ public class Constants {
             .leftEncoder_HardwareMapName("frontLeftMotor")
             .rightEncoder_HardwareMapName("backLeftMotor")
             .strafeEncoder_HardwareMapName("frontRightMotor")
-            .leftPodY(7.25)
-            .rightPodY(-7.25)
+            .leftPodY(7)
+            .rightPodY(-7)
             .strafePodX(-5.5)
-            .leftEncoderDirection(Encoder.FORWARD)
-            .rightEncoderDirection(Encoder.FORWARD)
+            .leftEncoderDirection(Encoder.REVERSE)
+            .rightEncoderDirection(Encoder.REVERSE)
             .strafeEncoderDirection(Encoder.FORWARD);
     public static Follower createFollower(HardwareMap hardwareMap){
         return new FollowerBuilder(follower_constants, hardwareMap)
-                .pathConstraints(path_constraints)
                 .mecanumDrivetrain(drive_constants)
                 .threeWheelLocalizer(odo_wheel_constants)
                 .build();
