@@ -92,14 +92,14 @@ public class MecanumTeleOp extends OpMode {
         }
 
         if(gamepad1.dpadUpWasPressed()){
-            vectorServo.setPower(1.0);
+            vectorServo.setPower(-1.0);
         }
         else if(gamepad1.dpadUpWasReleased()){
             vectorServo.setPower(0.0);
         }
 
         if(gamepad1.left_trigger > 0.2){
-            outtakeMotor.setVelocity(-close_rpm);
+            outtakeMotor.setPower(-0.8);
         }
         else if(gamepad1.right_trigger > 0.2){
             outtakeMotor.setVelocity(-far_rpm);
