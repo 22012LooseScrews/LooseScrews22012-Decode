@@ -16,22 +16,26 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Follower follower = Constants.createFollower(hardwareMap);
         PathBuilder builder = new PathBuilder(follower);
-        follower.setStartingPose(new Pose(56.0, 8.0, Math.toRadians(0)));
+        follower.setStartingPose(new Pose(56.0, 9.0, Math.toRadians(90)));
 
         PathChain small_triangle_blue_path = builder
                 .addPath(
+                        // Path 1
                         new BezierCurve(
-                                new Pose(56.000, 8.000),
-                                new Pose(56.461, 43.176),
-                                new Pose(18.741, 35.348)
+                                new Pose(56.000, 9.000),
+                                new Pose(72.421, 46.526),
+                                new Pose(22.737, 36.000)
                         )
                 )
-                .setTangentHeadingInterpolation()
+                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(180))
                 .addPath(
-                        new BezierLine(new Pose(18.741, 35.348), new Pose(71.881, 22.774))
+                        // Path 2
+                        new BezierLine(new Pose(22.737, 36.000), new Pose(71.881, 22.774))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(192), Math.toRadians(118.5))
+                .setLinearHeadingInterpolation(Math.toRadians(184), Math.toRadians(118.5))
+             //   .setReversed()
                 .addPath(
+                        // Path 3
                         new BezierCurve(
                                 new Pose(71.881, 22.774),
                                 new Pose(52.191, 63.104),
@@ -40,10 +44,12 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                 )
                 .setTangentHeadingInterpolation()
                 .addPath(
+                        // Path 4
                         new BezierLine(new Pose(20.402, 60.731), new Pose(71.644, 73.068))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(185), Math.toRadians(134))
                 .addPath(
+                        // Path 5
                         new BezierCurve(
                                 new Pose(71.644, 73.068),
                                 new Pose(57.885, 89.437),
@@ -52,6 +58,7 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                 )
                 .setTangentHeadingInterpolation()
                 .addPath(
+                        // Path 6
                         new BezierLine(new Pose(24.672, 84.455), new Pose(71.644, 73.068))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(189), Math.toRadians(134))

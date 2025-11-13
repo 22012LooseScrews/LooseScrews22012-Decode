@@ -22,11 +22,12 @@ public class BigTriangleBlueAuto extends LinearOpMode {
                 .addPath(
                         new BezierCurve(
                                 new Pose(22.500, 126.000),
-                                new Pose(58.834, 99.638),
-                                new Pose(18.741, 85.641)
+                                new Pose(64.764, 114.346),
+                                new Pose(52.903, 90.623),
+                                new Pose(23.486, 85.641)
                         )
                 )
-                .setTangentHeadingInterpolation()
+                .setLinearHeadingInterpolation(Math.toRadians(323.5), Math.toRadians(180))
                 .addPath(
                         new BezierLine(new Pose(18.741, 85.641), new Pose(71.644, 73.068))
                 )
@@ -47,7 +48,7 @@ public class BigTriangleBlueAuto extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(71.644, 73.068),
                                 new Pose(72.830, 35.822),
-                                new Pose(20.639, 37.245)
+                                new Pose(23.486, 37.245)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))

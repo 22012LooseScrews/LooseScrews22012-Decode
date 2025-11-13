@@ -20,18 +20,21 @@ public class BigTriangleRedAuto extends LinearOpMode {
 
         PathChain big_triangle_red_path = builder
                 .addPath(
+                        // Path 1
                         new BezierCurve(
                                 new Pose(121.500, 126.000),
-                                new Pose(85.166, 99.638),
+                                new Pose(63.158, 86.737),
                                 new Pose(125.259, 85.641)
                         )
                 )
                 .setTangentHeadingInterpolation()
                 .addPath(
+                        // Path 2
                         new BezierLine(new Pose(125.259, 85.641), new Pose(72.356, 73.068))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(341), Math.toRadians(46))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(46))
                 .addPath(
+                        // Path 3
                         new BezierCurve(
                                 new Pose(72.356, 73.068),
                                 new Pose(60.731, 62.392),
@@ -40,19 +43,22 @@ public class BigTriangleRedAuto extends LinearOpMode {
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(46), Math.toRadians(0))
                 .addPath(
+                        // Path 4
                         new BezierLine(new Pose(120.514, 63.104), new Pose(72.356, 73.068))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(46))
                 .addPath(
+                        // Path 5
                         new BezierCurve(
                                 new Pose(72.356, 73.068),
-                                new Pose(72.119, 35.822),
-                                new Pose(123.361, 37.245)
+                                new Pose(71.170, 35.822),
+                                new Pose(123.579, 34.947)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(46), Math.toRadians(0))
                 .addPath(
-                        new BezierLine(new Pose(123.361, 37.245), new Pose(72.119, 22.774))
+                        // Path 6
+                        new BezierLine(new Pose(123.579, 34.947), new Pose(72.119, 22.774))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(61.5))
                 .build();
