@@ -13,9 +13,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor;
     DcMotorEx outtakeMotor;
-    Servo spinServo;
-    CRServo vectorServo;
-    double P, I, D, F;
+  //  Servo spinServo;
+    CRServo vectorServo, spinServo;
+    int num_of_times_circle_pressed;
+    //double P, I, D, F;
     @Override
     public void init() {
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
@@ -26,7 +27,7 @@ public class MecanumTeleOp extends OpMode {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         outtakeMotor = hardwareMap.get(DcMotorEx.class, "outtakeMotor");
 
-        spinServo = hardwareMap.get(Servo.class, "spinServo");
+        spinServo = hardwareMap.get(CRServo.class, "spinServo");
         vectorServo = hardwareMap.get(CRServo.class, "vectorServo");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -40,11 +41,11 @@ public class MecanumTeleOp extends OpMode {
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         outtakeMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        P = 10.0;
-        I = 0.0;
-        D = 0.5;
-        F = 13.0;
-        outtakeMotor.setVelocityPIDFCoefficients(P, I, D, F);
+//        P = 10.0;
+//        I = 0.0;
+//        D = 0.5;
+//        F = 13.0;
+//        outtakeMotor.setVelocityPIDFCoefficients(P, I, D, F);
     }
 
     @Override
@@ -76,33 +77,20 @@ public class MecanumTeleOp extends OpMode {
             intakeMotor.setPower(0.0);
         }
 
-        if(gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
-            spinServo.setPosition(0.33);
+
+
+        if (gamepad1.circleWasPressed() || gamepad1.bWasPressed()) {
+            spinServo.setPower(1.0);
+        }
+        else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased()){
+            spinServo.setPower(0.0);
         }
         else if(gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
-            spinServo.setPosition(0.66);
+            spinServo.setPower(-1.0);
         }
-        else if(gamepad1.squareWasPressed() || gamepad1.xWasPressed()){
-            spinServo.setPosition(1.0);
+        else if(gamepad1.triangleWasReleased() || gamepad1.yWasReleased()){
+            spinServo.setPower(0.0);
         }
-        else if(gamepad1.crossWasPressed() || gamepad1.aWasPressed()){
-            spinServo.setDirection(Servo.Direction.REVERSE);
-            spinServo.setPosition(0);
-            spinServo.setDirection(Servo.Direction.FORWARD);
-        }
-
-//        if (gamepad1.circleWasPressed() || gamepad1.bWasPressed()) {
-//            spinServo.setPower(1.0);
-//        }
-//        else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased()){
-//            spinServo.setPower(0.0);
-//        }
-//        else if(gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
-//            spinServo.setPower(-1.0);
-//        }
-//        else if(gamepad1.triangleWasReleased() || gamepad1.aWasReleased()){
-//            spinServo.setPower(0.0);
-//        }
 
         if(gamepad1.dpadUpWasPressed()){
             vectorServo.setPower(-1.0);
@@ -112,10 +100,10 @@ public class MecanumTeleOp extends OpMode {
         }
 
         if(gamepad1.left_trigger > 0.2){
-            outtakeMotor.setPower(-0.8);
+            outtakeMotor.setPower(-0.6);
         }
         else if(gamepad1.right_trigger > 0.2){
-            outtakeMotor.setVelocity(-far_rpm);
+            outtakeMotor.setPower(-1.0);
         }
         else{
             outtakeMotor.setVelocity(0);

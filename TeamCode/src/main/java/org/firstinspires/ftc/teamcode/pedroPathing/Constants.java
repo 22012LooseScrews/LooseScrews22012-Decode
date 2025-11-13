@@ -27,18 +27,20 @@ public class Constants {
             .yVelocity(55.36111188046402);
 
     public static FollowerConstants follower_constants = new FollowerConstants()
-            .mass(11.34);
-//            .centripetalScaling(0.0005)
-//            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.6, 0, 0.0001, 0.6, 0.025))
-//            .headingPIDFCoefficients(new PIDFCoefficients(0.71, 0, 0.002, 0.025))
-//            .translationalPIDFCoefficients(new PIDFCoefficients(0.06, 0, 0.001, 0.025))
-//            .forwardZeroPowerAcceleration(-32.372163315984494)
-//            .lateralZeroPowerAcceleration(-78.47962665767436);
+            .mass(11.34)
+            .centripetalScaling(0.0005)
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.6, 0, 0.0001, 0.6, 0.025))
+            .headingPIDFCoefficients(new PIDFCoefficients(0.6, 0, 0.01, 0.025))
+            .translationalPIDFCoefficients(new PIDFCoefficients(0.06, 0, 0.01, 0.02))
+            .forwardZeroPowerAcceleration(-32.372163315984494)
+            .lateralZeroPowerAcceleration(-78.47962665767436);
 
-//    public static PathConstraints path_constraints = new PathConstraints(
-//            3.4,
-//            10
-//    );
+    public static PathConstraints path_constraints = new PathConstraints(
+            0.995,
+            100,
+            1.2,
+            1
+    );
     public static ThreeWheelConstants odo_wheel_constants = new ThreeWheelConstants()
             .forwardTicksToInches(0.0020031719903638194)
             .strafeTicksToInches(0.002012573702528496)
