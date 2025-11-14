@@ -17,10 +17,10 @@ public class MecanumTeleOp extends OpMode {
     int num_of_times_circle_pressed;
 
     // Dashboard-tunable variables
-    public static double close_rpm = 4000;  // close shot
-    public static double far_rpm = 5400;    // far shot
-    public static double velocity = 0;      // current target velocity (RPM)
-    public static double ticksPerRev = 28;  // update if your motor encoder differs
+  //  public static double close_rpm = 4000;  // close shot
+//    public static double far_rpm = 5400;    // far shot
+//    public static double velocity = 0;      // current target velocity (RPM)
+//    public static double ticksPerRev = 28;  // update if your motor encoder differs
 
     @Override
     public void init() {
@@ -97,24 +97,21 @@ public class MecanumTeleOp extends OpMode {
         }
 
         // === Outtake Velocity Control ===
-        if (gamepad1.left_trigger > 0.2) {
-            velocity = close_rpm;
-        } else if (gamepad1.right_trigger > 0.2) {
-            velocity = far_rpm;
+        if (gamepad1.left_trigger > 0.1) {
+            outtakeMotor.setPower(-0.79);
+        } else if (gamepad1.right_trigger > 0.1) {
+            outtakeMotor.setPower(-0.93);
         } else {
-            velocity = 0;
+            outtakeMotor.setPower(0);
         }
 
-        double ticksPerSecond = (velocity / 60.0) * ticksPerRev;
-        outtakeMotor.setVelocity(ticksPerSecond);
-
         // === Telemetry ===
-        telemetry.addData("Y", -gamepad1.left_stick_y);
-        telemetry.addData("X", -gamepad1.left_stick_x * 1.1);
+   /*     telemetry.addData("Y", -gamepad1.left_stick_y);
+         telemetry.addData("X", -gamepad1.left_stick_x * 1.1);
         telemetry.addData("RX", gamepad1.right_stick_x);
         telemetry.addData("Left Bumper", gamepad1.left_bumper);
-        telemetry.addData("Right Bumper", gamepad1.right_bumper);
-        telemetry.addData("Target Velocity (RPM)", velocity);
-        telemetry.addData("Outtake Velocity (ticks/s)", outtakeMotor.getVelocity());
+        telemetry.addData("Right Bumper", gamepad1.right_bumper);*/
+        //telemetry.addData("Target Velocity (RPM)", velocity);
+        //telemetry.addData("Outtake Velocity (ticks/s)", outtakeMotor.getVelocity());
     }
 }

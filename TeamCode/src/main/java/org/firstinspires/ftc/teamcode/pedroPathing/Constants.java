@@ -25,7 +25,6 @@ public class Constants {
             .maxPower(1.0)
             .xVelocity(66.70028277980974)
             .yVelocity(55.36111188046402);
-
     public static FollowerConstants follower_constants = new FollowerConstants()
             .mass(11.34)
             .centripetalScaling(0.0005)
