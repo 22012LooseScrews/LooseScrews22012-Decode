@@ -1,4 +1,5 @@
 package opmodes.teleop;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -14,7 +15,13 @@ public class MecanumTeleOp extends OpMode {
     DcMotorEx outtakeMotor;
     CRServo vectorServo, spinServo;
     int num_of_times_circle_pressed;
-    //double P, I, D, F;
+
+    // Dashboard-tunable variables
+    public static double close_rpm = 4000;  // close shot
+    public static double far_rpm = 5400;    // far shot
+    public static double velocity = 0;      // current target velocity (RPM)
+    public static double ticksPerRev = 28;  // update if your motor encoder differs
+
     @Override
     public void init() {
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
@@ -39,16 +46,14 @@ public class MecanumTeleOp extends OpMode {
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         outtakeMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-//        P = 10.0;
-//        I = 0.0;
-//        D = 0.5;
-//        F = 13.0;
-//        outtakeMotor.setVelocityPIDFCoefficients(P, I, D, F);
+        // Optionally tune PIDF here if needed
+        // double P = 10.0, I = 0.0, D = 0.5, F = 13.0;
+        // outtakeMotor.setVelocityPIDFCoefficients(P, I, D, F);
     }
 
     @Override
     public void loop() {
-        // max_outtake_power = 1.0 + 0.85;
+        // === Mecanum Drive Control ===
         double y = gamepad1.left_stick_y;
         double x = -gamepad1.left_stick_x * 1.1;
         double rx = -gamepad1.right_stick_x;
@@ -59,59 +64,57 @@ public class MecanumTeleOp extends OpMode {
         double frontRightPower = (y - x - rx) / denominator;
         double backRightPower = (y + x - rx) / denominator;
 
-        double close_rpm = 4000;
-        double far_rpm = 5400;
-
         frontLeftMotor.setPower(frontLeftPower);
         backLeftMotor.setPower(backLeftPower);
         frontRightMotor.setPower(frontRightPower);
         backRightMotor.setPower(backRightPower);
 
+        // === Intake Control ===
         if (gamepad1.left_bumper) {
             intakeMotor.setPower(1.0);
-        } else if(gamepad1.right_bumper){
+        } else if (gamepad1.right_bumper) {
             intakeMotor.setPower(-1.0);
-        } else{
+        } else {
             intakeMotor.setPower(0.0);
         }
 
-
-
+        // === Spin Servo Control ===
         if (gamepad1.circleWasPressed() || gamepad1.bWasPressed()) {
             spinServo.setPower(1.0);
-        }
-        else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased()){
+        } else if (gamepad1.circleWasReleased() || gamepad1.bWasReleased()) {
             spinServo.setPower(0.0);
-        }
-        else if(gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
+        } else if (gamepad1.triangleWasPressed() || gamepad1.yWasPressed()) {
             spinServo.setPower(-1.0);
-        }
-        else if(gamepad1.triangleWasReleased() || gamepad1.yWasReleased()){
+        } else if (gamepad1.triangleWasReleased() || gamepad1.yWasReleased()) {
             spinServo.setPower(0.0);
         }
 
-        if(gamepad1.dpadUpWasPressed()){
+        // === Vector Servo Control ===
+        if (gamepad1.dpadUpWasPressed()) {
             vectorServo.setPower(-1.0);
-        }
-        else if(gamepad1.dpadUpWasReleased()){
+        } else if (gamepad1.dpadUpWasReleased()) {
             vectorServo.setPower(0.0);
         }
 
-        if(gamepad1.left_trigger > 0.2){
-            outtakeMotor.setPower(-0.6);
-        }
-        else if(gamepad1.right_trigger > 0.2){
-            outtakeMotor.setPower(-1.0);
-        }
-        else{
-            outtakeMotor.setVelocity(0);
+        // === Outtake Velocity Control ===
+        if (gamepad1.left_trigger > 0.2) {
+            velocity = close_rpm;
+        } else if (gamepad1.right_trigger > 0.2) {
+            velocity = far_rpm;
+        } else {
+            velocity = 0;
         }
 
-        telemetry.addData("Y",-gamepad1.left_stick_y);
-        telemetry.addData("X",-gamepad1.left_stick_x * 1.1);
-        telemetry.addData("RX",gamepad1.right_stick_x);
+        double ticksPerSecond = (velocity / 60.0) * ticksPerRev;
+        outtakeMotor.setVelocity(ticksPerSecond);
+
+        // === Telemetry ===
+        telemetry.addData("Y", -gamepad1.left_stick_y);
+        telemetry.addData("X", -gamepad1.left_stick_x * 1.1);
+        telemetry.addData("RX", gamepad1.right_stick_x);
         telemetry.addData("Left Bumper", gamepad1.left_bumper);
         telemetry.addData("Right Bumper", gamepad1.right_bumper);
-        telemetry.addData("Outtake Motor RPM", outtakeMotor.getVelocity());
+        telemetry.addData("Target Velocity (RPM)", velocity);
+        telemetry.addData("Outtake Velocity (ticks/s)", outtakeMotor.getVelocity());
     }
 }

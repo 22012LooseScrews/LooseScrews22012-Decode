@@ -1,4 +1,5 @@
 package opmodes.autonomous;
+
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -6,13 +7,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@Autonomous
+@Autonomous(name = "AprilTag Limelight Auto Test Red")
 public class AprilTagLimelightAutoTestRed extends LinearOpMode {
 
     private Limelight3A limelight;
     private DcMotor frontLeft, frontRight, backLeft, backRight;
 
-    // PID constants for alignment
     private static final double KP_TURN = 0.035;
     private static final double MIN_TURN_POWER = 0.08;
 
@@ -34,8 +34,9 @@ public class AprilTagLimelightAutoTestRed extends LinearOpMode {
 
         // === Initialize Limelight ===
         limelight = hardwareMap.get(Limelight3A.class, "Limelight");
-        limelight.pipelineSwitch(0); // AprilTag pipeline
+        limelight.pipelineSwitch(0);
         limelight.start();
+        sleep(1000); // give time for Limelight to start
 
         telemetry.addLine("Red Auto Initialized. Waiting for start...");
         telemetry.update();
@@ -43,55 +44,52 @@ public class AprilTagLimelightAutoTestRed extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        // Step 1: Detect AprilTag
+        // Step 1: Try detecting AprilTag with timeout
         LLResult result = null;
-        while (opModeIsActive() && result == null) {
+        long startTime = System.currentTimeMillis();
+
+        while (opModeIsActive() && result == null && System.currentTimeMillis() - startTime < 3000) {
             LLResult temp = limelight.getLatestResult();
             if (temp != null && temp.isValid()) result = temp;
+
             telemetry.addLine("Searching for AprilTag...");
+            telemetry.addData("Result valid?", (temp != null && temp.isValid()));
             telemetry.update();
+            sleep(50);
         }
 
-        if (result != null) {
+        if (result != null && result.isValid()) {
             telemetry.addData("Tag Detected", true);
             telemetry.addData("tx", result.getTx());
             telemetry.addData("ty", result.getTy());
             telemetry.addData("ta", result.getTa());
             telemetry.update();
         } else {
-            telemetry.addLine("No tag detected - proceeding blindly");
+            telemetry.addLine("No tag detected - proceeding anyway");
             telemetry.update();
         }
 
-        // Step 2: Drive from (123,123) → (96,96)
-        driveToPoint(123.36, 123.36, 96, 96, 0.5);
+        // Step 2: Drive forward a fixed distance
+        driveForward(0.5, 1500);
 
-        // Step 3: Align with detected AprilTag
+        // Step 3: Align if tag was seen
         if (result != null && result.isValid()) {
             autoAlignToTag(result.getTx());
         }
 
-        // Step 4: Perform scoring or drop sequence
-        telemetry.addLine("Performing scoring sequence...");
+        telemetry.addLine("Scoring...");
         telemetry.update();
         sleep(1000);
 
         stopAll();
     }
 
-    private void driveToPoint(double startX, double startY, double endX, double endY, double speed) {
-        double dx = endX - startX;
-        double dy = endY - startY;
-        double distance = Math.hypot(dx, dy);
-
-        long driveTime = (long) (distance * 15); // tune scaling per robot
-
-        frontLeft.setPower(speed);
-        backLeft.setPower(speed);
-        frontRight.setPower(speed);
-        backRight.setPower(speed);
-
-        sleep(driveTime);
+    private void driveForward(double power, long timeMs) {
+        frontLeft.setPower(power);
+        backLeft.setPower(power);
+        frontRight.setPower(power);
+        backRight.setPower(power);
+        sleep(timeMs);
         stopAll();
     }
 
@@ -120,7 +118,6 @@ public class AprilTagLimelightAutoTestRed extends LinearOpMode {
             if (turnPower > 0) turnPower += MIN_TURN_POWER;
             else turnPower -= MIN_TURN_POWER;
 
-            // Apply turn correction
             frontLeft.setPower(turnPower);
             backLeft.setPower(turnPower);
             frontRight.setPower(-turnPower);
