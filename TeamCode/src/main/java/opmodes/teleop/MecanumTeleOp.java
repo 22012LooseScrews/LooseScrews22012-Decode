@@ -1,5 +1,6 @@
 package opmodes.teleop;
 
+
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -7,9 +8,12 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
+//import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import abstraction.subsystems.SpinServo;
+/*import abstraction.subsystems.IntakeMotor;
+import abstraction.subsystems.OuttakeMotor;*/
 @TeleOp
 @Config
 public class MecanumTeleOp extends OpMode {
@@ -17,9 +21,11 @@ public class MecanumTeleOp extends OpMode {
     DcMotorEx outtakeMotor;
     CRServo vectorServo, spinServo;
 //    Servo gateServo;
-    private static ElapsedTime myStopwatch = new ElapsedTime();
+    public static ElapsedTime myStopwatch = new ElapsedTime();
     double spin_servo_position = 0;
-
+    private boolean opModeIsActive() {
+        return true;
+    }
     // Dashboard-tunable variables
   //  public static double close_rpm = 4000;  // close shot
 //    public static double far_rpm = 5400;    // far shot
@@ -36,9 +42,11 @@ public class MecanumTeleOp extends OpMode {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         outtakeMotor = hardwareMap.get(DcMotorEx.class, "outtakeMotor");
 
-        spinServo = hardwareMap.get(CRServo.class, "spinServo");
+
 //        gateServo = hardwareMap.get(Servo.class, "gateServo");
         vectorServo = hardwareMap.get(CRServo.class, "vectorServo");
+
+        SpinServo spinServo = new SpinServo(this);
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -85,22 +93,18 @@ public class MecanumTeleOp extends OpMode {
             vectorServo.setPower(0.0);
         }
 
-        if (gamepad1.circleWasPressed() || gamepad1.bWasPressed()) {
-            spinServo.setPower(1.0);
-        } else if (gamepad1.circleWasReleased() || gamepad1.bWasReleased()) {
-            spinServo.setPower(0.0);
-        } else if (gamepad1.triangleWasPressed() || gamepad1.yWasPressed()) {
-            spinServo.setPower(-1.0);
-        } else if (gamepad1.triangleWasReleased() || gamepad1.yWasReleased()) {
+        if (gamepad1.circle || gamepad1.b) {
+            while (opModeIsActive() && myStopwatch.seconds() < 0.5) {
+                spinServo.setPower(1.0);
+            }
+        } else if (gamepad1.triangle || gamepad1.y) {
+            while (opModeIsActive() && myStopwatch.seconds() < 0.5) {
+                spinServo.setPower(-1.0);
+            }
+        }else {
             spinServo.setPower(0.0);
         }
 
-        if (gamepad1.circle || gamepad1.b){
-            while (myStopwatch.seconds() < 0.5) {
-                spinServo.setPower(1.0);
-            }
-            spinServo.setPower(0);
-        }
 //
 //        if(gamepad1.cross || gamepad1.a){
 //            gateServo.setPosition(0.25);
@@ -131,4 +135,6 @@ public class MecanumTeleOp extends OpMode {
         //telemetry.addData("Target Velocity (RPM)", velocity);
         //telemetry.addData("Outtake Velocity (ticks/s)", outtakeMotor.getVelocity());
     }
+
+
 }
