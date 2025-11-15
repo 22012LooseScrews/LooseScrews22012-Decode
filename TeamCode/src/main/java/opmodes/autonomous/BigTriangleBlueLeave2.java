@@ -1,3 +1,4 @@
+/*
 package opmodes.autonomous;
 
 import com.pedropathing.follower.Follower;
@@ -24,21 +25,25 @@ import common.AutoStates;
 public class BigTriangleBlueLeave2 extends LinearOpMode {
     private Timer pathTimer, opmodeTimer;
     PathChain preloads;
+*/
 /*    PathChain intake1;
     PathChain shoot1;
     PathChain intake2;
     PathChain shoot2;
     PathChain intake3;
-    PathChain shoot3;*/
+    PathChain shoot3;*//*
+
 
     private enum Autostates {
         preloads,
- /*       intake1,
+ */
+/*       intake1,
         shoot1,
         intake2,
         shoot2,
         intake3,
-        shoot3,*/
+        shoot3,*//*
+
     }
 
     @Override
@@ -57,13 +62,16 @@ public class BigTriangleBlueLeave2 extends LinearOpMode {
                         new BezierLine(new Pose(56.000, 8.000), new Pose(56.000, 20.000))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(110))
+*/
 /*                .addParametricCallback(0.5, () -> spinServo.spin_forward())
                 .addParametricCallback(0.99, () -> spinServo.spin_stop())
                 .addParametricCallback(0.5, () -> outtakeMotor.outtake_far())
-                .addParametricCallback(0.99, () -> outtakeMotor.outtake_stop())*/
+                .addParametricCallback(0.99, () -> outtakeMotor.outtake_stop())*//*
+
                 .build();
 
-        /*intake1 = follower.pathBuilder()
+        */
+/*intake1 = follower.pathBuilder()
                 .addPath(
                         // Path 1
                         new BezierCurve(
@@ -117,7 +125,8 @@ public class BigTriangleBlueLeave2 extends LinearOpMode {
                         new BezierLine(new Pose(24.672, 84.455), new Pose(71.644, 73.068))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(189), Math.toRadians(134))
-                .build();*/
+                .build();*//*
+
 
 
         waitForStart();
@@ -197,4 +206,4 @@ public class BigTriangleBlueLeave2 extends LinearOpMode {
 
         // All done
     }
-}
+}*/

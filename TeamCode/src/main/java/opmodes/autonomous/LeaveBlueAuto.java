@@ -1,3 +1,4 @@
+/*
 package opmodes.autonomous;
 
 import com.bylazar.configurables.annotations.Configurable;
@@ -68,4 +69,4 @@ public class LeaveBlueAuto extends OpMode {
         // Refer to the Pedro Pathing Docs (Auto Example) for an example state machine
         return pathState;
     }
-}
+}*/
