@@ -1,12 +1,14 @@
 package abstraction.subsystems;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class IntakeMotor {
-    private static DcMotorEx intakeMotor;
+    private static DcMotor intakeMotor;
 
-    public IntakeMotor() {
-        IntakeMotor.intakeMotor = intakeMotor;
+    public IntakeMotor(OpMode opMode) {
+        intakeMotor = opMode.hardwareMap.get(DcMotor.class, "intakeMotor");
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
     public void intake_intake(){

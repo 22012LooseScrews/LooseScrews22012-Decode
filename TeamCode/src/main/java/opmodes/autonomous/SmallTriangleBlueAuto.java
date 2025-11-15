@@ -10,14 +10,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.pedropathing.util.Timer;
 
-import org.firstinspires.ftc.robotcore.external.StateMachine;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import abstraction.subsystems.SpinServo;
 import abstraction.subsystems.OuttakeMotor;
 import common.AutoStates;
 
-import static org.firstinspires.ftc.teamcode.pedroPathing.Tuning.follower;
+//import static org.firstinspires.ftc.teamcode.pedroPathing.Tuning.follower;
 
 
 @Autonomous
@@ -47,14 +46,14 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
         SpinServo spinServo = new SpinServo(this);
-        OuttakeMotor outtakeMotor = new OuttakeMotor();
+        OuttakeMotor outtakeMotor = new OuttakeMotor(this);
         Follower follower = Constants.createFollower(hardwareMap);
         PathBuilder builder = new PathBuilder(follower);
-        final Pose startPose = new Pose(28.5, 128, Math.toRadians(180));
+        final Pose startPose = new Pose(56, 9, Math.toRadians(90));
         follower.setStartingPose(startPose);
         preloads = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(56.000, 8.000), new Pose(56.000, 20.000))
+                        new BezierLine(new Pose(56.000, 9.000), new Pose(56.000, 20.000))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(110))
                 .addParametricCallback(0.5, () -> spinServo.spin_forward())
@@ -197,4 +196,77 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
 
         // All done
     }
+
+    @Autonomous
+    public static class BigTriangleBlueAuto2 extends LinearOpMode {
+        private Timer pathTimer, opmodeTimer;
+        PathChain preloads;
+    /*    PathChain intake1;
+        PathChain shoot1;
+        PathChain intake2;
+        PathChain shoot2;
+        PathChain intake3;
+        PathChain shoot3;*/
+
+        private enum Autostates {
+            preloads,
+        }
+
+        @Override
+        public void runOpMode() throws InterruptedException {
+            pathTimer = new Timer();
+            opmodeTimer = new Timer();
+            opmodeTimer.resetTimer();
+            SpinServo spinServo = new SpinServo(this);
+            OuttakeMotor outtakeMotor = new OuttakeMotor(this);
+            Follower follower = Constants.createFollower(hardwareMap);
+            PathBuilder builder = new PathBuilder(follower);
+            final Pose startPose = new Pose(22.774, 125.259, Math.toRadians(90));
+            follower.setStartingPose(startPose);
+            preloads = follower.pathBuilder()
+                    .addPath(
+                            new BezierLine(new Pose(22.774, 125.259), new Pose(56.461, 92.046))
+                    )
+                    .setLinearHeadingInterpolation(Math.toRadians(145), Math.toRadians(130))
+                    .addParametricCallback(0.5, () -> spinServo.spin_forward())
+                    .addParametricCallback(0.99, () -> spinServo.spin_stop())
+                    .addParametricCallback(0.1, () -> outtakeMotor.outtake_far())
+                    .addParametricCallback(0.99, () -> outtakeMotor.outtake_stop())
+                    .build();
+
+
+            waitForStart();
+
+            if (isStopRequested()) return;
+            AutoStates state = AutoStates.preloads;
+            PathChain currentPath = null;
+
+            while (opModeIsActive() && state != AutoStates.intake1){
+
+                switch (state) {
+                    case preloads:
+                        currentPath = preloads;
+                        follower.followPath(currentPath);
+                        state = AutoStates.intake1;
+                        break;
+                }// next state when this path finishes
+
+
+
+
+
+
+
+                }
+
+                // Keep updating follower while it's busy. If not busy, loop will advance state next iteration.
+                if (follower.isBusy()) {
+                    follower.update();
+                }
+
+                idle(); // let the system breathe / give up CPU briefly
+            }
+
+            // All done
+        }
 }

@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp
 @Config
@@ -14,7 +16,9 @@ public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor;
     DcMotorEx outtakeMotor;
     CRServo vectorServo, spinServo;
-    int num_of_times_circle_pressed;
+//    Servo gateServo;
+    private static ElapsedTime myStopwatch = new ElapsedTime();
+    double spin_servo_position = 0;
 
     // Dashboard-tunable variables
   //  public static double close_rpm = 4000;  // close shot
@@ -33,6 +37,7 @@ public class MecanumTeleOp extends OpMode {
         outtakeMotor = hardwareMap.get(DcMotorEx.class, "outtakeMotor");
 
         spinServo = hardwareMap.get(CRServo.class, "spinServo");
+//        gateServo = hardwareMap.get(Servo.class, "gateServo");
         vectorServo = hardwareMap.get(CRServo.class, "vectorServo");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -46,6 +51,7 @@ public class MecanumTeleOp extends OpMode {
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         outtakeMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
+        myStopwatch.reset();
         // Optionally tune PIDF here if needed
         // double P = 10.0, I = 0.0, D = 0.5, F = 13.0;
         // outtakeMotor.setVelocityPIDFCoefficients(P, I, D, F);
@@ -53,7 +59,6 @@ public class MecanumTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        // === Mecanum Drive Control ===
         double y = gamepad1.left_stick_y;
         double x = -gamepad1.left_stick_x * 1.1;
         double rx = -gamepad1.right_stick_x;
@@ -69,16 +74,17 @@ public class MecanumTeleOp extends OpMode {
         frontRightMotor.setPower(frontRightPower);
         backRightMotor.setPower(backRightPower);
 
-        // === Intake Control ===
         if (gamepad1.left_bumper) {
             intakeMotor.setPower(1.0);
+            vectorServo.setPower(0.0);
         } else if (gamepad1.right_bumper) {
             intakeMotor.setPower(-1.0);
+            vectorServo.setPower(1.0);
         } else {
             intakeMotor.setPower(0.0);
+            vectorServo.setPower(0.0);
         }
 
-        // === Spin Servo Control ===
         if (gamepad1.circleWasPressed() || gamepad1.bWasPressed()) {
             spinServo.setPower(1.0);
         } else if (gamepad1.circleWasReleased() || gamepad1.bWasReleased()) {
@@ -89,14 +95,26 @@ public class MecanumTeleOp extends OpMode {
             spinServo.setPower(0.0);
         }
 
-        // === Vector Servo Control ===
+        if (gamepad1.circle || gamepad1.b){
+            while (myStopwatch.seconds() < 0.5) {
+                spinServo.setPower(1.0);
+            }
+            spinServo.setPower(0);
+        }
+//
+//        if(gamepad1.cross || gamepad1.a){
+//            gateServo.setPosition(0.25);
+//        }
+//        else{
+//            gateServo.setPosition(0);
+//        }
+
         if (gamepad1.dpadUpWasPressed()) {
             vectorServo.setPower(-1.0);
         } else if (gamepad1.dpadUpWasReleased()) {
             vectorServo.setPower(0.0);
         }
 
-        // === Outtake Velocity Control ===
         if (gamepad1.left_trigger > 0.1) {
             outtakeMotor.setPower(-0.79);
         } else if (gamepad1.right_trigger > 0.1) {
@@ -105,9 +123,8 @@ public class MecanumTeleOp extends OpMode {
             outtakeMotor.setPower(0);
         }
 
-        // === Telemetry ===
-   /*     telemetry.addData("Y", -gamepad1.left_stick_y);
-         telemetry.addData("X", -gamepad1.left_stick_x * 1.1);
+   /*    telemetry.addData("Y", -gamepad1.left_stick_y);
+        telemetry.addData("X", -gamepad1.left_stick_x * 1.1);
         telemetry.addData("RX", gamepad1.right_stick_x);
         telemetry.addData("Left Bumper", gamepad1.left_bumper);
         telemetry.addData("Right Bumper", gamepad1.right_bumper);*/
