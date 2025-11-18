@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp
 @Config
@@ -29,7 +30,14 @@ public class AprilTagLimelightTestTeleop extends OpMode {
     // PID gains
     public static double kpForward = 0.04;
     public static double kpStrafe = 0.04;
-    public static double kpTurn = 0.02;
+    public static double kpTurn   = 0.02;
+
+    // === TIMED OUTTAKE (DPAD RIGHT) ===
+    boolean outtakeActive = false;
+    double outtakeEndTime = 0;
+    public static double outtakeDuration = 0.30; // seconds
+    ElapsedTime myStopwatch = new ElapsedTime();
+
 
     @Override
     public void init() {
@@ -55,18 +63,42 @@ public class AprilTagLimelightTestTeleop extends OpMode {
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        // FIXED: use DcMotor.ZeroPowerBehavior enum for DcMotorEx setZeroPowerBehavior
         outtakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // === LIMELIGHT INIT ===
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        limelight.pipelineSwitch(0); // set AprilTag pipeline (adjust index if needed)
+        limelight.pipelineSwitch(0);
     }
+
+
 
     @Override
     public void loop() {
 
-        // If DPAD DOWN is held → run AprilTag autonomous tracking
+        myStopwatch.reset();
+        // ======================================================
+        // === TIMED OUTTAKE (DPAD RIGHT) — non-blocking 0.3s ===
+        // ======================================================
+        if (gamepad1.dpad_right && !outtakeActive) {
+            myStopwatch.startTime();
+            while(myStopwatch.seconds() < 0.5){
+                intakeMotor.setPower(-1.0);
+            }
+
+            intakeMotor.setPower(1);
+        }
+
+        if (outtakeActive) {
+            if (getRuntime() >= outtakeEndTime) {
+                intakeMotor.setPower(0.0);
+                outtakeActive = false;
+            }
+            // Skip normal intake controls until burst is finished
+        }
+
+
+
+        // If DPAD DOWN is held → auto AprilTag tracking
         if (gamepad1.dpad_down) {
             runAprilTagTracking();
             return;
@@ -75,13 +107,15 @@ public class AprilTagLimelightTestTeleop extends OpMode {
         // Else → normal driver control
         runDriverControl();
 
-        // === Intake Control ===
-        if (gamepad1.left_bumper) {
-            intakeMotor.setPower(1.0);
-        } else if (gamepad1.right_bumper) {
-            intakeMotor.setPower(-1.0);
-        } else {
-            intakeMotor.setPower(0.0);
+        // === Normal Intake Control (only active when not outtakeActive) ===
+        if (!outtakeActive) {
+            if (gamepad1.left_bumper) {
+                intakeMotor.setPower(1.0);
+            } else if (gamepad1.right_bumper) {
+                intakeMotor.setPower(-1.0);
+            } else {
+                intakeMotor.setPower(0.0);
+            }
         }
 
         // === Spin Servo Control ===
@@ -96,22 +130,23 @@ public class AprilTagLimelightTestTeleop extends OpMode {
         }
 
         // === Vector Servo Control ===
-        // FIXED: use camelCase methods (no underscore)
         if (gamepad1.dpadUpWasPressed()) {
             vectorServo.setPower(-1.0);
         } else if (gamepad1.dpadUpWasReleased()) {
             vectorServo.setPower(0.0);
         }
 
-        // === Outtake Velocity ===
+        // === Outtake Velocity Motor ===
         if (gamepad1.left_trigger > 0.1) {
-            outtakeMotor.setPower(-0.79);
+            outtakeMotor.setPower(-0.83);
         } else if (gamepad1.right_trigger > 0.1) {
             outtakeMotor.setPower(-0.93);
         } else {
             outtakeMotor.setPower(0);
         }
     }
+
+
 
     // ============================================================
     // DRIVER CONTROL (normal teleop)
@@ -130,8 +165,10 @@ public class AprilTagLimelightTestTeleop extends OpMode {
         setDrive(fl, fr, bl, br);
     }
 
+
+
     // ============================================================
-    // APRILTAG AUTONOMOUS TRACKING (DPAD DOWN)
+    // APRILTAG AUTONOMOUS TRACKING
     // ============================================================
     private void runAprilTagTracking() {
 
@@ -143,14 +180,13 @@ public class AprilTagLimelightTestTeleop extends OpMode {
             return;
         }
 
-        // FIXED: use tx variable for horizontal offset (was ty incorrectly)
-        double tx = result.getTx();            // Horizontal offset (deg)
-        double distance = result.getTyNC(); // Distance in meters
+        double tx = result.getTx();        // Horizontal offset (deg)
+        double distance = result.getTyNC(); // Distance (meters)
 
-        // PID calculations
+        // PID
         double forward = (distance - targetDistance) * kpForward;
-        double strafe = (-tx) * kpStrafe;
-        double turn   = (-tx) * kpTurn;
+        double strafe  = (-tx) * kpStrafe;
+        double turn    = (-tx) * kpTurn;
 
         forward = clip(forward, -0.45, 0.45);
         strafe  = clip(strafe,  -0.45, 0.45);
@@ -167,6 +203,8 @@ public class AprilTagLimelightTestTeleop extends OpMode {
         telemetry.addData("tx", tx);
         telemetry.addData("distance", distance);
     }
+
+
 
     // ============================================================
     // UTILITY

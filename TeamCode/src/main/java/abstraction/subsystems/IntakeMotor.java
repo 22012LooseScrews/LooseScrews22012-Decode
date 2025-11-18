@@ -1,6 +1,5 @@
 package abstraction.subsystems;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -20,5 +19,4 @@ public class IntakeMotor {
     public void intake_stop(){
         intakeMotor.setPower(0);
     }
-
 }

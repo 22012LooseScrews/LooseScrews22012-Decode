@@ -8,21 +8,22 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-//import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 import abstraction.subsystems.SpinServo;
-/*import abstraction.subsystems.IntakeMotor;
-import abstraction.subsystems.OuttakeMotor;*/
+import abstraction.subsystems.IntakeMotor;
+import abstraction.subsystems.OuttakeMotor;
 @TeleOp
 @Config
 public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor, intakeMotor;
     DcMotorEx outtakeMotor;
     CRServo vectorServo, spinServo;
-//    Servo gateServo;
-    public static ElapsedTime myStopwatch = new ElapsedTime();
-    double spin_servo_position = 0;
+    SpinServo spindexer;
+
+//    public static ElapsedTime myStopwatch = new ElapsedTime();
     private boolean opModeIsActive() {
         return true;
     }
@@ -42,11 +43,9 @@ public class MecanumTeleOp extends OpMode {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         outtakeMotor = hardwareMap.get(DcMotorEx.class, "outtakeMotor");
 
-
-//        gateServo = hardwareMap.get(Servo.class, "gateServo");
         vectorServo = hardwareMap.get(CRServo.class, "vectorServo");
 
-        SpinServo spinServo = new SpinServo(this);
+        //spinServo = hardwareMap.get(CRServo.class, "spinServo");
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -59,7 +58,9 @@ public class MecanumTeleOp extends OpMode {
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         outtakeMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        myStopwatch.reset();
+        spindexer = new SpinServo(this);
+
+//        myStopwatch.reset();
         // Optionally tune PIDF here if needed
         // double P = 10.0, I = 0.0, D = 0.5, F = 13.0;
         // outtakeMotor.setVelocityPIDFCoefficients(P, I, D, F);
@@ -84,34 +85,27 @@ public class MecanumTeleOp extends OpMode {
 
         if (gamepad1.left_bumper) {
             intakeMotor.setPower(1.0);
-            vectorServo.setPower(0.0);
+            //vectorServo.setPower(0.0);
         } else if (gamepad1.right_bumper) {
             intakeMotor.setPower(-1.0);
-            vectorServo.setPower(1.0);
+         //   vectorServo.setPower(1.0);
         } else {
             intakeMotor.setPower(0.0);
-            vectorServo.setPower(0.0);
+           // vectorServo.setPower(0.0);
         }
 
-        if (gamepad1.circle || gamepad1.b) {
-            while (opModeIsActive() && myStopwatch.seconds() < 0.5) {
-                spinServo.setPower(1.0);
-            }
-        } else if (gamepad1.triangle || gamepad1.y) {
-            while (opModeIsActive() && myStopwatch.seconds() < 0.5) {
-                spinServo.setPower(-1.0);
-            }
-        }else {
-            spinServo.setPower(0.0);
+        if(gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
+           // spinServo.setPower(1.0);
+            spindexer.spin_forward();
         }
-
-//
-//        if(gamepad1.cross || gamepad1.a){
-//            gateServo.setPosition(0.25);
-//        }
-//        else{
-//            gateServo.setPosition(0);
-//        }
+        else if(gamepad1.triangleWasPressed() || gamepad1.bWasReleased()){
+//      //      spinServo.setPower(-1.0);
+            spindexer.spin_backward();
+        }
+        else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.triangleWasReleased() || gamepad1.bWasReleased()){
+         //   spinServo.setPower(0.0);
+            spindexer.spin_stop();
+        }
 
         if (gamepad1.dpadUpWasPressed()) {
             vectorServo.setPower(-1.0);
@@ -120,9 +114,9 @@ public class MecanumTeleOp extends OpMode {
         }
 
         if (gamepad1.left_trigger > 0.1) {
-            outtakeMotor.setPower(-0.79);
-        } else if (gamepad1.right_trigger > 0.1) {
             outtakeMotor.setPower(-0.93);
+        } else if (gamepad1.right_trigger > 0.1) {
+            outtakeMotor.setPower(-1.00);
         } else {
             outtakeMotor.setPower(0);
         }
@@ -134,6 +128,7 @@ public class MecanumTeleOp extends OpMode {
         telemetry.addData("Right Bumper", gamepad1.right_bumper);*/
         //telemetry.addData("Target Velocity (RPM)", velocity);
         //telemetry.addData("Outtake Velocity (ticks/s)", outtakeMotor.getVelocity());
+        telemetry.addData("Outtake Velocity", outtakeMotor.getVelocity());
     }
 
 
