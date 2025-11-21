@@ -121,15 +121,12 @@ public class MecanumTeleOp extends OpMode {
             outtakeMotor.setPower(0);
         }
 
-   /*    telemetry.addData("Y", -gamepad1.left_stick_y);
+   /*   telemetry.addData("Y", -gamepad1.left_stick_y);
         telemetry.addData("X", -gamepad1.left_stick_x * 1.1);
         telemetry.addData("RX", gamepad1.right_stick_x);
         telemetry.addData("Left Bumper", gamepad1.left_bumper);
         telemetry.addData("Right Bumper", gamepad1.right_bumper);*/
         //telemetry.addData("Target Velocity (RPM)", velocity);
         //telemetry.addData("Outtake Velocity (ticks/s)", outtakeMotor.getVelocity());
-        telemetry.addData("Outtake Velocity", outtakeMotor.getVelocity());
     }
-
-
 }

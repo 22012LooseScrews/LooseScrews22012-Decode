@@ -11,7 +11,7 @@ public class IntakeMotor {
         intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
     }
     public void intake_intake(){
-        intakeMotor.setPower(1);
+        intakeMotor.setPower(-1);
     }
     public void intake_outtake(){
         intakeMotor.setPower(-1);

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 public class OuttakeMotor {
-    private DcMotorEx outtakeMotor;;
+    private DcMotorEx outtakeMotor;
 
     public OuttakeMotor(OpMode opMode) {
     //    this.Opmode = opMode;
