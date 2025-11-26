@@ -19,8 +19,6 @@ public class SpinServo {
     public void spin_forward()  {
         /*myStopwatch.reset();*/
         spinServo.setPower(1.0);
-
-
     }
 
     public void spin_forward_2(){
@@ -28,10 +26,9 @@ public class SpinServo {
     }
 
     public void spin_backward() {
-//        myStopwatch.reset();
-//        while (myStopwatch.seconds() < 0.5) {
+//      myStopwatch.reset();
+//      while (myStopwatch.seconds() < 0.5) {
         spinServo.setPower(-1.0);
-        //}
     }
     public void spin_stop(){
         spinServo.setPower(0);

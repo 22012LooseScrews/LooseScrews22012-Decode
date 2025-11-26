@@ -18,7 +18,7 @@ import abstraction.subsystems.SpinServo;
 import common.AutoStates;
 
 @Autonomous
-public class BigTriangleBlueAuto extends LinearOpMode {
+public class SmallTriangleBlueAuto extends LinearOpMode {
     public PathChain preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3;
 
     @Override
@@ -31,15 +31,15 @@ public class BigTriangleBlueAuto extends LinearOpMode {
         Follower follower = Constants.createFollower(hardwareMap);
         ElapsedTime timer = new ElapsedTime();
         PathBuilder pathBuilder = new PathBuilder(follower);
-        follower.setStartingPose(new Pose(22.5, 126, Math.toRadians(144)));
+        follower.setStartingPose(new Pose(56, 8, Math.toRadians(90)));
         boolean timer_has_started = false;
         boolean path_started = false;
 
         preloads = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(22.5, 126), new Pose(71.644, 73.068))
+                        new BezierLine(new Pose(56.000, 8.000), new Pose(71.644, 73.068))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(144), Math.toRadians(134))
+                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(134))
                 .build();
 
         intake1 = follower.pathBuilder()
@@ -52,7 +52,7 @@ public class BigTriangleBlueAuto extends LinearOpMode {
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
-                .addParametricCallback(0.85, ()-> spindexer.spin_forward_2())
+                .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(1, () -> spindexer.spin_stop())
                 .build();
@@ -74,7 +74,7 @@ public class BigTriangleBlueAuto extends LinearOpMode {
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
-                .addParametricCallback(0.85, ()-> spindexer.spin_forward_2())
+                .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(1, () -> spindexer.spin_stop())
                 .build();
@@ -96,7 +96,7 @@ public class BigTriangleBlueAuto extends LinearOpMode {
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
-                .addParametricCallback(0.85, ()-> spindexer.spin_forward_2())
+                .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(1, () -> spindexer.spin_stop())
                 .build();
@@ -137,26 +137,26 @@ public class BigTriangleBlueAuto extends LinearOpMode {
                         if(timer.seconds() <= 1.25){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() > 5.5){
+                        else if(timer.seconds() > 5.95){
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake1;
                         }
-                        else if(timer.seconds() >= 5.4){
+                        else if(timer.seconds() >= 5.85){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 5){
+                        else if(timer.seconds() > 5.55){
                             spindexer.spin_forward_2();
                         }
-                        else if(timer.seconds() > 3.9){
+                        else if(timer.seconds() > 4.35){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 3.5){
+                        else if(timer.seconds() > 3.95){
                             spindexer.spin_forward_2();
                         }
-                        else if(timer.seconds() > 2.25){
+                        else if(timer.seconds() > 2.5){
                             spindexer.spin_stop();
                         }
                         else if(timer.seconds() > 1.5){
