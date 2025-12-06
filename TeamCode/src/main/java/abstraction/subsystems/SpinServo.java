@@ -16,10 +16,10 @@ public class SpinServo {
         spinServo = opMode.hardwareMap.get(CRServo.class, "spinServo");
         spinServo.setDirection(CRServo.Direction.FORWARD);
     }
-    public void spin_forward()  {
-        /*myStopwatch.reset();*/
-        spinServo.setPower(1.0);
-    }
+//    public void spin_forward()  {
+//        /*myStopwatch.reset();*/
+//        spinServo.setPower(1.0);
+//    }
 
     public void spin_forward_2(){
         spinServo.setPower(1.0);

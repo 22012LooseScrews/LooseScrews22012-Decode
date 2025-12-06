@@ -4,7 +4,6 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.PathBuilder;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -27,19 +26,19 @@ public class SmallTriangleRedAuto extends LinearOpMode {
         IntakeMotor intakeMotor = new IntakeMotor(this);
         OuttakeMotor outtakeMotor = new OuttakeMotor(this);
 
+
         AutoStates current_state = AutoStates.preloads;
         Follower follower = Constants.createFollower(hardwareMap);
         ElapsedTime timer = new ElapsedTime();
-        PathBuilder pathBuilder = new PathBuilder(follower);
-        follower.setStartingPose(new Pose(88, 8, Math.toRadians(90)));
+        follower.setStartingPose(new Pose(88, 9, Math.toRadians(90)));
         boolean timer_has_started = false;
         boolean path_started = false;
 
         preloads = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(88.000, 8.000), new Pose(72.356, 73.068))
+                        new BezierLine(new Pose(88.000, 9.000), new Pose(82, 20))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(46))
+                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(60))
                 .build();
 
         intake1 = follower.pathBuilder()
@@ -50,7 +49,7 @@ public class SmallTriangleRedAuto extends LinearOpMode {
                                 new Pose(119.565, 84.455)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(46), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(60), Math.toRadians(0))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
@@ -345,6 +344,7 @@ public class SmallTriangleRedAuto extends LinearOpMode {
                         else if(timer.seconds() > 2.25){
                             outtakeMotor.outtake_far();
                             spindexer.spin_forward_2();
+
                         }
                     }
                     break;

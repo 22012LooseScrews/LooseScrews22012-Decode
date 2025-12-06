@@ -4,7 +4,6 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.PathBuilder;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -15,6 +14,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import abstraction.subsystems.IntakeMotor;
 import abstraction.subsystems.OuttakeMotor;
 import abstraction.subsystems.SpinServo;
+import abstraction.subsystems.VectorServo;
 import common.AutoStates;
 
 @Autonomous
@@ -26,11 +26,11 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
         SpinServo spindexer = new SpinServo(this);
         IntakeMotor intakeMotor = new IntakeMotor(this);
         OuttakeMotor outtakeMotor = new OuttakeMotor(this);
+        VectorServo vectorServo = new VectorServo(this);
 
         AutoStates current_state = AutoStates.preloads;
         Follower follower = Constants.createFollower(hardwareMap);
         ElapsedTime timer = new ElapsedTime();
-        PathBuilder pathBuilder = new PathBuilder(follower);
         follower.setStartingPose(new Pose(56, 8, Math.toRadians(90)));
         boolean timer_has_started = false;
         boolean path_started = false;
@@ -52,8 +52,10 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0.3, ()->vectorServo.vector_intake())
                 .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
+                .addParametricCallback(1, () -> vectorServo.vector_stop())
                 .addParametricCallback(1, () -> spindexer.spin_stop())
                 .build();
 
@@ -74,8 +76,10 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0.3, ()-> vectorServo.vector_intake())
                 .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
+                .addParametricCallback(1, ()-> vectorServo.vector_stop())
                 .addParametricCallback(1, () -> spindexer.spin_stop())
                 .build();
 
@@ -96,8 +100,10 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0.3, ()-> vectorServo.vector_intake())
                 .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
+                .addParametricCallback(1, ()->vectorServo.vector_stop())
                 .addParametricCallback(1, () -> spindexer.spin_stop())
                 .build();
 
@@ -135,22 +141,22 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                         }
 
                         if(timer.seconds() <= 1.25){
-                            outtakeMotor.outtake_close();
+                            outtakeMotor.outtake_far();
                         }
-                        else if(timer.seconds() > 5.95){
+                        else if(timer.seconds() > 5.6){
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake1;
                         }
-                        else if(timer.seconds() >= 5.85){
+                        else if(timer.seconds() >= 5.5){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 5.55){
+                        else if(timer.seconds() > 5.2){
                             spindexer.spin_forward_2();
                         }
-                        else if(timer.seconds() > 4.35){
+                        else if(timer.seconds() > 4){
                             spindexer.spin_stop();
                         }
                         else if(timer.seconds() > 3.95){
@@ -160,7 +166,7 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                             spindexer.spin_stop();
                         }
                         else if(timer.seconds() > 1.5){
-                            outtakeMotor.outtake_close();
+                            outtakeMotor.outtake_far();
                             spindexer.spin_forward_2();
                         }
                     }
