@@ -15,10 +15,10 @@ public class PanelsDrawing {
     private static final FieldManager panelsField = PanelsField.INSTANCE.getField();
 
     private static final Style robotLook = new Style(
-            "", "#3F51B5", 5.0
+            "#3F51B5", "#3F51B5", 1
     );
     private static final Style historyLook = new Style(
-            "", "#4CAF50", 5.0
+            "", "#4CAF50", 1
     );
 
     /**

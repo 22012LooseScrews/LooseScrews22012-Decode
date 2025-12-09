@@ -1,6 +1,5 @@
 package opmodes.teleop;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -13,7 +12,6 @@ import abstraction.subsystems.SpinServo;
 import abstraction.subsystems.OuttakeMotor;
 import abstraction.subsystems.VectorServo;
 @TeleOp
-@Config
 public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor;
     OuttakeMotor outtake_motor;
@@ -84,7 +82,6 @@ public class MecanumTeleOp extends OpMode {
         frontRightMotor.setPower(frontRightPower);
         backRightMotor.setPower(backRightPower);
 
-
         if (gamepad1.left_bumper) {
             intake_motor.intake_intake();
             vector_servo.vector_intake();
@@ -99,10 +96,10 @@ public class MecanumTeleOp extends OpMode {
         if(gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
             spindexer.spin_forward_2();
         }
-        else if(gamepad1.triangleWasPressed() || gamepad1.bWasReleased()){
+        else if(gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
             spindexer.spin_backward();
         }
-        else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.triangleWasReleased() || gamepad1.bWasReleased()){
+        else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.triangleWasReleased() || gamepad1.yWasReleased()){
             spindexer.spin_stop();
         }
 
@@ -115,7 +112,8 @@ public class MecanumTeleOp extends OpMode {
         }
 
         telemetry.addData("Outtake Velocity (ticks/s)", outtake_motor.getVel());
-        telemetry.addData("what it actually is ",ll_result.getTx());
+        telemetry.addData("Battery Voltage", outtake_motor.getVol());
+        //telemetry.addData("what it actually is ",ll_result.getTx());
         telemetry.update();
     }
 }

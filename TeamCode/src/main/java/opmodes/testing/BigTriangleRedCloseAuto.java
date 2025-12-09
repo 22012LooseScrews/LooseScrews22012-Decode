@@ -19,8 +19,8 @@ import abstraction.subsystems.VectorServo;
 import common.AutoStates;
 
 @Autonomous
-public class BigTriangleRedAuto extends LinearOpMode {
-    public PathChain preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3;
+public class BigTriangleRedCloseAuto extends LinearOpMode {
+    public PathChain preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3, waitForTeleOp;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -47,12 +47,11 @@ public class BigTriangleRedAuto extends LinearOpMode {
                 .addPath(
                         new BezierCurve(
                                 new Pose(83.587, 81.909),
-                                new Pose(69.984, 89.101),
-                                new Pose(124.565, 84.455)
+                                new Pose(69.923, 89.101),
+                                new Pose(122.664, 84.067)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(48), Math.toRadians(0))
-
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()->vectorServo.vector_intake())
                 .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
@@ -63,9 +62,9 @@ public class BigTriangleRedAuto extends LinearOpMode {
 
         shoot1 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(119.565, 84.455), new Pose(83.587, 81.909))
+                        new BezierLine(new Pose(122.664, 84.067), new Pose(83.587, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(46))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(48))
                 .build();
 
         intake2 = follower.pathBuilder()
@@ -73,7 +72,7 @@ public class BigTriangleRedAuto extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(83.587, 81.909),
                                 new Pose(40.092, 61.206),
-                                new Pose(119.328, 60.494)
+                                new Pose(122.184, 59.854)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(48), Math.toRadians(0))
@@ -87,7 +86,7 @@ public class BigTriangleRedAuto extends LinearOpMode {
 
         shoot2 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(119.328, 60.494), new Pose(83.587, 81.909))
+                        new BezierLine(new Pose(122.184, 59.854), new Pose(83.587, 81.909))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(48))
                 .build();
@@ -97,7 +96,7 @@ public class BigTriangleRedAuto extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(83.587, 81.909),
                                 new Pose(61.443, 29.654),
-                                new Pose(119.826, 36.876)
+                                new Pose(122.664, 35.641)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(48), Math.toRadians(0))
@@ -111,9 +110,16 @@ public class BigTriangleRedAuto extends LinearOpMode {
 
         shoot3 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(119.826, 36.876), new Pose(83.587, 81.909))
+                        new BezierLine(new Pose(122.664, 35.641), new Pose(83.587, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(46))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(48))
+                .build();
+
+        waitForTeleOp = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(new Pose(83.587, 81.909), new Pose(126.919, 10.438))
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(48), Math.toRadians(90))
                 .build();
 
         PanelsDrawing.init();
@@ -334,7 +340,7 @@ public class BigTriangleRedAuto extends LinearOpMode {
                             spindexer.spin_stop();
                             timer_has_started = false;
 
-                            current_state = AutoStates.end;
+                            current_state = AutoStates.teleop_standby;
                         }
                         else if(timer.seconds() >= 7.25){
                             spindexer.spin_stop();
@@ -358,9 +364,21 @@ public class BigTriangleRedAuto extends LinearOpMode {
                     }
                     break;
 
+                case teleop_standby:
+                    if(!path_started){
+                        follower.followPath(waitForTeleOp);
+                        path_started = true;
+                    }
+                    if(!follower.isBusy()){
+                        current_state = AutoStates.end;
+                        path_started = false;
+                    }
+                    break;
+
                 default:
                     break;
             }
+
             follower.update();
             if(follower.isBusy()){
                 PanelsDrawing.drawDebug(follower);

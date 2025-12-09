@@ -1,5 +1,5 @@
 package opmodes.testing;
-
+// Needs some fixing
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.pedroPathing.PanelsDrawing;
 
 import abstraction.subsystems.IntakeMotor;
 import abstraction.subsystems.OuttakeMotor;
@@ -18,7 +19,7 @@ import abstraction.subsystems.VectorServo;
 import common.AutoStates;
 
 @Autonomous
-public class SmallTriangleBlueAuto extends LinearOpMode {
+public class SmallTriangleBlueCloseAuto extends LinearOpMode {
     public PathChain preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3;
 
     @Override
@@ -114,6 +115,7 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                 .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
                 .build();
 
+        PanelsDrawing.init();
         waitForStart();
 
         if(isStopRequested()){
@@ -141,7 +143,7 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                         }
 
                         if(timer.seconds() <= 1.25){
-                            outtakeMotor.outtake_far();
+                            outtakeMotor.outtake_close();
                         }
                         else if(timer.seconds() > 5.6){
                             outtakeMotor.outtake_stop();
@@ -166,7 +168,7 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                             spindexer.spin_stop();
                         }
                         else if(timer.seconds() > 1.5){
-                            outtakeMotor.outtake_far();
+                            outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
                         }
                     }
@@ -202,7 +204,7 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                         }
 
                         if(timer.seconds() <= 1.25){
-                            outtakeMotor.outtake_far();
+                            outtakeMotor.outtake_close();
                         }
                         else if(timer.seconds() > 7.25){
                             outtakeMotor.outtake_stop();
@@ -227,7 +229,7 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                             spindexer.spin_stop();
                         }
                         else if(timer.seconds() > 2.25){
-                            outtakeMotor.outtake_far();
+                            outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
                         }
                     }
@@ -263,7 +265,7 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                         }
 
                         if(timer.seconds() <= 1.25){
-                            outtakeMotor.outtake_far();
+                            outtakeMotor.outtake_close();
                         }
                         else if(timer.seconds() > 7.25){
                             outtakeMotor.outtake_stop();
@@ -288,7 +290,7 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                             spindexer.spin_stop();
                         }
                         else if(timer.seconds() > 2.25){
-                            outtakeMotor.outtake_far();
+                            outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
                         }
                     }
@@ -324,7 +326,7 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                         }
 
                         if(timer.seconds() <= 1.25){
-                            outtakeMotor.outtake_far();
+                            outtakeMotor.outtake_close();
                         }
                         else if(timer.seconds() > 7.25){
                             outtakeMotor.outtake_stop();
@@ -349,7 +351,7 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                             spindexer.spin_stop();
                         }
                         else if(timer.seconds() > 2.25){
-                            outtakeMotor.outtake_far();
+                            outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
                         }
                     }
@@ -359,8 +361,9 @@ public class SmallTriangleBlueAuto extends LinearOpMode {
                     break;
             }
 
+            follower.update();
             if(follower.isBusy()){
-                follower.update();
+                PanelsDrawing.drawDebug(follower);
             }
         }
     }
