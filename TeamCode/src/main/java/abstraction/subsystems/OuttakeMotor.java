@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 public class OuttakeMotor {
     private DcMotorEx outtakeMotor;
     private VoltageSensor voltageSensor;
-    private double close_rpm = 2000;
-    private double far_rpm = 2650;
-    private double best_voltage = 12.9;
+    private double close_rpm = 1600;
+    private double far_rpm = 2190;
+    private double best_voltage = 13;
 
     public OuttakeMotor(OpMode opMode) {
         outtakeMotor = opMode.hardwareMap.get(DcMotorEx.class, "outtakeMotor");
@@ -35,9 +35,20 @@ public class OuttakeMotor {
     public void outtake_stop() {
         outtakeMotor.setVelocity(0);
     }
+
+//    public void outtake_auto_close() {
+//        outtakeMotor.setVelocity(newCloseRpm(close_auto_rpm));
+//    }
     public double getVel(){
         return outtakeMotor.getVelocity();
     }
+
+    public double newCloseAutoRpm(double close_auto_rpm){
+        double current_voltage = voltageSensor.getVoltage();
+        double factor = best_voltage/current_voltage;
+        return factor * close_rpm;
+    }
+
     public double newCloseRpm(double close_rpm){
         double current_voltage = voltageSensor.getVoltage();
         double factor = best_voltage/current_voltage;
@@ -50,5 +61,10 @@ public class OuttakeMotor {
     }
     public double getVol(){
         return voltageSensor.getVoltage();
+    }
+    public double getFactor(){
+        double current_voltage = voltageSensor.getVoltage();
+        double factor = best_voltage/current_voltage;
+        return factor;
     }
 }

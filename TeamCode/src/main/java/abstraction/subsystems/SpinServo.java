@@ -17,27 +17,4 @@ public class SpinServo {
     public void spin_stop(){
         spinServo.setPower(0);
     }
-//    public void spin_auto(){
-//        myStopwatch.reset();
-//            if (myStopwatch.seconds() < 0.5) {
-//                spin_forward();
-//            }
-//            myStopwatch.reset();
-//            while (myStopwatch.seconds() < 0.5){
-//                spin_stop();
-//            }
-//            myStopwatch.reset();
-//            while (myStopwatch.seconds() < 0.5) {
-//                spin_forward();
-//            }
-//            myStopwatch.reset();
-//            while (myStopwatch.seconds() < 0.5){
-//                spin_stop();
-//            }
-//            myStopwatch.reset();
-//            while (myStopwatch.seconds() < 0.5) {
-//                spin_forward();
-//        }
-//
-//    }
 }

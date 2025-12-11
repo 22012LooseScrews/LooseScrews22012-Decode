@@ -19,7 +19,7 @@ import abstraction.subsystems.VectorServo;
 import common.AutoStates;
 
 @Autonomous
-public class BigTriangleBlueCloseAuto extends LinearOpMode {
+public class BBTCloseAuto extends LinearOpMode {
     public PathChain preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3, waitForTeleOp;
 
     @Override
@@ -158,28 +158,14 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                         if (timer.seconds() <= 1.5) {
                             outtakeMotor.outtake_close();
                         }
-                        else if (timer.seconds() > 6) {
+                        else if (timer.seconds() > 4) {
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake1;
                         }
-                        else if (timer.seconds() >= 6) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 5.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 4) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 3.5) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 2.25) {
-                            spindexer.spin_stop();
-                        }
+
                         else if (timer.seconds() > 1.5) {
                             outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
@@ -216,31 +202,17 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if (timer.seconds() <= 1.25) {
+                        if (timer.seconds() <= 1.5) {
                             outtakeMotor.outtake_close();
                         }
-                        else if (timer.seconds() > 5.45) {
+                        else if (timer.seconds() > 4) {
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake2;
                         }
-                        else if (timer.seconds() >= 5.35) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 4.75) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 3.65) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 3.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 2) {
-                            spindexer.spin_stop();
-                        }
+
                         else if (timer.seconds() > 1.5) {
                             outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
@@ -277,32 +249,18 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if (timer.seconds() <= 1.25) {
+                        if (timer.seconds() <= 1.5) {
                             outtakeMotor.outtake_close();
                         }
-                        else if (timer.seconds() > 7.25) {
+                        else if (timer.seconds() > 4) {
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake3;
                         }
-                        else if (timer.seconds() >= 7.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 6.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 5.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 4.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 3.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 2.25) {
+
+                        else if (timer.seconds() > 1.5) {
                             outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
                         }
@@ -338,32 +296,18 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if (timer.seconds() <= 1.25) {
+                        if (timer.seconds() <= 1.5) {
                             outtakeMotor.outtake_close();
                         }
-                        else if (timer.seconds() > 7.25) {
+                        else if (timer.seconds() > 4) {
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.teleop_standby;
                         }
-                        else if (timer.seconds() >= 7.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 6.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 5.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 4.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 3.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 2.25) {
+
+                        else if (timer.seconds() > 1.5) {
                             outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
                         }

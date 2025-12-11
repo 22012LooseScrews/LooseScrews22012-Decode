@@ -113,6 +113,7 @@ public class MecanumTeleOp extends OpMode {
 
         telemetry.addData("Outtake Velocity (ticks/s)", outtake_motor.getVel());
         telemetry.addData("Battery Voltage", outtake_motor.getVol());
+        telemetry.addData("factor", outtake_motor.getFactor());
         //telemetry.addData("what it actually is ",ll_result.getTx());
         telemetry.update();
     }
