@@ -40,7 +40,7 @@ public class SmallTriangleBlueFarAuto extends LinearOpMode {
                 .addPath(
                         new BezierLine(new Pose(56.000, 8.000), new Pose(62.392, 21.825))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(116))
+                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(122.5))
                 .build();
 
         intake1 = follower.pathBuilder()
@@ -51,20 +51,20 @@ public class SmallTriangleBlueFarAuto extends LinearOpMode {
                                 new Pose(21.336, 35.641)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(116), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(122.5), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()->vectorServo.vector_intake())
-                .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
+                .addParametricCallback(0.3, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(1, () -> vectorServo.vector_stop())
-                .addParametricCallback(1, () -> spindexer.spin_stop())
+                .addParametricCallback(0.9, () -> spindexer.spin_stop())
                 .build();
 
         shoot1 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(new Pose(21.336, 35.641), new Pose(62.392, 21.825))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(116))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(122.5))
                 .build();
 
         intake2 = follower.pathBuilder()
@@ -75,20 +75,20 @@ public class SmallTriangleBlueFarAuto extends LinearOpMode {
                                 new Pose(21.816, 59.854)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(116), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(122.5), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> vectorServo.vector_intake())
-                .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
+                .addParametricCallback(0.3, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(1, ()-> vectorServo.vector_stop())
-                .addParametricCallback(1, () -> spindexer.spin_stop())
+                .addParametricCallback(0.9, () -> spindexer.spin_stop())
                 .build();
 
         shoot2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(new Pose(21.816, 59.854), new Pose(62.392, 21.825))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(116))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(122.5))
                 .build();
 
         intake3 = follower.pathBuilder()
@@ -99,20 +99,20 @@ public class SmallTriangleBlueFarAuto extends LinearOpMode {
                                 new Pose(21.336, 84.067)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(116), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(122.5), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> vectorServo.vector_intake())
-                .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
+                .addParametricCallback(0.3, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(1, ()->vectorServo.vector_stop())
-                .addParametricCallback(1, () -> spindexer.spin_stop())
+                .addParametricCallback(0.9, () -> spindexer.spin_stop())
                 .build();
 
         shoot3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(new Pose(21.336, 84.067), new Pose(62.392, 21.825))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(116))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(122.5))
                 .build();
 
         PanelsDrawing.init();
@@ -145,26 +145,26 @@ public class SmallTriangleBlueFarAuto extends LinearOpMode {
                         if(timer.seconds() <= 1.25){
                             outtakeMotor.outtake_far();
                         }
-                        else if(timer.seconds() > 5.6){
+                        else if(timer.seconds() > 5.8){
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake1;
                         }
-                        else if(timer.seconds() >= 5.5){
+                        else if(timer.seconds() >= 5.8){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 5.2){
+                        else if(timer.seconds() > 5.05){
                             spindexer.spin_forward_2();
                         }
-                        else if(timer.seconds() > 4){
+                        else if(timer.seconds() > 3.8){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 3.95){
+                        else if(timer.seconds() > 3.5){
                             spindexer.spin_forward_2();
                         }
-                        else if(timer.seconds() > 2.5){
+                        else if(timer.seconds() > 2.25){
                             spindexer.spin_stop();
                         }
                         else if(timer.seconds() > 1.5){
@@ -206,29 +206,29 @@ public class SmallTriangleBlueFarAuto extends LinearOpMode {
                         if(timer.seconds() <= 1.25){
                             outtakeMotor.outtake_far();
                         }
-                        else if(timer.seconds() > 7.25){
+                        else if(timer.seconds() > 5.8){
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake2;
                         }
-                        else if(timer.seconds() >= 7.25){
+                        else if(timer.seconds() >= 5.8){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 6.25){
+                        else if(timer.seconds() > 5.05){
                             spindexer.spin_forward_2();
                         }
-                        else if(timer.seconds() > 5.25){
+                        else if(timer.seconds() > 3.8){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 4.25){
+                        else if(timer.seconds() > 3.5){
                             spindexer.spin_forward_2();
-                        }
-                        else if(timer.seconds() > 3.25){
-                            spindexer.spin_stop();
                         }
                         else if(timer.seconds() > 2.25){
+                            spindexer.spin_stop();
+                        }
+                        else if(timer.seconds() > 1.5){
                             outtakeMotor.outtake_far();
                             spindexer.spin_forward_2();
                         }
@@ -267,29 +267,29 @@ public class SmallTriangleBlueFarAuto extends LinearOpMode {
                         if(timer.seconds() <= 1.25){
                             outtakeMotor.outtake_far();
                         }
-                        else if(timer.seconds() > 7.25){
+                        else if(timer.seconds() > 5.8){
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake3;
                         }
-                        else if(timer.seconds() >= 7.25){
+                        else if(timer.seconds() >= 5.8){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 6.25){
+                        else if(timer.seconds() > 5.05){
                             spindexer.spin_forward_2();
                         }
-                        else if(timer.seconds() > 5.25){
+                        else if(timer.seconds() > 3.8){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 4.25){
+                        else if(timer.seconds() > 3.5){
                             spindexer.spin_forward_2();
-                        }
-                        else if(timer.seconds() > 3.25){
-                            spindexer.spin_stop();
                         }
                         else if(timer.seconds() > 2.25){
+                            spindexer.spin_stop();
+                        }
+                        else if(timer.seconds() > 1.5){
                             outtakeMotor.outtake_far();
                             spindexer.spin_forward_2();
                         }
@@ -328,29 +328,29 @@ public class SmallTriangleBlueFarAuto extends LinearOpMode {
                         if(timer.seconds() <= 1.25){
                             outtakeMotor.outtake_far();
                         }
-                        else if(timer.seconds() > 7.25){
+                        else if(timer.seconds() > 5.8){
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.end;
                         }
-                        else if(timer.seconds() >= 7.25){
+                        else if(timer.seconds() >= 5.8){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 6.25){
+                        else if(timer.seconds() > 5.05){
                             spindexer.spin_forward_2();
                         }
-                        else if(timer.seconds() > 5.25){
+                        else if(timer.seconds() > 3.8){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 4.25){
+                        else if(timer.seconds() > 3.5){
                             spindexer.spin_forward_2();
-                        }
-                        else if(timer.seconds() > 3.25){
-                            spindexer.spin_stop();
                         }
                         else if(timer.seconds() > 2.25){
+                            spindexer.spin_stop();
+                        }
+                        else if(timer.seconds() > 1.5){
                             outtakeMotor.outtake_far();
                             spindexer.spin_forward_2();
                         }

@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 public class OuttakeMotor {
     private DcMotorEx outtakeMotor;
     private VoltageSensor voltageSensor;
-    private double close_rpm = 1600;
-    private double far_rpm = 2190;
-    private double best_voltage = 13;
+    private double close_rpm = 1775;
+    private double far_rpm = 2150;
+    private double best_voltage;
 
     public OuttakeMotor(OpMode opMode) {
         outtakeMotor = opMode.hardwareMap.get(DcMotorEx.class, "outtakeMotor");
@@ -20,7 +20,7 @@ public class OuttakeMotor {
         outtakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         outtakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         outtakeMotor.setVelocityPIDFCoefficients(
-                17.5,
+                17,
                 0.5,
                 1,
                 10
@@ -35,27 +35,37 @@ public class OuttakeMotor {
     public void outtake_stop() {
         outtakeMotor.setVelocity(0);
     }
-
-//    public void outtake_auto_close() {
-//        outtakeMotor.setVelocity(newCloseRpm(close_auto_rpm));
-//    }
     public double getVel(){
         return outtakeMotor.getVelocity();
     }
-
-    public double newCloseAutoRpm(double close_auto_rpm){
-        double current_voltage = voltageSensor.getVoltage();
-        double factor = best_voltage/current_voltage;
-        return factor * close_rpm;
-    }
-
     public double newCloseRpm(double close_rpm){
         double current_voltage = voltageSensor.getVoltage();
+//        if(current_voltage>13.3){
+//            best_voltage = 13.3;
+//        }
+//        else{
+//            best_voltage = 13;
+//        }
+//        double factor = best_voltage/current_voltage;
+//        return factor * close_rpm;
+
+        if(current_voltage>13.1){
+            best_voltage = 13.75;
+        }
+        else{
+            best_voltage = 13.25;
+        }
         double factor = best_voltage/current_voltage;
         return factor * close_rpm;
     }
     public double newFarRpm(double far_rpm){
         double current_voltage = voltageSensor.getVoltage();
+        if(current_voltage>13.1){
+            best_voltage = 13.75;
+        }
+        else{
+            best_voltage = 13.25;
+        }
         double factor = best_voltage/current_voltage;
         return factor * far_rpm;
     }

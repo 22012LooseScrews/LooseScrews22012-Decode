@@ -40,7 +40,7 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                 .addPath(
                         new BezierLine(new Pose(22.5, 126), new Pose(60.413, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(144), Math.toRadians(132))
+                .setLinearHeadingInterpolation(Math.toRadians(144), Math.toRadians(134))
                 .build();
 
         intake1 = follower.pathBuilder()
@@ -51,7 +51,7 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                                 new Pose(17.336, 79.067)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(132), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> vectorServo.vector_intake())
                 .addParametricCallback(0.3, ()-> spindexer.spin_forward_2())
@@ -64,7 +64,7 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                 .addPath(
                         new BezierLine(new Pose(17.336, 79.067), new Pose(60.413, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(124))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
                 .addParametricCallback(0.2, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(0.45, () -> spindexer.spin_stop())
                 .build();
@@ -74,11 +74,11 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(60.413, 81.909),
                                 new Pose(103.908, 61.206),
-                                new Pose(17.816, 59.854)
+                                new Pose(14.816, 56.854)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(124), Math.toRadians(180))
-                .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
+                .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
+                .addParametricCallback(0.1, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> vectorServo.vector_intake())
                 .addParametricCallback(0.3, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
@@ -88,9 +88,9 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
 
         shoot2 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(17.816, 59.854), new Pose(60.413, 81.909))
+                        new BezierLine(new Pose(14.816, 56.854), new Pose(60.413, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(123))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
                 .addParametricCallback(0.2, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(0.45, () -> spindexer.spin_stop())
                 .build();
@@ -100,10 +100,10 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(60.413, 81.909),
                                 new Pose(82.557, 29.654),
-                                new Pose(17.336, 35.641)
+                                new Pose(14.336, 35.641)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(123), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> vectorServo.vector_intake())
                 .addParametricCallback(0.3, ()-> spindexer.spin_forward_2())
@@ -114,9 +114,9 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
 
         shoot3 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(21.336, 35.641), new Pose(60.413, 81.909))
+                        new BezierLine(new Pose(14.336, 35.641), new Pose(60.413, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(123))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
                 .addParametricCallback(0.2, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(0.45, () -> spindexer.spin_stop())
                 .build();
@@ -125,7 +125,7 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                 .addPath(
                         new BezierLine(new Pose(60.413, 81.909), new Pose(17.081, 10.438))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(123), Math.toRadians(85))
+                .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(85))
                 .build();
 
         PanelsDrawing.init();
@@ -158,28 +158,14 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                         if (timer.seconds() <= 1.5) {
                             outtakeMotor.outtake_close();
                         }
-                        else if (timer.seconds() > 6) {
+                        else if (timer.seconds() > 4) {
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake1;
                         }
-                        else if (timer.seconds() >= 6) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 5.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 4) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 3.5) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 2.25) {
-                            spindexer.spin_stop();
-                        }
+
                         else if (timer.seconds() > 1.5) {
                             outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
@@ -216,31 +202,17 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if (timer.seconds() <= 1.25) {
+                        if (timer.seconds() <= 1.5) {
                             outtakeMotor.outtake_close();
                         }
-                        else if (timer.seconds() > 5.45) {
+                        else if (timer.seconds() > 4) {
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake2;
                         }
-                        else if (timer.seconds() >= 5.35) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 4.75) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 3.65) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 3.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 2) {
-                            spindexer.spin_stop();
-                        }
+
                         else if (timer.seconds() > 1.5) {
                             outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
@@ -277,32 +249,17 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if (timer.seconds() <= 1.25) {
+                        if (timer.seconds() <= 1.5) {
                             outtakeMotor.outtake_close();
                         }
-                        else if (timer.seconds() > 7.25) {
+                        else if (timer.seconds() > 4) {
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake3;
                         }
-                        else if (timer.seconds() >= 7.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 6.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 5.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 4.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 3.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 2.25) {
+                        else if (timer.seconds() > 1.5) {
                             outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
                         }
@@ -315,7 +272,7 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                         path_started = true;
                     }
                     if (!follower.isBusy()) {
-                        current_state = AutoStates.shoot3;
+                        current_state = AutoStates.end;
                         path_started = false;
                     }
                     break;
@@ -338,32 +295,18 @@ public class BigTriangleBlueCloseAuto extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if (timer.seconds() <= 1.25) {
+                        if (timer.seconds() <= 1.5) {
                             outtakeMotor.outtake_close();
                         }
-                        else if (timer.seconds() > 7.25) {
+                        else if (timer.seconds() > 4) {
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.teleop_standby;
                         }
-                        else if (timer.seconds() >= 7.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 6.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 5.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 4.25) {
-                            spindexer.spin_forward_2();
-                        }
-                        else if (timer.seconds() > 3.25) {
-                            spindexer.spin_stop();
-                        }
-                        else if (timer.seconds() > 2.25) {
+
+                        else if (timer.seconds() > 1.5) {
                             outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
                         }

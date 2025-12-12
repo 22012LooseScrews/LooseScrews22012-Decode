@@ -40,7 +40,7 @@ public class SmallTriangleRedFarAuto extends LinearOpMode {
                 .addPath(
                         new BezierLine(new Pose(88.000, 8.000), new Pose(81.608, 21.825))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(60))
+                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(57.5))
                 .build();
 
         intake1 = follower.pathBuilder()
@@ -72,7 +72,7 @@ public class SmallTriangleRedFarAuto extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(81.608, 21.825),
                                 new Pose(51.479, 63.341),
-                                new Pose(122.184, 59.854)
+                                new Pose(122.184, 54.854)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(64), Math.toRadians(0))
@@ -86,7 +86,7 @@ public class SmallTriangleRedFarAuto extends LinearOpMode {
 
         shoot2 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(122.184, 59.854), new Pose(81.608, 21.825))
+                        new BezierLine(new Pose(122.184, 54.854), new Pose(81.608, 21.825))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(64))
                 .build();
