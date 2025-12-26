@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import abstraction.subsystems.IntakeMotor;
-import abstraction.subsystems.SpinServo;
 import abstraction.subsystems.OuttakeMotor;
+import abstraction.subsystems.SpinServo;
 import abstraction.subsystems.VectorServo;
 @TeleOp
 public class MecanumTeleOp extends OpMode {
@@ -20,7 +20,7 @@ public class MecanumTeleOp extends OpMode {
     IntakeMotor intake_motor;
     private Limelight3A limelight;
     private static final double kp_turn = 0.03;
-    private static final double max_speed = 0.9;
+    private static final double max_speed = 1.0;
 
     @Override
     public void init() {
@@ -58,7 +58,7 @@ public class MecanumTeleOp extends OpMode {
         double final_rx = rx;
 
         LLResult ll_result = limelight.getLatestResult();
-        if(gamepad1.dpad_up && ll_result != null && ll_result.isValid()){
+        if(gamepad1.dpadUpWasPressed() && ll_result != null && ll_result.isValid()){
             double turn_error = ll_result.getTx();
             double turn_power = turn_error * -kp_turn;
             turn_power = Math.min(Math.abs(turn_power), max_speed) * Math.signum(turn_power);
@@ -113,7 +113,6 @@ public class MecanumTeleOp extends OpMode {
 
         telemetry.addData("Outtake Velocity (ticks/s)", outtake_motor.getVel());
         telemetry.addData("Battery Voltage", outtake_motor.getVol());
-        telemetry.addData("factor", outtake_motor.getFactor());
         //telemetry.addData("what it actually is ",ll_result.getTx());
         telemetry.update();
     }
