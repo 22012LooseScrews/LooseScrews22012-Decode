@@ -14,6 +14,7 @@ public class SpinServo {
     public void spin_backward() {
         spinServo.setPower(-1.0);
     }
+    public void spin_forward_1() {spinServo.setPower(0.75);}
     public void spin_stop(){
         spinServo.setPower(0);
     }
