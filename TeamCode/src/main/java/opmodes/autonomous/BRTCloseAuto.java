@@ -106,7 +106,7 @@ public class BRTCloseAuto extends LinearOpMode {
                 .setLinearHeadingInterpolation(Math.toRadians(52), Math.toRadians(0))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> vectorServo.vector_intake())
-                .addParametricCallback(0.3, ()-> spindexer.spin_forward_2())
+                .addParametricCallback(0.2, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(1, ()-> vectorServo.vector_stop())
                 .addParametricCallback(0.9, () -> spindexer.spin_stop())
@@ -117,7 +117,7 @@ public class BRTCloseAuto extends LinearOpMode {
                         new BezierLine(new Pose(129.664, 35.641), new Pose(83.587, 85.909))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(52))
-                .addParametricCallback(0.2, ()-> spindexer.spin_forward_2())
+                .addParametricCallback(0.1, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(0.45, () -> spindexer.spin_stop())
                 .build();
 
