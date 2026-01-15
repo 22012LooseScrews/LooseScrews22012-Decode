@@ -72,7 +72,7 @@ public class BBTCloseAuto extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(60.413, 81.909),
                                 new Pose(100.908, 58.206),
-                                new Pose(12, 54.5)
+                                new Pose(12, 56.5)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(135), Math.toRadians(180))
@@ -84,7 +84,7 @@ public class BBTCloseAuto extends LinearOpMode {
 
         shoot2 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(9, 54.5), new Pose(60.413, 81.909))
+                        new BezierLine(new Pose(12, 56.5), new Pose(60.413, 81.909))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(125.5))
                 .addParametricCallback(0.2, ()-> spindexer.spin_forward_2())
@@ -98,7 +98,7 @@ public class BBTCloseAuto extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(60.413, 81.909),
                                 new Pose(78.557, 29.654),
-                                new Pose(11.336, 30.641)
+                                new Pose(11.336, 32.641)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(127), Math.toRadians(180))
@@ -116,7 +116,7 @@ public class BBTCloseAuto extends LinearOpMode {
                 .addParametricCallback(0.2, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(0.25, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.95, ()-> intakeMotor.intake_stop())
-                .addParametricCallback(0.6, () -> spindexer.spin_stop())
+                .addParametricCallback(0.4, () -> spindexer.spin_stop())
                 .build();
 
 //        waitForTeleOp = follower.pathBuilder()
