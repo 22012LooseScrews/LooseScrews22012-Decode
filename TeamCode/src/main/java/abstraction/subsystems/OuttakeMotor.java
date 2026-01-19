@@ -10,7 +10,7 @@ public class OuttakeMotor {
     private DcMotorEx outtakeMotor;
     private VoltageSensor voltageSensor;
 
-    private double auto_close_rpm = 1825;
+    private double auto_close_rpm = 1875;
     private double close_rpm = 1745;
     private double far_rpm = 2150;
 

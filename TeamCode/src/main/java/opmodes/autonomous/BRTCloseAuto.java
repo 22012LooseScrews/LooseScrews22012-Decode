@@ -62,9 +62,11 @@ public class BRTCloseAuto extends LinearOpMode {
                 .addPath(
                         new BezierLine(new Pose(126.664, 77.5), new Pose(83.587, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(51))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(46))
                 .addParametricCallback(0.1, () -> spindexer.spin_forward_2())
-                .addParametricCallback(0.45, () -> spindexer.spin_stop())
+                .addParametricCallback(0.425, () -> spindexer.spin_stop())
+                .addParametricCallback(0.45, ()->spindexer.spin_backward())
+                .addParametricCallback(0.55, ()->spindexer.spin_stop())
                 .build();
 
         intake2 = follower.pathBuilder()
@@ -75,7 +77,7 @@ public class BRTCloseAuto extends LinearOpMode {
                                 new Pose(129.184, 56.854)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(51), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(46), Math.toRadians(0))
                 .addParametricCallback(0.3, () -> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, () -> vectorServo.vector_intake())
                 .addParametricCallback(0.3, () -> spindexer.spin_forward_2())
@@ -88,7 +90,7 @@ public class BRTCloseAuto extends LinearOpMode {
                 .addPath(
                         new BezierLine(new Pose(129.184, 56.854), new Pose(83.587, 85.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(49.5))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(45.5))
                 .addParametricCallback(0.2, () -> spindexer.spin_forward_2())
                 .addParametricCallback(0.45, () -> spindexer.spin_stop())
                 .build();
@@ -101,13 +103,13 @@ public class BRTCloseAuto extends LinearOpMode {
                                 new Pose(129.664, 35.641)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(49.5), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(45.5), Math.toRadians(0))
                 .addParametricCallback(0.3, () -> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, () -> vectorServo.vector_intake())
                 .addParametricCallback(0.2, () -> spindexer.spin_forward_2())
                 .addParametricCallback(1, () -> intakeMotor.intake_stop())
                 .addParametricCallback(1, () -> vectorServo.vector_stop())
-                .addParametricCallback(0.9, () -> spindexer.spin_stop())
+                .addParametricCallback(0.99, () -> spindexer.spin_stop())
                 .build();
 
         shoot3 = follower.pathBuilder()
@@ -115,9 +117,9 @@ public class BRTCloseAuto extends LinearOpMode {
                         new BezierLine(new Pose(129.664, 35.64), new Pose(83.587, 85.909))
                 )
 
-                .setLinearHeadingInterpolation((Math.toRadians(0)), Math.toRadians(51.5))
+                .setLinearHeadingInterpolation((Math.toRadians(0)), Math.toRadians(45.5))
                 .addParametricCallback(0.2, () -> spindexer.spin_forward_2())
-                .addParametricCallback(0.45, () -> spindexer.spin_stop())
+                .addParametricCallback(0.7, () -> spindexer.spin_stop())
                 .build();
 
 //        waitForTeleOp = follower.pathBuilder()
