@@ -55,12 +55,21 @@ public class MecanumTeleOp extends OpMode {
 
         LLResult ll_result = limelight.getLatestResult();
         if(gamepad1.dpad_up && ll_result != null && ll_result.isValid()){
-            double turn_error = ll_result.getTx();
-            double turn_power = turn_error * -kp_turn;
-            turn_power = Math.min(Math.abs(turn_power), max_speed) * Math.signum(turn_power);
-            final_rx = turn_power;
+            double close_turn_error = ll_result.getTx() - 3.3;
+            double close_turn_power = close_turn_error * -kp_turn;
+            close_turn_power = Math.min(Math.abs(close_turn_power), max_speed) * Math.signum(close_turn_power);
+            final_rx = close_turn_power;
 
-            telemetry.addData("Current TX Error (Deg)", turn_error);
+            telemetry.addData("Current TX Error (Deg)", close_turn_error);
+            telemetry.update();
+        }
+        else if(gamepad1.dpad_down && ll_result != null && ll_result.isValid()){
+            double far_turn_error =  ll_result.getTx() - 9;
+            double far_turn_power = far_turn_error * -kp_turn;
+            far_turn_power = Math.min(Math.abs(far_turn_power), max_speed) * Math.signum(far_turn_power);
+            final_rx = far_turn_power;
+
+            telemetry.addData("Current TX Error (Deg)", far_turn_error);
             telemetry.update();
         }
         else {
@@ -86,19 +95,19 @@ public class MecanumTeleOp extends OpMode {
             intake_motor.intake_stop();
         }
 
-        if(gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
+        if(gamepad2.circleWasPressed() || gamepad2.bWasPressed() || gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
             spindexer.spin_forward_2();
         }
-        else if(gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
+        else if(gamepad2.triangleWasPressed() || gamepad2.yWasPressed() || gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
             spindexer.spin_backward();
         }
-        else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.triangleWasReleased() || gamepad1.yWasReleased()){
+        else if(gamepad2.circleWasReleased() || gamepad2.bWasReleased() || gamepad2.triangleWasReleased() || gamepad2.yWasReleased() || gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.triangleWasReleased() || gamepad1.yWasReleased()){
             spindexer.spin_stop();
         }
 
-        if (gamepad1.left_trigger > 0.1) {
+        if (gamepad2.left_trigger > 0.1 || gamepad1.left_trigger > 0.1) {
             outtake_motor.outtake_close();
-        } else if (gamepad1.right_trigger > 0.1) {
+        } else if (gamepad2.right_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
             outtake_motor.outtake_far();
         } else {
             outtake_motor.outtake_stop();
