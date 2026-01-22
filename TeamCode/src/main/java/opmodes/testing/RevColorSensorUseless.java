@@ -14,7 +14,7 @@
 //        UNKNOWN
 //    }
 //    public void init(HardwareMap hardwareMap){
-//        revColorSensor = hardwareMap.get(NormalizedColorSensor.class, "revColorSensor");
+//        revColorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorSensor");
 //        //revColorSensor.setGain(8);
 //           //- .setGain() is for adjusting lighting, more lighting means more sensitivity to light
 //

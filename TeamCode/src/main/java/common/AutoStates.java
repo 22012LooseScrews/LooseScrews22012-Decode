@@ -1,6 +1,7 @@
 package common;
 
 public enum AutoStates {
+    apriltag,
     preloads,
     wait_for_preload_shot,
     intake1,

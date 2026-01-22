@@ -33,7 +33,6 @@ public class Constants {
             .translationalPIDFCoefficients(new PIDFCoefficients(0.06, 0, 0.01, 0.02))
             .forwardZeroPowerAcceleration(-32.372163315984494)
             .lateralZeroPowerAcceleration(-78.47962665767436);
-
     public static PathConstraints path_constraints = new PathConstraints(
             0.995,
             100,

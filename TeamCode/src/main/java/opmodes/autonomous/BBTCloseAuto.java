@@ -19,7 +19,7 @@ import common.AutoStates;
 
 @Autonomous
 public class BBTCloseAuto extends LinearOpMode {
-    public PathChain preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3, waitForTeleOp;
+    public PathChain apriltag, preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3, waitForTeleOp;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -27,18 +27,25 @@ public class BBTCloseAuto extends LinearOpMode {
         IntakeMotor intakeMotor = new IntakeMotor(this);
         OuttakeMotor OuttakeMotor = new OuttakeMotor(this);
 
-        AutoStates current_state = AutoStates.preloads;
+        AutoStates current_state = AutoStates.apriltag;
         Follower follower = Constants.createFollower(hardwareMap);
         ElapsedTime timer = new ElapsedTime();
         follower.setStartingPose(new Pose(22.5, 126, Math.toRadians(144)));
         boolean timer_has_started = false;
         boolean path_started = false;
 
+        apriltag = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(new Pose(22.5, 126), new Pose(55.275, 81.435))
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(144), Math.toRadians(72))
+                .build();
+
         preloads = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(22.5, 126), new Pose(60.413, 81.909))
+                        new BezierLine(new Pose(55.275, 81.435), new Pose(60.413, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(144), Math.toRadians(137.5))
+                .setLinearHeadingInterpolation(Math.toRadians(72), Math.toRadians(137.5))
                 .build();
 
         intake1 = follower.pathBuilder()
@@ -101,7 +108,7 @@ public class BBTCloseAuto extends LinearOpMode {
                                 new Pose(11.336, 32.641)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(127), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(125.5), Math.toRadians(180))
                 .addParametricCallback(0.35, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.55, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(0.99, ()-> intakeMotor.intake_stop())
@@ -110,7 +117,7 @@ public class BBTCloseAuto extends LinearOpMode {
 
         shoot3 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(14.336, 32.641), new Pose(60.413, 81.909))
+                        new BezierLine(new Pose(11.336, 32.641), new Pose(60.413, 81.909))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(120))
                 .addParametricCallback(0.2, ()-> spindexer.spin_forward_2())
@@ -121,12 +128,12 @@ public class BBTCloseAuto extends LinearOpMode {
                 .addParametricCallback(0.55, ()->spindexer.spin_stop())
                 .build();
 
-//        waitForTeleOp = follower.pathBuilder()
-//                .addPath(
-//                        new BezierLine(new Pose(60.413, 81.909), new Pose(17.081, 10.438))
-//                )
-//                .setLinearHeadingInterpolation(Math.toRadians(130), Math.toRadians(85))
-//                .build();
+        waitForTeleOp = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(new Pose(60.413, 81.909), new Pose(50, 67))
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(120), Math.toRadians(90))
+                .build();
 
         PanelsDrawing.init();
         waitForStart();
@@ -137,6 +144,17 @@ public class BBTCloseAuto extends LinearOpMode {
 
         while(opModeIsActive() && current_state != AutoStates.end){
             switch(current_state) {
+                case apriltag:
+                    if(!path_started){
+                        follower.followPath(apriltag);
+                        path_started = true;
+                    }
+                    if(!follower.isBusy()){
+                        path_started = false;
+                        current_state = AutoStates.preloads;
+                    }
+                    break;
+
                 case preloads:
                     if (!path_started) {
                         follower.followPath(preloads);
@@ -259,7 +277,7 @@ public class BBTCloseAuto extends LinearOpMode {
                         if (timer.seconds() <= 1) {
                             OuttakeMotor.auto_outtake_close();
                         }
-                        else if (timer.seconds() > 3.6) {
+                        else if (timer.seconds() > 3) {
                             OuttakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             intakeMotor.intake_stop();
@@ -315,7 +333,7 @@ public class BBTCloseAuto extends LinearOpMode {
                             intakeMotor.intake_stop();
                             timer_has_started = false;
 
-                            current_state = AutoStates.end;
+                            current_state = AutoStates.teleop_standby;
                         }
                         else if (timer.seconds() > 1) {
                             OuttakeMotor.auto_outtake_close();
@@ -325,16 +343,16 @@ public class BBTCloseAuto extends LinearOpMode {
                     }
                     break;
 
-//                case teleop_standby:
-//                    if(!path_started){
-//                        follower.followPath(waitForTeleOp);
-//                        path_started = true;
-//                    }
-//                    if(!follower.isBusy()){
-//                        current_state = AutoStates.end;
-//                        path_started = false;
-//                    }
-//                    break;
+                case teleop_standby:
+                    if(!path_started){
+                        follower.followPath(waitForTeleOp);
+                        path_started = true;
+                    }
+                    if(!follower.isBusy()){
+                        current_state = AutoStates.end;
+                        path_started = false;
+                    }
+                    break;
 
                 default:
                     break;
