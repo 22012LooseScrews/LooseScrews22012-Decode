@@ -1,25 +1,25 @@
-package opmodes.testing;
-// Needs some fixing
+package org.firstinspires.ftc.teamcode.opmodes.testingOrUseless;
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.PanelsDrawing;
 
-import abstraction.subsystems.IntakeMotor;
-import abstraction.subsystems.OuttakeMotor;
-import abstraction.subsystems.SpinServo;
-import abstraction.subsystems.VectorServo;
-import common.AutoStates;
-
+import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
+import org.firstinspires.ftc.teamcode.common.AutoStates;
+@Disabled
 @Autonomous
-public class SmallTriangleBlueCloseAuto extends LinearOpMode {
+public class SmallTriangleRedCloseAuto extends LinearOpMode {
     public PathChain preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3;
 
     @Override
@@ -27,92 +27,85 @@ public class SmallTriangleBlueCloseAuto extends LinearOpMode {
         SpinServo spindexer = new SpinServo(this);
         IntakeMotor intakeMotor = new IntakeMotor(this);
         OuttakeMotor outtakeMotor = new OuttakeMotor(this);
-        VectorServo vectorServo = new VectorServo(this);
 
         AutoStates current_state = AutoStates.preloads;
         Follower follower = Constants.createFollower(hardwareMap);
         ElapsedTime timer = new ElapsedTime();
-        follower.setStartingPose(new Pose(56, 8, Math.toRadians(90)));
+        follower.setStartingPose(new Pose(88, 9, Math.toRadians(90)));
         boolean timer_has_started = false;
         boolean path_started = false;
 
         preloads = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(56.000, 8.000), new Pose(71.644, 73.068))
+                        new BezierLine(new Pose(88.000, 9.000), new Pose(82, 20))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(134))
+                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(60))
                 .build();
 
         intake1 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(71.644, 73.068),
-                                new Pose(69.984, 87.776),
-                                new Pose(24.435, 84.455)
+                                new Pose(72.356, 73.068),
+                                new Pose(74.016, 87.776),
+                                new Pose(119.565, 84.455)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(60), Math.toRadians(0))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
-                .addParametricCallback(0.3, ()->vectorServo.vector_intake())
                 .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
-                .addParametricCallback(1, () -> vectorServo.vector_stop())
                 .addParametricCallback(1, () -> spindexer.spin_stop())
                 .build();
 
         shoot1 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(24.435, 84.455), new Pose(71.644, 73.068))
+                        new BezierLine(new Pose(119.565, 84.455), new Pose(72.356, 73.068))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(46))
                 .build();
 
         intake2 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(71.644, 73.068),
-                                new Pose(103.908, 61.206),
-                                new Pose(24.672, 60.494)
+                                new Pose(72.356, 73.068),
+                                new Pose(40.092, 61.206),
+                                new Pose(119.328, 60.494)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(46), Math.toRadians(0))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
-                .addParametricCallback(0.3, ()-> vectorServo.vector_intake())
                 .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
-                .addParametricCallback(1, ()-> vectorServo.vector_stop())
                 .addParametricCallback(1, () -> spindexer.spin_stop())
                 .build();
 
         shoot2 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(24.672, 60.494), new Pose(71.644, 73.068))
+                        new BezierLine(new Pose(119.328, 60.494), new Pose(72.356, 73.068))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(46))
                 .build();
 
         intake3 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(71.644, 73.068),
-                                new Pose(82.557, 29.654),
-                                new Pose(24.672, 35.822)
+                                new Pose(72.356, 73.068),
+                                new Pose(61.443, 29.654),
+                                new Pose(119.328, 35.822)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(134), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(46), Math.toRadians(0))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
-                .addParametricCallback(0.3, ()-> vectorServo.vector_intake())
                 .addParametricCallback(0.75, ()-> spindexer.spin_forward_2())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
-                .addParametricCallback(1, ()->vectorServo.vector_stop())
                 .addParametricCallback(1, () -> spindexer.spin_stop())
                 .build();
 
         shoot3 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(24.672, 35.822), new Pose(71.644, 73.068))
+                        new BezierLine(new Pose(119.328, 35.822), new Pose(72.356, 73.068))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(46))
                 .build();
 
         PanelsDrawing.init();
@@ -145,29 +138,29 @@ public class SmallTriangleBlueCloseAuto extends LinearOpMode {
                         if(timer.seconds() <= 1.25){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() > 5.6){
+                        else if(timer.seconds() > 7.25){
                             outtakeMotor.outtake_stop();
                             spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake1;
                         }
-                        else if(timer.seconds() >= 5.5){
+                        else if(timer.seconds() >= 7.25){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 5.2){
+                        else if(timer.seconds() > 6.25){
                             spindexer.spin_forward_2();
                         }
-                        else if(timer.seconds() > 4){
+                        else if(timer.seconds() > 5.25){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 3.95){
+                        else if(timer.seconds() > 4.25){
                             spindexer.spin_forward_2();
                         }
-                        else if(timer.seconds() > 2.5){
+                        else if(timer.seconds() > 3.25){
                             spindexer.spin_stop();
                         }
-                        else if(timer.seconds() > 1.5){
+                        else if(timer.seconds() > 2.25){
                             outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
                         }
@@ -353,6 +346,7 @@ public class SmallTriangleBlueCloseAuto extends LinearOpMode {
                         else if(timer.seconds() > 2.25){
                             outtakeMotor.outtake_close();
                             spindexer.spin_forward_2();
+
                         }
                     }
                     break;

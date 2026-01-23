@@ -1,4 +1,4 @@
-package opmodes.teleop;
+package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -7,13 +7,11 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
-import abstraction.subsystems.SpinServo;
+import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
 
 @TeleOp
 public class OuttakeTuningTeleOp extends OpMode {
-
     public DcMotorEx outtakeMotor;
-
     SpinServo spindexer;
     private double close_rpm = 1745;
     private double far_rpm = 2150;

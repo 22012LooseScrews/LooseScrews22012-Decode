@@ -1,4 +1,4 @@
-package opmodes.teleop;
+package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -7,15 +7,17 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import abstraction.subsystems.IntakeMotor;
-import abstraction.subsystems.OuttakeMotor;
-import abstraction.subsystems.SpinServo;
+import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.SpinMotor;
+import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
 @TeleOp
 public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor;
     OuttakeMotor outtake_motor;
     SpinServo spindexer;
     IntakeMotor intake_motor;
+    SpinMotor spin_motor;
     private Limelight3A limelight;
     private static final double kp_turn = 0.03;
     private static final double max_speed = 1.0;
@@ -38,6 +40,7 @@ public class MecanumTeleOp extends OpMode {
         spindexer = new SpinServo(this);
         outtake_motor = new OuttakeMotor(this);
         intake_motor = new IntakeMotor(this);
+        spin_motor = new SpinMotor(this);
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.pipelineSwitch(2);
@@ -64,7 +67,7 @@ public class MecanumTeleOp extends OpMode {
             telemetry.update();
         }
         else if(gamepad1.dpad_down && ll_result != null && ll_result.isValid()){
-            double far_turn_error =  ll_result.getTx() - 9;
+            double far_turn_error =  ll_result.getTx() + 3;
             double far_turn_power = far_turn_error * -kp_turn;
             far_turn_power = Math.min(Math.abs(far_turn_power), max_speed) * Math.signum(far_turn_power);
             final_rx = far_turn_power;
@@ -96,13 +99,13 @@ public class MecanumTeleOp extends OpMode {
         }
 
         if(gamepad2.circleWasPressed() || gamepad2.bWasPressed() || gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
-            spindexer.spin_forward_2();
+            spin_motor.spin_forward();
         }
         else if(gamepad2.triangleWasPressed() || gamepad2.yWasPressed() || gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
-            spindexer.spin_backward();
+            spin_motor.spin_backward();
         }
         else if(gamepad2.circleWasReleased() || gamepad2.bWasReleased() || gamepad2.triangleWasReleased() || gamepad2.yWasReleased() || gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.triangleWasReleased() || gamepad1.yWasReleased()){
-            spindexer.spin_stop();
+            spin_motor.spin_stop();
         }
 
         if (gamepad2.left_trigger > 0.1 || gamepad1.left_trigger > 0.1) {
@@ -114,7 +117,6 @@ public class MecanumTeleOp extends OpMode {
         }
 
         telemetry.addData("Outtake Velocity (ticks/s)", outtake_motor.getVel());
-        telemetry.addData("Battery Voltage", outtake_motor.getVol());
         telemetry.addData("what it actually is ",ll_result.getTx());
         telemetry.update();
     }

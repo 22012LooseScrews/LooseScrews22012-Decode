@@ -1,4 +1,4 @@
-package common;
+package org.firstinspires.ftc.teamcode.common;
 
 public enum AutoStates {
     apriltag,

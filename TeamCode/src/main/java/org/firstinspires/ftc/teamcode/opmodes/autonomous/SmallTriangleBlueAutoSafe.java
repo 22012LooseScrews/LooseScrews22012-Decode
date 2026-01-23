@@ -1,7 +1,6 @@
-package opmodes.autonomous;
+package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
 import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathBuilder;
@@ -11,8 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-import abstraction.subsystems.SpinServo;
-import abstraction.subsystems.OuttakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
+import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
 @Autonomous
 public class SmallTriangleBlueAutoSafe extends LinearOpMode {
     @Override
