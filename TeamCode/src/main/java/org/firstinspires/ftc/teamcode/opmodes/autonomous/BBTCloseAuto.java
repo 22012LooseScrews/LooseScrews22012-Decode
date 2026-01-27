@@ -16,36 +16,42 @@ import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
 import org.firstinspires.ftc.teamcode.common.AutoStates;
+import org.firstinspires.ftc.teamcode.abstractions.SpinMotor;
 
 @Autonomous
 public class BBTCloseAuto extends LinearOpMode {
-    public PathChain apriltag, preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3, waitForTeleOp;
+    public PathChain  preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3, waitForTeleOp;
 
     @Override
     public void runOpMode() throws InterruptedException {
         SpinServo spindexer = new SpinServo(this);
         IntakeMotor intakeMotor = new IntakeMotor(this);
         OuttakeMotor OuttakeMotor = new OuttakeMotor(this);
+        SpinMotor spinMotor = new SpinMotor(this);
 
-        AutoStates current_state = AutoStates.apriltag;
+
+        AutoStates current_state = AutoStates.preloads;
         Follower follower = Constants.createFollower(hardwareMap);
         ElapsedTime timer = new ElapsedTime();
         follower.setStartingPose(new Pose(22.5, 126, Math.toRadians(144)));
         boolean timer_has_started = false;
         boolean path_started = false;
 
-        apriltag = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(new Pose(22.5, 126), new Pose(55.275, 81.435))
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(144), Math.toRadians(72))
-                .build();
+//        apriltag = follower.pathBuilder()
+//                .addPath(
+//                        new BezierLine(new Pose(22.5, 126), new Pose(55.275, 81.435))
+//                )
+//                .setLinearHeadingInterpolation(Math.toRadians(144), Math.toRadians(72))
+//                .build();
 
         preloads = follower.pathBuilder()
                 .addPath(
                         new BezierLine(new Pose(55.275, 81.435), new Pose(60.413, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(72), Math.toRadians(137.5))
+                .setLinearHeadingInterpolation(Math.toRadians(144), Math.toRadians(137.5))
+                //.addParametricCallback(0.01, ()-> OuttakeMotor.auto_outtake_close())
+                //.addParametricCallback(0.85, ()-> spinMotor.add360Degrees(0.55))
+              // .addParametricCallback(1, ()-> OuttakeMotor.outtake_stop())
                 .build();
 
         intake1 = follower.pathBuilder()
@@ -58,7 +64,7 @@ public class BBTCloseAuto extends LinearOpMode {
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(137.5), Math.toRadians(180))
                 .addParametricCallback(0.35, ()-> intakeMotor.intake_intake())
-                .addParametricCallback(0.55, ()-> spindexer.spin_forward_2())
+                .addParametricCallback(0.55, ()-> spinMotor.add360Degrees(0.55))
                 .addParametricCallback(0.99, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(0.575, () -> spindexer.spin_stop())
                 .build();
@@ -144,16 +150,16 @@ public class BBTCloseAuto extends LinearOpMode {
 
         while(opModeIsActive() && current_state != AutoStates.end){
             switch(current_state) {
-                case apriltag:
-                    if(!path_started){
-                        follower.followPath(apriltag);
-                        path_started = true;
-                    }
-                    if(!follower.isBusy()){
-                        path_started = false;
-                        current_state = AutoStates.preloads;
-                    }
-                    break;
+//                case apriltag:
+//                    if(!path_started){
+//                        follower.followPath(apriltag);
+//                        path_started = true;
+//                    }
+//                    if(!follower.isBusy()){
+//                        path_started = false;
+//                        current_state = AutoStates.preloads;
+//                    }
+//                    break;
 
                 case preloads:
                     if (!path_started) {
@@ -172,24 +178,23 @@ public class BBTCloseAuto extends LinearOpMode {
                             timer.reset();
                             timer_has_started = true;
                         }
-                        if (timer.seconds() <= .1) {
-                            intakeMotor.intake_intake();
-                        }
-                        if (timer.seconds() <= 1) {
+
+                        if (timer.seconds() <= 0.5) {
                             OuttakeMotor.auto_outtake_close();
+
                         }
-                        else if(timer.seconds() > 3){
+                        else if(timer.seconds() > 3.5){
                             OuttakeMotor.outtake_stop();
-                            spindexer.spin_stop();
+
                             intakeMotor.intake_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake1;
                         }
-                        else if (timer.seconds() > 1) {
-                            OuttakeMotor.auto_outtake_close();
-                            spindexer.spin_forward_2();
+                        else if(timer.seconds() >=2){
+                            spinMotor.add360Degrees(0.55);
                         }
+
                     }
                     break;
 

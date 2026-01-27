@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -9,10 +11,16 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.RevColorSensor;
 import org.firstinspires.ftc.teamcode.abstractions.SpinMotor;
 import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
+
+@Config
 @TeleOp
 public class MecanumTeleOp extends OpMode {
+    RevColorSensor color_sensor = new RevColorSensor();
+    RevColorSensor.DetectedColor detectedColor;
+    FtcDashboard dashboard;
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor;
     OuttakeMotor outtake_motor;
     SpinServo spindexer;
@@ -21,9 +29,17 @@ public class MecanumTeleOp extends OpMode {
     private Limelight3A limelight;
     private static final double kp_turn = 0.03;
     private static final double max_speed = 1.0;
+    int spin_counter;
+    long lastSpinTime;
+    boolean lastCircleBtn = false;
+    boolean readyToFinalSpin;
+    boolean colorSpinTriggered = false;
 
     @Override
     public void init() {
+        dashboard = FtcDashboard.getInstance();
+        color_sensor.init(hardwareMap);
+
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
@@ -44,11 +60,17 @@ public class MecanumTeleOp extends OpMode {
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.pipelineSwitch(2);
+
+        spin_counter = 0;
+        lastSpinTime = 0;
+        readyToFinalSpin = false;
     }
 
+    @Override
     public void start() {
         limelight.start();
     }
+
     @Override
     public void loop() {
         double y = gamepad1.left_stick_y;
@@ -56,39 +78,25 @@ public class MecanumTeleOp extends OpMode {
         double rx = -gamepad1.right_stick_x;
         double final_rx = rx;
 
+        detectedColor = color_sensor.getDetectedColor(telemetry);
         LLResult ll_result = limelight.getLatestResult();
+
         if(gamepad1.dpad_up && ll_result != null && ll_result.isValid()){
             double close_turn_error = ll_result.getTx() - 3.3;
             double close_turn_power = close_turn_error * -kp_turn;
-            close_turn_power = Math.min(Math.abs(close_turn_power), max_speed) * Math.signum(close_turn_power);
-            final_rx = close_turn_power;
-
-            telemetry.addData("Current TX Error (Deg)", close_turn_error);
-            telemetry.update();
+            final_rx = Math.min(Math.abs(close_turn_power), max_speed) * Math.signum(close_turn_power);
         }
         else if(gamepad1.dpad_down && ll_result != null && ll_result.isValid()){
             double far_turn_error =  ll_result.getTx() + 3;
             double far_turn_power = far_turn_error * -kp_turn;
-            far_turn_power = Math.min(Math.abs(far_turn_power), max_speed) * Math.signum(far_turn_power);
-            final_rx = far_turn_power;
-
-            telemetry.addData("Current TX Error (Deg)", far_turn_error);
-            telemetry.update();
-        }
-        else {
-            telemetry.addLine("No AprilTag Detected");
+            final_rx = Math.min(Math.abs(far_turn_power), max_speed) * Math.signum(far_turn_power);
         }
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(final_rx), 1);
-        double frontLeftPower = (y + x + final_rx) / denominator;
-        double backLeftPower = (y - x + final_rx) / denominator;
-        double frontRightPower = (y - x - final_rx) / denominator;
-        double backRightPower = (y + x - final_rx) / denominator;
-
-        frontLeftMotor.setPower(frontLeftPower);
-        backLeftMotor.setPower(backLeftPower);
-        frontRightMotor.setPower(frontRightPower);
-        backRightMotor.setPower(backRightPower);
+        frontLeftMotor.setPower((y + x + final_rx) / denominator);
+        backLeftMotor.setPower((y - x + final_rx) / denominator);
+        frontRightMotor.setPower((y - x - final_rx) / denominator);
+        backRightMotor.setPower((y + x - final_rx) / denominator);
 
         if (gamepad1.left_bumper) {
             intake_motor.intake_intake();
@@ -98,26 +106,73 @@ public class MecanumTeleOp extends OpMode {
             intake_motor.intake_stop();
         }
 
-        if(gamepad2.circleWasPressed() || gamepad2.bWasPressed() || gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
-            spin_motor.spin_forward();
+        boolean currentColorTarget = (detectedColor == RevColorSensor.DetectedColor.GREEN || detectedColor == RevColorSensor.DetectedColor.PURPLE);
+        boolean currentCircleBtn = (gamepad1.circle || gamepad1.b || gamepad2.circle || gamepad2.b);
+
+        if (currentColorTarget && !colorSpinTriggered) {
+            if (spin_counter == 0) {
+                spin_motor.add120DegreesOne(1.0);
+                spin_counter++;
+            }
+            else if(spin_counter == 1){
+                spin_motor.add120DegreesOne(1.0);
+                spin_counter++;
+            }
+            else if (spin_counter == 2) {
+                readyToFinalSpin = true;
+            }
+            colorSpinTriggered = true;
+        } else if (!currentColorTarget) {
+            colorSpinTriggered = false;
         }
-        else if(gamepad2.triangleWasPressed() || gamepad2.yWasPressed() || gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
-            spin_motor.spin_backward();
+
+        if ((currentCircleBtn && !lastCircleBtn) && System.currentTimeMillis() - lastSpinTime > 250) {
+            lastSpinTime = System.currentTimeMillis();
+            if (spin_counter == 0) {
+                spin_motor.add120DegreesOne(1.0);
+                spin_counter++;
+            }
+            else if(spin_counter == 1){
+                spin_motor.add120DegreesTwo(1.0);
+                spin_counter++;
+            }
+            else if (spin_counter == 2) {
+                readyToFinalSpin = true;
+            }
         }
-        else if(gamepad2.circleWasReleased() || gamepad2.bWasReleased() || gamepad2.triangleWasReleased() || gamepad2.yWasReleased() || gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.triangleWasReleased() || gamepad1.yWasReleased()){
-            spin_motor.spin_stop();
+
+        if (readyToFinalSpin && outtake_motor.getVel() > 1825) {
+            spin_motor.add360Degrees(1.0);
+
+            readyToFinalSpin = false;
         }
+
+        lastCircleBtn = currentCircleBtn;
 
         if (gamepad2.left_trigger > 0.1 || gamepad1.left_trigger > 0.1) {
             outtake_motor.outtake_close();
+            spin_counter = 0;
         } else if (gamepad2.right_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
             outtake_motor.outtake_far();
+            spin_counter = 0;
         } else {
             outtake_motor.outtake_stop();
         }
 
-        telemetry.addData("Outtake Velocity (ticks/s)", outtake_motor.getVel());
-        telemetry.addData("what it actually is ",ll_result.getTx());
+        if(gamepad1.circleWasPressed() || gamepad2.circleWasPressed()){
+            spin_motor.spin_forward();
+        }
+        else if(gamepad1.triangleWasPressed() || gamepad2.triangleWasPressed()){
+            spin_motor.spin_backward();
+        }
+        else if(gamepad1.triangleWasReleased() || gamepad1.circleWasReleased() || gamepad2.triangleWasReleased() || gamepad2.circleWasReleased()){
+            spin_motor.spin_stop();
+        }
+
+        telemetry.addData("Outtake Velocity", outtake_motor.getVel());
+        telemetry.addData("Detected Color", detectedColor);
+        telemetry.addData("Num of spins", spin_counter);
+        telemetry.addData("what it actually is", ll_result.getTx());
         telemetry.update();
     }
 }
