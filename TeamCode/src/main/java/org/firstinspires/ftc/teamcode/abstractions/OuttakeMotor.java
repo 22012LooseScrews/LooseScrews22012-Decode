@@ -4,12 +4,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 public class OuttakeMotor {
     private DcMotorEx outtakeMotor;
-    private double auto_close_rpm = 1635;
-    private double close_rpm = 1560;
+    private double auto_close_rpm = 1645.5;
+    private double close_rpm = 1650;
     private double far_rpm = 1900;
 
     public OuttakeMotor(OpMode opMode) {
@@ -27,10 +26,10 @@ public class OuttakeMotor {
 
     public void auto_outtake_close() {
         outtakeMotor.setVelocityPIDFCoefficients(
-                70,
+                80,
                 0,
                 0,
-                12.4
+                12.3
         );
         outtakeMotor.setVelocity(auto_close_rpm);
     }
@@ -39,13 +38,13 @@ public class OuttakeMotor {
                 70,
                 0,
                 0,
-                12.4
+                12.3
         );
         outtakeMotor.setVelocity(close_rpm);
     }
     public void outtake_far() {
         outtakeMotor.setVelocityPIDFCoefficients(
-                80,
+                300,
                 0,
                 0,
                 12.93

@@ -16,16 +16,21 @@ import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
 import org.firstinspires.ftc.teamcode.common.AutoStates;
+import org.firstinspires.ftc.teamcode.abstractions.SpinMotor;
 
 @Autonomous
 public class BRTCloseAuto extends LinearOpMode {
     public PathChain apriltag, preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3, waitForTeleOp;
 
+    boolean path_started = false;
+    boolean has_spun_path = false;
+    boolean last_sample_detected = false;
     @Override
     public void runOpMode() throws InterruptedException {
         SpinServo spindexer = new SpinServo(this);
         IntakeMotor intakeMotor = new IntakeMotor(this);
         OuttakeMotor outtakeMotor = new OuttakeMotor(this);
+        SpinMotor spinMotor = new SpinMotor(this);
 
         AutoStates current_state = AutoStates.preloads;
         Follower follower = Constants.createFollower(hardwareMap);
@@ -34,12 +39,12 @@ public class BRTCloseAuto extends LinearOpMode {
         boolean timer_has_started = false;
         boolean path_started = false;
 
-        apriltag = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(new Pose(121.5, 126), new Pose(88.725, 81.435))
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(36), Math.toRadians(108))
-                .build();
+//        apriltag = follower.pathBuilder()
+//                .addPath(
+//                        new BezierLine(new Pose(121.5, 126), new Pose(88.725, 81.435))
+//                )
+//                .setLinearHeadingInterpolation(Math.toRadians(36), Math.toRadians(108))
+//                .build();
 
         preloads = follower.pathBuilder()
                 .addPath(
@@ -155,19 +160,20 @@ public class BRTCloseAuto extends LinearOpMode {
                         if (!timer_has_started) {
                             timer.reset();
                             timer_has_started = true;
+                            has_spun_path = false;
                         }
-
                         if (timer.seconds() <= 1) {
                             outtakeMotor.auto_outtake_close();
-                        } else if (timer.seconds() > 3) {
+                        }
+                        else if(timer.seconds() > 3){
                             outtakeMotor.outtake_stop();
-                            spindexer.spin_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake1;
-                        } else if (timer.seconds() > 1) {
+                        }
+                        else if (timer.seconds() > 2) {
                             outtakeMotor.auto_outtake_close();
-                            spindexer.spin_forward_2();
+                            triggerSpin2(spinMotor);
                         }
                     }
                     break;
@@ -199,21 +205,20 @@ public class BRTCloseAuto extends LinearOpMode {
                         if (!timer_has_started) {
                             timer.reset();
                             timer_has_started = true;
+                            has_spun_path = false;
                         }
-
                         if (timer.seconds() <= 1) {
                             outtakeMotor.auto_outtake_close();
-                        } else if (timer.seconds() > 3) {
+                        }
+                        else if(timer.seconds() > 3){
                             outtakeMotor.outtake_stop();
-                            spindexer.spin_stop();
-                            intakeMotor.intake_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake2;
-                        } else if (timer.seconds() > 1) {
+                        }
+                        else if (timer.seconds() > 2) {
                             outtakeMotor.auto_outtake_close();
-                            spindexer.spin_forward_2();
-                            intakeMotor.intake_intake();
+                            triggerSpin2(spinMotor);
                         }
                     }
                     break;
@@ -245,21 +250,20 @@ public class BRTCloseAuto extends LinearOpMode {
                         if (!timer_has_started) {
                             timer.reset();
                             timer_has_started = true;
+                            has_spun_path = false;
                         }
-
                         if (timer.seconds() <= 1) {
                             outtakeMotor.auto_outtake_close();
-                        } else if (timer.seconds() > 3) {
+                        }
+                        else if(timer.seconds() > 3){
                             outtakeMotor.outtake_stop();
-                            spindexer.spin_stop();
-                            intakeMotor.intake_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake3;
-                        } else if (timer.seconds() > 1) {
+                        }
+                        else if (timer.seconds() > 2) {
                             outtakeMotor.auto_outtake_close();
-                            spindexer.spin_forward_2();
-                            intakeMotor.intake_intake();
+                            triggerSpin2(spinMotor);
                         }
                     }
                     break;
@@ -291,24 +295,24 @@ public class BRTCloseAuto extends LinearOpMode {
                         if (!timer_has_started) {
                             timer.reset();
                             timer_has_started = true;
+                            has_spun_path = false;
                         }
-
-                        if (timer.seconds() <= 1.5) {
+                        if (timer.seconds() <= 1) {
                             outtakeMotor.auto_outtake_close();
-                        } else if (timer.seconds() > 4) {
+                        }
+                        else if(timer.seconds() > 3){
                             outtakeMotor.outtake_stop();
-                            spindexer.spin_stop();
-                            intakeMotor.intake_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.teleop_standby;
-                        } else if (timer.seconds() > 1.5) {
+                        }
+                        else if (timer.seconds() > 2) {
                             outtakeMotor.auto_outtake_close();
-                            spindexer.spin_forward_2();
-                            intakeMotor.intake_intake();
+                            triggerSpin2(spinMotor);
                         }
                     }
                     break;
+
 
                 case teleop_standby:
                     if(!path_started){
@@ -329,6 +333,18 @@ public class BRTCloseAuto extends LinearOpMode {
             if (follower.isBusy()) {
                 PanelsDrawing.drawDebug(follower);
             }
+        }
+    }
+    public void triggerSpin(SpinMotor spinMotor){
+        if(!has_spun_path){
+            spinMotor.add120Degrees(0.55);
+            has_spun_path = true;
+        }
+    }
+    public void triggerSpin2(SpinMotor spinMotor){
+        if(!has_spun_path){
+            spinMotor.add360Degrees(0.55);
+            has_spun_path = true;
         }
     }
 }

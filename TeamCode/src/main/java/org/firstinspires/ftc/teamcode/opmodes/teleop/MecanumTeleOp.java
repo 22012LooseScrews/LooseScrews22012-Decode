@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -15,15 +14,12 @@ import org.firstinspires.ftc.teamcode.abstractions.RevColorSensor;
 import org.firstinspires.ftc.teamcode.abstractions.SpinMotor;
 import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
 
-@Config
 @TeleOp
 public class MecanumTeleOp extends OpMode {
     RevColorSensor color_sensor = new RevColorSensor();
     RevColorSensor.DetectedColor detectedColor;
-    FtcDashboard dashboard;
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor;
     OuttakeMotor outtake_motor;
-    SpinServo spindexer;
     IntakeMotor intake_motor;
     SpinMotor spin_motor;
     private Limelight3A limelight;
@@ -34,10 +30,10 @@ public class MecanumTeleOp extends OpMode {
     boolean lastCircleBtn = false;
     boolean readyToFinalSpin;
     boolean colorSpinTriggered = false;
+    boolean last_sample_detected = false;
 
     @Override
     public void init() {
-        dashboard = FtcDashboard.getInstance();
         color_sensor.init(hardwareMap);
 
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
@@ -53,13 +49,12 @@ public class MecanumTeleOp extends OpMode {
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        spindexer = new SpinServo(this);
         outtake_motor = new OuttakeMotor(this);
         intake_motor = new IntakeMotor(this);
         spin_motor = new SpinMotor(this);
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        limelight.pipelineSwitch(2);
+        limelight.pipelineSwitch(0);
 
         spin_counter = 0;
         lastSpinTime = 0;
@@ -110,30 +105,23 @@ public class MecanumTeleOp extends OpMode {
         boolean currentCircleBtn = (gamepad1.circle || gamepad1.b || gamepad2.circle || gamepad2.b);
 
         if (currentColorTarget && !colorSpinTriggered) {
-            if (spin_counter == 0) {
-                spin_motor.add120DegreesOne(1.0);
-                spin_counter++;
-            }
-            else if(spin_counter == 1){
-                spin_motor.add120DegreesOne(1.0);
+            if (spin_counter < 2) {
+                spin_motor.add120Degrees(1.0);
                 spin_counter++;
             }
             else if (spin_counter == 2) {
                 readyToFinalSpin = true;
             }
             colorSpinTriggered = true;
-        } else if (!currentColorTarget) {
+        }
+        else if (!currentColorTarget) {
             colorSpinTriggered = false;
         }
 
         if ((currentCircleBtn && !lastCircleBtn) && System.currentTimeMillis() - lastSpinTime > 250) {
             lastSpinTime = System.currentTimeMillis();
-            if (spin_counter == 0) {
-                spin_motor.add120DegreesOne(1.0);
-                spin_counter++;
-            }
-            else if(spin_counter == 1){
-                spin_motor.add120DegreesTwo(1.0);
+            if (spin_counter < 2) {
+                spin_motor.add120Degrees(1.0);
                 spin_counter++;
             }
             else if (spin_counter == 2) {
@@ -141,9 +129,14 @@ public class MecanumTeleOp extends OpMode {
             }
         }
 
-        if (readyToFinalSpin && outtake_motor.getVel() > 1825) {
-            spin_motor.add360Degrees(1.0);
-
+        if (readyToFinalSpin && gamepad1.left_trigger > 0.1 && outtake_motor.getVel() > 1635) {
+            spin_motor.add360Degrees(0.55);
+            spin_counter = 0;
+            readyToFinalSpin = false;
+        }
+        else if(readyToFinalSpin && gamepad1.right_trigger > 0.1 && outtake_motor.getVel() > 1875){
+            spin_motor.add360Degrees(0.55);
+            spin_counter = 0;
             readyToFinalSpin = false;
         }
 
@@ -161,9 +154,11 @@ public class MecanumTeleOp extends OpMode {
 
         if(gamepad1.circleWasPressed() || gamepad2.circleWasPressed()){
             spin_motor.spin_forward();
+            spin_counter = 0;
         }
         else if(gamepad1.triangleWasPressed() || gamepad2.triangleWasPressed()){
             spin_motor.spin_backward();
+            spin_counter = 0;
         }
         else if(gamepad1.triangleWasReleased() || gamepad1.circleWasReleased() || gamepad2.triangleWasReleased() || gamepad2.circleWasReleased()){
             spin_motor.spin_stop();

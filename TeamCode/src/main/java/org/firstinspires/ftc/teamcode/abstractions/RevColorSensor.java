@@ -29,10 +29,10 @@ public class RevColorSensor {
         telemetry.addData("Blue: ", normBlue);
         telemetry.addData("Green", normGreen);
 
-        if(normRed >= 0.014 && normRed <= 0.037 && normBlue >= 0.035 && normBlue <= 0.063 && normGreen >= 0.0455 && normGreen <= 0.07){
+        if(normRed >= 0.0127 && normRed <= 0.0174 && normBlue >= 0.0344 && normBlue <= 0.06 && normGreen >= 0.0464 && normGreen <= 0.07){
             return DetectedColor.GREEN;
         }
-        else if(normRed >= 0.023 && normRed <= 0.032 && normBlue >= 0.0425 && normBlue <= 0.054 && normGreen >= 0.027 && normGreen <= 0.0414){
+        else if(normRed >= 0.0232 && normRed <= 0.0368 && normBlue >= 0.0428 && normBlue <= 0.0629 && normGreen >= 0.027 && normGreen <= 0.0448){
             return DetectedColor.PURPLE;
         }
         else{

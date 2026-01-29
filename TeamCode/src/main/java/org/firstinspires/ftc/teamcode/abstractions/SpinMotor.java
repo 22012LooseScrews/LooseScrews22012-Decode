@@ -5,9 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class SpinMotor {
     private DcMotor spinMotor;
-    private static final int ticks_for_120_degrees_one = 180;
-    private static final int ticks_for_120_degrees_two = 200;
-    private static final int ticks_for_360_degrees = 540;
+    private static final int ticks_for_120_degrees_one = 162;
+    private static final int ticks_for_360_degrees = 520;
 
     public SpinMotor(OpMode opMode){
         spinMotor = opMode.hardwareMap.get(DcMotor.class, "spinMotor");
@@ -17,17 +16,10 @@ public class SpinMotor {
         spinMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void add120DegreesOne(double power) {
+    public void add120Degrees(double power) {
         int new120TargetOne = spinMotor.getCurrentPosition() + ticks_for_120_degrees_one;
 
         spinMotor.setTargetPosition(new120TargetOne);
-        spinMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        spinMotor.setPower(power);
-    }
-    public void add120DegreesTwo(double power){
-        int new120TargetTwo = spinMotor.getCurrentPosition() + ticks_for_120_degrees_two;
-
-        spinMotor.setTargetPosition(new120TargetTwo);
         spinMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         spinMotor.setPower(power);
     }
@@ -52,5 +44,9 @@ public class SpinMotor {
 
     public void spin_stop(){
         spinMotor.setPower(0);
+    }
+
+    public boolean isBusy(){
+        return spinMotor.isBusy();
     }
 }
