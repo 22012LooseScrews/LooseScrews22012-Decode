@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -12,7 +11,6 @@ import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.RevColorSensor;
 import org.firstinspires.ftc.teamcode.abstractions.SpinMotor;
-import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
 
 @TeleOp
 public class MecanumTeleOp extends OpMode {
@@ -54,7 +52,7 @@ public class MecanumTeleOp extends OpMode {
         spin_motor = new SpinMotor(this);
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        limelight.pipelineSwitch(0);
+        limelight.pipelineSwitch(2);
 
         spin_counter = 0;
         lastSpinTime = 0;
@@ -76,15 +74,23 @@ public class MecanumTeleOp extends OpMode {
         detectedColor = color_sensor.getDetectedColor(telemetry);
         LLResult ll_result = limelight.getLatestResult();
 
-        if(gamepad1.dpad_up && ll_result != null && ll_result.isValid()){
-            double close_turn_error = ll_result.getTx() - 3.3;
-            double close_turn_power = close_turn_error * -kp_turn;
-            final_rx = Math.min(Math.abs(close_turn_power), max_speed) * Math.signum(close_turn_power);
-        }
-        else if(gamepad1.dpad_down && ll_result != null && ll_result.isValid()){
-            double far_turn_error =  ll_result.getTx() + 3;
-            double far_turn_power = far_turn_error * -kp_turn;
-            final_rx = Math.min(Math.abs(far_turn_power), max_speed) * Math.signum(far_turn_power);
+        if(ll_result != null && ll_result.isValid()){
+            double tx = ll_result.getTx();
+            if((gamepad1.left_trigger > 0.1) || gamepad1.dpad_up){
+                telemetry.addLine("Apriltag Detected");
+                double close_turn_error = tx - 3.3;
+                double close_turn_power = close_turn_error * -kp_turn;
+                final_rx = Math.min(Math.abs(close_turn_power), max_speed) * Math.signum(close_turn_power);
+            }
+            else if((gamepad1.right_trigger > 0.1) || gamepad1.dpad_down){
+                telemetry.addLine("Apriltag Detected");
+                double far_turn_error = tx - 3.3;
+                double far_turn_power = far_turn_error * -kp_turn;
+                final_rx = Math.min(Math.abs(far_turn_power), max_speed) * Math.signum(far_turn_power);
+            }
+            else{
+                telemetry.addLine("No Apriltag Detected");
+            }
         }
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(final_rx), 1);
@@ -144,10 +150,8 @@ public class MecanumTeleOp extends OpMode {
 
         if (gamepad2.left_trigger > 0.1 || gamepad1.left_trigger > 0.1) {
             outtake_motor.outtake_close();
-            spin_counter = 0;
         } else if (gamepad2.right_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
             outtake_motor.outtake_far();
-            spin_counter = 0;
         } else {
             outtake_motor.outtake_stop();
         }
@@ -164,10 +168,16 @@ public class MecanumTeleOp extends OpMode {
             spin_motor.spin_stop();
         }
 
+        if(gamepad1.options){
+            spin_counter = 0;
+            readyToFinalSpin = false;
+            colorSpinTriggered = false;
+            last_sample_detected = false;
+        }
+
         telemetry.addData("Outtake Velocity", outtake_motor.getVel());
         telemetry.addData("Detected Color", detectedColor);
         telemetry.addData("Num of spins", spin_counter);
-        telemetry.addData("what it actually is", ll_result.getTx());
         telemetry.update();
     }
 }

@@ -15,7 +15,6 @@ import org.firstinspires.ftc.teamcode.pedroPathing.PanelsDrawing;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
-import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
 import org.firstinspires.ftc.teamcode.common.AutoStates;
 import org.firstinspires.ftc.teamcode.abstractions.SpinMotor;
 
@@ -28,15 +27,16 @@ public class BBTCloseAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SpinServo spindexer = new SpinServo(this);
         IntakeMotor intakeMotor = new IntakeMotor(this);
         OuttakeMotor OuttakeMotor = new OuttakeMotor(this);
-        OuttakeMotor outtakeMotor = new OuttakeMotor(this);
         SpinMotor spinMotor = new SpinMotor(this);
+
         RevColorSensor colorSensor = new RevColorSensor();
         RevColorSensor.DetectedColor detectedColor;
+
         AutoStates current_state = AutoStates.preloads;
         ElapsedTime timer = new ElapsedTime();
+
         boolean timer_has_started = false;
         Follower follower = Constants.createFollower(hardwareMap);
         follower.setStartingPose(new Pose(22.5, 126, Math.toRadians(144)));
@@ -174,7 +174,7 @@ public class BBTCloseAuto extends LinearOpMode {
                         if (timer.seconds() <= 1) {
                             OuttakeMotor.auto_outtake_close();
                         }
-                        else if(timer.seconds() > 3){
+                        else if(timer.seconds() > 2.75){
                             OuttakeMotor.outtake_stop();
                             timer_has_started = false;
 
@@ -225,7 +225,7 @@ public class BBTCloseAuto extends LinearOpMode {
                         if (timer.seconds() <= 1) {
                             OuttakeMotor.auto_outtake_close();
                         }
-                        else if(timer.seconds() > 3){
+                        else if(timer.seconds() > 2.75){
                             OuttakeMotor.outtake_stop();
                             timer_has_started = false;
 
@@ -276,7 +276,7 @@ public class BBTCloseAuto extends LinearOpMode {
                         if (timer.seconds() <= 1) {
                             OuttakeMotor.auto_outtake_close();
                         }
-                        else if(timer.seconds() > 3){
+                        else if(timer.seconds() > 2.75){
                             OuttakeMotor.outtake_stop();
                             timer_has_started = false;
 
@@ -327,7 +327,7 @@ public class BBTCloseAuto extends LinearOpMode {
                         if (timer.seconds() <= 1) {
                             OuttakeMotor.auto_outtake_close();
                         }
-                        else if(timer.seconds() > 3){
+                        else if(timer.seconds() > 2.75){
                             OuttakeMotor.outtake_stop();
                             timer_has_started = false;
 
@@ -363,10 +363,7 @@ public class BBTCloseAuto extends LinearOpMode {
     }
 
     public void triggerSpin(SpinMotor spinMotor){
-        if(!has_spun_path){
-            spinMotor.add120Degrees(0.55);
-            has_spun_path = true;
-        }
+        spinMotor.add120Degrees(0.55);
     }
     public void triggerSpin2(SpinMotor spinMotor){
         if(!has_spun_path){

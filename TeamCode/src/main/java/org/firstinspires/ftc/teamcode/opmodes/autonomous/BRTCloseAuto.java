@@ -9,35 +9,37 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.abstractions.RevColorSensor;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.PanelsDrawing;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
-import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
 import org.firstinspires.ftc.teamcode.common.AutoStates;
 import org.firstinspires.ftc.teamcode.abstractions.SpinMotor;
 
 @Autonomous
 public class BRTCloseAuto extends LinearOpMode {
-    public PathChain apriltag, preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3, waitForTeleOp;
-
+    public PathChain preloads, intake1, shoot1, intake2, shoot2, intake3, shoot3, waitForTeleOp;
     boolean path_started = false;
     boolean has_spun_path = false;
     boolean last_sample_detected = false;
     @Override
     public void runOpMode() throws InterruptedException {
-        SpinServo spindexer = new SpinServo(this);
         IntakeMotor intakeMotor = new IntakeMotor(this);
         OuttakeMotor outtakeMotor = new OuttakeMotor(this);
         SpinMotor spinMotor = new SpinMotor(this);
 
+        RevColorSensor colorSensor = new RevColorSensor();
+        RevColorSensor.DetectedColor detectedColor;
+
         AutoStates current_state = AutoStates.preloads;
-        Follower follower = Constants.createFollower(hardwareMap);
         ElapsedTime timer = new ElapsedTime();
-        follower.setStartingPose(new Pose(121.5, 126, Math.toRadians(36)));
+
         boolean timer_has_started = false;
-        boolean path_started = false;
+        Follower follower = Constants.createFollower(hardwareMap);
+        follower.setStartingPose(new Pose(121.5, 126, Math.toRadians(36)));
+        colorSensor.init(hardwareMap);
 
 //        apriltag = follower.pathBuilder()
 //                .addPath(
@@ -63,9 +65,7 @@ public class BRTCloseAuto extends LinearOpMode {
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(48), Math.toRadians(0))
                 .addParametricCallback(0.35, () -> intakeMotor.intake_intake())
-                .addParametricCallback(0.55, () -> spindexer.spin_forward_2())
-                .addParametricCallback(0.99, () -> intakeMotor.intake_stop())
-                .addParametricCallback(0.95, () -> spindexer.spin_stop())
+                .addParametricCallback(1, () -> intakeMotor.intake_stop())
                 .build();
 
         shoot1 = follower.pathBuilder()
@@ -73,10 +73,8 @@ public class BRTCloseAuto extends LinearOpMode {
                         new BezierLine(new Pose(126.664, 77.5), new Pose(83.587, 81.909))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(46))
-                .addParametricCallback(0.1, () -> spindexer.spin_forward_2())
-                .addParametricCallback(0.425, () -> spindexer.spin_stop())
-                .addParametricCallback(0.45, ()->spindexer.spin_backward())
-                .addParametricCallback(0.55, ()->spindexer.spin_stop())
+                .addParametricCallback(0.01, () -> intakeMotor.intake_intake())
+                .addParametricCallback(0.8, () -> intakeMotor.intake_stop())
                 .build();
 
         intake2 = follower.pathBuilder()
@@ -88,10 +86,8 @@ public class BRTCloseAuto extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(46), Math.toRadians(0))
-                .addParametricCallback(0.3, () -> intakeMotor.intake_intake())
-                .addParametricCallback(0.3, () -> spindexer.spin_forward_2())
+                .addParametricCallback(0.35, () -> intakeMotor.intake_intake())
                 .addParametricCallback(1, () -> intakeMotor.intake_stop())
-                .addParametricCallback(0.9, () -> spindexer.spin_stop())
                 .build();
 
         shoot2 = follower.pathBuilder()
@@ -99,8 +95,8 @@ public class BRTCloseAuto extends LinearOpMode {
                         new BezierLine(new Pose(129.184, 56.854), new Pose(83.587, 81.909))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(45.5))
-                .addParametricCallback(0.2, () -> spindexer.spin_forward_2())
-                .addParametricCallback(0.45, () -> spindexer.spin_stop())
+                .addParametricCallback(0.01, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0.8, () -> intakeMotor.intake_stop())
                 .build();
 
         intake3 = follower.pathBuilder()
@@ -112,20 +108,18 @@ public class BRTCloseAuto extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(45.5), Math.toRadians(0))
-                .addParametricCallback(0.3, () -> intakeMotor.intake_intake())
-                .addParametricCallback(0.2, () -> spindexer.spin_forward_2())
+                .addParametricCallback(0.35, () -> intakeMotor.intake_intake())
                 .addParametricCallback(1, () -> intakeMotor.intake_stop())
-                .addParametricCallback(0.99, () -> spindexer.spin_stop())
                 .build();
 
         shoot3 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(129.664, 35.64), new Pose(83.587, 81.909))
+                        new BezierLine(new Pose(132.664, 32.641), new Pose(83.587, 81.909))
                 )
 
                 .setLinearHeadingInterpolation((Math.toRadians(0)), Math.toRadians(45.5))
-                .addParametricCallback(0.2, () -> spindexer.spin_forward_2())
-                .addParametricCallback(0.7, () -> spindexer.spin_stop())
+                .addParametricCallback(0.01, () -> intakeMotor.intake_intake())
+                .addParametricCallback(0.8, () -> intakeMotor.intake_stop())
                 .build();
 
         waitForTeleOp = follower.pathBuilder()
@@ -143,13 +137,17 @@ public class BRTCloseAuto extends LinearOpMode {
         }
 
         while (opModeIsActive() && current_state != AutoStates.end) {
+            detectedColor = colorSensor.getDetectedColor(telemetry);
+            boolean current_sample_detected = (detectedColor == RevColorSensor.DetectedColor.GREEN || detectedColor == RevColorSensor.DetectedColor.PURPLE);
+
             switch (current_state) {
                 case preloads:
                     if (!path_started) {
+                        has_spun_path = false;
                         follower.followPath(preloads);
                         path_started = true;
                     }
-                    if (!follower.isBusy()) {
+                    if (!follower.isBusy() && !spinMotor.isBusy()) {
                         path_started = false;
                         current_state = AutoStates.wait_for_preload_shot;
                     }
@@ -165,7 +163,7 @@ public class BRTCloseAuto extends LinearOpMode {
                         if (timer.seconds() <= 1) {
                             outtakeMotor.auto_outtake_close();
                         }
-                        else if(timer.seconds() > 3){
+                        else if(timer.seconds() > 2.75){
                             outtakeMotor.outtake_stop();
                             timer_has_started = false;
 
@@ -180,9 +178,15 @@ public class BRTCloseAuto extends LinearOpMode {
 
                 case intake1:
                     if (!path_started) {
+                        has_spun_path = false;
+                        last_sample_detected = false;
                         follower.followPath(intake1);
                         path_started = true;
                     }
+                    if(current_sample_detected && !last_sample_detected){
+                        triggerSpin(spinMotor);
+                    }
+                    last_sample_detected = current_sample_detected;
                     if (!follower.isBusy()) {
                         path_started = false;
                         current_state = AutoStates.shoot1;
@@ -210,7 +214,7 @@ public class BRTCloseAuto extends LinearOpMode {
                         if (timer.seconds() <= 1) {
                             outtakeMotor.auto_outtake_close();
                         }
-                        else if(timer.seconds() > 3){
+                        else if(timer.seconds() > 2.75){
                             outtakeMotor.outtake_stop();
                             timer_has_started = false;
 
@@ -225,12 +229,18 @@ public class BRTCloseAuto extends LinearOpMode {
 
                 case intake2:
                     if (!path_started) {
+                        has_spun_path = false;
+                        last_sample_detected = false;
                         follower.followPath(intake2);
                         path_started = true;
                     }
+                    if(current_sample_detected && !last_sample_detected){
+                        triggerSpin(spinMotor);
+                    }
+                    last_sample_detected = current_sample_detected;
                     if (!follower.isBusy()) {
-                        current_state = AutoStates.shoot2;
                         path_started = false;
+                        current_state = AutoStates.shoot2;
                     }
                     break;
 
@@ -255,7 +265,7 @@ public class BRTCloseAuto extends LinearOpMode {
                         if (timer.seconds() <= 1) {
                             outtakeMotor.auto_outtake_close();
                         }
-                        else if(timer.seconds() > 3){
+                        else if(timer.seconds() > 2.75){
                             outtakeMotor.outtake_stop();
                             timer_has_started = false;
 
@@ -270,12 +280,18 @@ public class BRTCloseAuto extends LinearOpMode {
 
                 case intake3:
                     if (!path_started) {
+                        has_spun_path = false;
+                        last_sample_detected = false;
                         follower.followPath(intake3);
                         path_started = true;
                     }
+                    if(current_sample_detected && !last_sample_detected){
+                        triggerSpin(spinMotor);
+                    }
+                    last_sample_detected = current_sample_detected;
                     if (!follower.isBusy()) {
-                        current_state = AutoStates.shoot3;
                         path_started = false;
+                        current_state = AutoStates.shoot3;
                     }
                     break;
 
@@ -300,7 +316,7 @@ public class BRTCloseAuto extends LinearOpMode {
                         if (timer.seconds() <= 1) {
                             outtakeMotor.auto_outtake_close();
                         }
-                        else if(timer.seconds() > 3){
+                        else if(timer.seconds() > 2.75){
                             outtakeMotor.outtake_stop();
                             timer_has_started = false;
 
@@ -336,10 +352,7 @@ public class BRTCloseAuto extends LinearOpMode {
         }
     }
     public void triggerSpin(SpinMotor spinMotor){
-        if(!has_spun_path){
-            spinMotor.add120Degrees(0.55);
-            has_spun_path = true;
-        }
+        spinMotor.add120Degrees(0.55);
     }
     public void triggerSpin2(SpinMotor spinMotor){
         if(!has_spun_path){
