@@ -51,7 +51,7 @@ public class BBTCloseAuto extends LinearOpMode {
 
         preloads = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(55.275, 81.435), new Pose(60.413, 81.909))
+                        new BezierLine(new Pose(22.5, 126), new Pose(60.413, 81.909))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(144), Math.toRadians(137.5))
                 .build();

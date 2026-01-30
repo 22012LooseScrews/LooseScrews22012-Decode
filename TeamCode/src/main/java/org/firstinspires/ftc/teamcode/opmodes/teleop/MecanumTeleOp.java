@@ -21,7 +21,7 @@ public class MecanumTeleOp extends OpMode {
     IntakeMotor intake_motor;
     SpinMotor spin_motor;
     private Limelight3A limelight;
-    private static final double kp_turn = 0.03;
+    private static final double kp_turn = 0.6;
     private static final double max_speed = 1.0;
     int spin_counter;
     long lastSpinTime;

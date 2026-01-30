@@ -24,6 +24,7 @@ public class BRTCloseAuto extends LinearOpMode {
     boolean path_started = false;
     boolean has_spun_path = false;
     boolean last_sample_detected = false;
+
     @Override
     public void runOpMode() throws InterruptedException {
         IntakeMotor intakeMotor = new IntakeMotor(this);
@@ -50,9 +51,9 @@ public class BRTCloseAuto extends LinearOpMode {
 
         preloads = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(88.725, 81.435), new Pose(83.587, 81.909))
+                        new BezierLine(new Pose(121.5, 126), new Pose(83.587, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(108), Math.toRadians(48))
+                .setLinearHeadingInterpolation(Math.toRadians(36), Math.toRadians(48))
                 .build();
 
         intake1 = follower.pathBuilder()
@@ -328,7 +329,6 @@ public class BRTCloseAuto extends LinearOpMode {
                         }
                     }
                     break;
-
 
                 case teleop_standby:
                     if(!path_started){
