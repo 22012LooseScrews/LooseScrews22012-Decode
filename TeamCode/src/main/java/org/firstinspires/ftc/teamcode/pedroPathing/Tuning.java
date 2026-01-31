@@ -143,13 +143,14 @@ class LocalizationTest extends OpMode {
 
     @Override
     public void start() {
+
         follower.startTeleopDrive();
         follower.update();
     }
 
     /**
      * This updates the robot's pose estimate, the simple mecanum drive, and updates the
-     * Panels telemetry with the robot's position as well as draws the robot's position.
+     * Panels atelemetry with the robot's position as well as draws the robot's position.
      */
     @Override
     public void loop() {

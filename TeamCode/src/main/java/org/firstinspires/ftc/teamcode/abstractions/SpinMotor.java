@@ -36,6 +36,10 @@ public class SpinMotor {
         spinMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         spinMotor.setPower(0.55);
     }
+    public void spin_forward_auto(){
+        spinMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        spinMotor.setPower(0.355);
+    }
 
     public void spin_backward(){
         spinMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

@@ -7,22 +7,22 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
-import org.firstinspires.ftc.teamcode.abstractions.SpinMotor;
+import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
 
 @TeleOp
 public class OuttakeTuningTeleOp extends OpMode {
     public DcMotorEx outtakeMotor;
-    SpinMotor spin_motor;
-    private double close_rpm = 1560;
-    private double far_rpm = 2050;
+    SpinServo spindexer;
+    private double close_rpm = 1745;
+    private double far_rpm = 2150;
     double F = 0;
     double P = 0;
-    double current_target_velocity = far_rpm;
+    double current_target_velocity = close_rpm;
     double[] step_sizes = {10.0, 1.0, 0.1, 0.001, 0.0001};
     int step_index = 0;
     @Override
     public void init() {
-        spin_motor = new SpinMotor(this);
+        spindexer = new SpinServo(this);
         outtakeMotor = hardwareMap.get(DcMotorEx.class, "outtakeMotor");
         outtakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         outtakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -40,13 +40,13 @@ public class OuttakeTuningTeleOp extends OpMode {
             }
         }
         if(gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
-            spin_motor.spin_forward();
+            spindexer.spin_forward_2();
         }
         else if(gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
-            spin_motor.spin_backward();
+            spindexer.spin_backward();
         }
         else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.triangleWasReleased() || gamepad1.yWasReleased()){
-            spin_motor.spin_stop();
+            spindexer.spin_stop();
         }
         if(gamepad1.xWasPressed()){
             step_index = (step_index+1)%step_sizes.length;

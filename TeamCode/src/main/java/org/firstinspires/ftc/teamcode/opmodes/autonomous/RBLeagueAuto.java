@@ -61,12 +61,12 @@ public class RBLeagueAuto extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(83.587, 81.909),
                                 new Pose(69.923, 89.320),
-                                new Pose(126.664, 77.5)
+                                new Pose(126.664, 80)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(48), Math.toRadians(0))
                 .addParametricCallback(0.35, () -> intakeMotor.intake_intake())
-                .addParametricCallback(0.75, () -> spinMotor.spin_forward())
+                .addParametricCallback(0.6, () -> spinMotor.spin_forward())
                 .addParametricCallback(1, () -> spinMotor.spin_stop())
                 .addParametricCallback(1, () -> intakeMotor.intake_stop())
 
@@ -74,13 +74,13 @@ public class RBLeagueAuto extends LinearOpMode {
 
         shoot1 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(126.664, 77.5), new Pose(83.587, 81.909))
+                        new BezierLine(new Pose(126.664, 80), new Pose(83.587, 81.909))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(46))
                 .addParametricCallback(0.01, () -> intakeMotor.intake_intake())
                 .addParametricCallback(0.8, () -> intakeMotor.intake_stop())
-                .addParametricCallback(0, () -> spinMotor.spin_forward())
-                .addParametricCallback(0.3, () -> spinMotor.spin_stop())
+                .addParametricCallback(0.2, () -> spinMotor.spin_forward())
+                .addParametricCallback(0.45, () -> spinMotor.spin_stop())
                 .build();
 
         intake2 = follower.pathBuilder()
@@ -106,7 +106,7 @@ public class RBLeagueAuto extends LinearOpMode {
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(45.5))
                 .addParametricCallback(0.01, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.8, () -> intakeMotor.intake_stop())
-                .addParametricCallback(0, () -> spinMotor.spin_forward())
+                .addParametricCallback(0.2, () -> spinMotor.spin_forward())
                 .addParametricCallback(0.3, () -> spinMotor.spin_stop())
 
                 .build();
@@ -134,7 +134,7 @@ public class RBLeagueAuto extends LinearOpMode {
                 .setLinearHeadingInterpolation((Math.toRadians(0)), Math.toRadians(45.5))
                 .addParametricCallback(0.01, () -> intakeMotor.intake_intake())
                 .addParametricCallback(0.8, () -> intakeMotor.intake_stop())
-                .addParametricCallback(0, () -> spinMotor.spin_forward())
+                .addParametricCallback(0.2, () -> spinMotor.spin_forward())
                 .addParametricCallback(0.3, () -> spinMotor.spin_stop())
                 .build();
 

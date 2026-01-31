@@ -61,23 +61,25 @@ public class BBLeagueAuto extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(60.413, 81.909),
                                 new Pose(74.077, 89.101),
-                                new Pose(15.5, 79.067)
+                                new Pose(15.5, 80.5)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(132), Math.toRadians(180))
                 .addParametricCallback(0.35,()->intakeMotor.intake_intake())
                 .addParametricCallback(1,()->intakeMotor.intake_stop())
-                .addParametricCallback(0.6, () -> spinMotor.spin_forward())
+                .addParametricCallback(0.6, () -> spinMotor.spin_forward_auto())
                 .addParametricCallback(0.9, () -> spinMotor.spin_stop())
                 .build();
 
         shoot1 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(15.5, 79.067), new Pose(60.413, 81.909))
+                        new BezierLine(new Pose(15.5, 80.5), new Pose(60.413, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(136.5))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(134.5))
                 .addParametricCallback(0.01, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.65, ()-> intakeMotor.intake_stop())
+                .addParametricCallback(0, () -> spinMotor.spin_forward())
+                .addParametricCallback(0.3, () -> spinMotor.spin_stop())
                 .build();
 
         intake2 = follower.pathBuilder()
@@ -85,47 +87,51 @@ public class BBLeagueAuto extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(60.413, 81.909),
                                 new Pose(100.908, 58.206),
-                                new Pose(12, 56.5)
+                                new Pose(12, 55.75)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(136.5), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(134.5), Math.toRadians(180))
                 .addParametricCallback(0.35, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
-                .addParametricCallback(0.6, () -> spinMotor.spin_forward())
+                .addParametricCallback(0.6, () -> spinMotor.spin_forward_auto())
                 .addParametricCallback(0.9, () -> spinMotor.spin_stop())
                 .build();
 
         shoot2 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(12, 56.5), new Pose(60.413, 81.909))
+                        new BezierLine(new Pose(12, 55.75), new Pose(60.413, 81.909))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(125.5))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(129))
                 .addParametricCallback(0.01, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.65, ()-> intakeMotor.intake_stop())
+                .addParametricCallback(0, () -> spinMotor.spin_forward())
+                .addParametricCallback(0.5, () -> spinMotor.spin_stop())
                 .build();
 
         intake3 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
                                 new Pose(60.413, 81.909),
-                                new Pose(78.557, 29.654),
-                                new Pose(11.336, 32.641)
+                                new Pose(78.557, 35.654),
+                                new Pose(11.336, 34.891)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(125.5), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(129), Math.toRadians(180))
                 .addParametricCallback(0.35, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
-                .addParametricCallback(0.6, () -> spinMotor.spin_forward())
+                .addParametricCallback(0.6, () -> spinMotor.spin_forward_auto())
                 .addParametricCallback(0.9, () -> spinMotor.spin_stop())
                 .build();
 
         shoot3 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(11.336, 32.641), new Pose(60.413, 81.909))
+                        new BezierLine(new Pose(11.336, 34.891), new Pose(60.413, 81.909))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(120))
                 .addParametricCallback(0.01, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.65, ()-> intakeMotor.intake_stop())
+                .addParametricCallback(0, () -> spinMotor.spin_forward())
+                .addParametricCallback(0.3, () -> spinMotor.spin_stop())
                 .build();
 
         waitForTeleOp = follower.pathBuilder()

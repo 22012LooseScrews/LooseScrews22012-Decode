@@ -21,7 +21,7 @@ public class MecanumTeleOp extends OpMode {
     IntakeMotor intake_motor;
     SpinMotor spin_motor;
     private Limelight3A limelight;
-    private static final double kp_turn = 0.6;
+    private static final double kp_turn = 0.03;
     private static final double max_speed = 1.0;
     int spin_counter;
     long lastSpinTime;
@@ -76,15 +76,15 @@ public class MecanumTeleOp extends OpMode {
 
         if(ll_result != null && ll_result.isValid()){
             double tx = ll_result.getTx();
-            if((gamepad1.left_trigger > 0.1) || gamepad1.dpad_up){
+            if(gamepad1.dpad_up){
                 telemetry.addLine("Apriltag Detected");
                 double close_turn_error = tx - 3.3;
                 double close_turn_power = close_turn_error * -kp_turn;
                 final_rx = Math.min(Math.abs(close_turn_power), max_speed) * Math.signum(close_turn_power);
             }
-            else if((gamepad1.right_trigger > 0.1) || gamepad1.dpad_down){
+            else if(gamepad1.dpad_down){
                 telemetry.addLine("Apriltag Detected");
-                double far_turn_error = tx - 3.3;
+                double far_turn_error = tx - 3;
                 double far_turn_power = far_turn_error * -kp_turn;
                 final_rx = Math.min(Math.abs(far_turn_power), max_speed) * Math.signum(far_turn_power);
             }
@@ -162,15 +162,15 @@ public class MecanumTeleOp extends OpMode {
             outtake_motor.outtake_stop();
         }
 
-        if(gamepad1.circleWasPressed() || gamepad2.circleWasPressed()){
+        if(gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
             spin_motor.spin_forward();
 //            spin_counter = 0;
         }
-        else if(gamepad1.triangleWasPressed() || gamepad2.triangleWasPressed()){
+        else if(gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
             spin_motor.spin_backward();
 //            spin_counter = 0;
         }
-        else if(gamepad1.triangleWasReleased() || gamepad1.circleWasReleased() || gamepad2.triangleWasReleased() || gamepad2.circleWasReleased()){
+        else if(gamepad1.triangleWasReleased() || gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.yWasReleased()){
             spin_motor.spin_stop();
         }
 
