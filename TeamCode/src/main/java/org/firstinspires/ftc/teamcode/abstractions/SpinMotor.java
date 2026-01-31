@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class SpinMotor {
     private DcMotor spinMotor;
-    private static final int ticks_for_120_degrees_one = 162;
+    private static final int ticks_for_120_degrees_one = 180;
     private static final int ticks_for_360_degrees = 520;
 
     public SpinMotor(OpMode opMode){

@@ -20,4 +20,8 @@ public class IntakeMotor {
     public void intake_stop(){
         intakeMotor.setPower(0);
     }
+
+    public void intake_slow() {
+        intakeMotor.setPower(-0.75);
+    }
 }
