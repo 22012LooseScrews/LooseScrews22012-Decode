@@ -145,6 +145,7 @@ public class BRTCloseAuto extends LinearOpMode {
                 case preloads:
                     if (!path_started) {
                         has_spun_path = false;
+                        follower.setMaxPower(1);
                         follower.followPath(preloads);
                         path_started = true;
                     }
@@ -181,6 +182,7 @@ public class BRTCloseAuto extends LinearOpMode {
                     if (!path_started) {
                         has_spun_path = false;
                         last_sample_detected = false;
+                        follower.setMaxPower(0.67);
                         follower.followPath(intake1);
                         path_started = true;
                     }
@@ -196,10 +198,14 @@ public class BRTCloseAuto extends LinearOpMode {
 
                 case shoot1:
                     if (!path_started) {
+                        follower.setMaxPower(1);
                         follower.followPath(shoot1);
+                        intakeMotor.intake_intake();
                         path_started = true;
+                        has_spun_path = false;
                     }
                     if (!follower.isBusy()) {
+                        intakeMotor.intake_stop();
                         path_started = false;
                         current_state = AutoStates.wait_for_shot1;
                     }
@@ -214,14 +220,17 @@ public class BRTCloseAuto extends LinearOpMode {
                         }
                         if (timer.seconds() <= 1) {
                             outtakeMotor.auto_outtake_close();
+                            intakeMotor.intake_intake();
                         }
                         else if(timer.seconds() > 2.75){
                             outtakeMotor.outtake_stop();
+                            intakeMotor.intake_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake2;
                         }
                         else if (timer.seconds() > 2) {
+                            intakeMotor.intake_intake();
                             outtakeMotor.auto_outtake_close();
                             triggerSpin2(spinMotor);
                         }
@@ -232,6 +241,7 @@ public class BRTCloseAuto extends LinearOpMode {
                     if (!path_started) {
                         has_spun_path = false;
                         last_sample_detected = false;
+                        follower.setMaxPower(0.67);
                         follower.followPath(intake2);
                         path_started = true;
                     }
@@ -247,10 +257,12 @@ public class BRTCloseAuto extends LinearOpMode {
 
                 case shoot2:
                     if (!path_started) {
+                        intakeMotor.intake_intake();
                         follower.followPath(shoot2);
                         path_started = true;
                     }
                     if (!follower.isBusy()) {
+                        intakeMotor.intake_stop();
                         current_state = AutoStates.wait_for_shot2;
                         path_started = false;
                     }
@@ -264,15 +276,18 @@ public class BRTCloseAuto extends LinearOpMode {
                             has_spun_path = false;
                         }
                         if (timer.seconds() <= 1) {
+                            intakeMotor.intake_intake();
                             outtakeMotor.auto_outtake_close();
                         }
                         else if(timer.seconds() > 2.75){
+                            intakeMotor.intake_stop();
                             outtakeMotor.outtake_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.intake3;
                         }
                         else if (timer.seconds() > 2) {
+                            intakeMotor.intake_intake();
                             outtakeMotor.auto_outtake_close();
                             triggerSpin2(spinMotor);
                         }
@@ -283,6 +298,7 @@ public class BRTCloseAuto extends LinearOpMode {
                     if (!path_started) {
                         has_spun_path = false;
                         last_sample_detected = false;
+                        follower.setMaxPower(0.67);
                         follower.followPath(intake3);
                         path_started = true;
                     }
@@ -298,10 +314,13 @@ public class BRTCloseAuto extends LinearOpMode {
 
                 case shoot3:
                     if (!path_started) {
+                        intakeMotor.intake_intake();
+                        follower.setMaxPower(1);
                         follower.followPath(shoot3);
                         path_started = true;
                     }
                     if (!follower.isBusy()) {
+                        intakeMotor.intake_stop();
                         current_state = AutoStates.wait_for_shot_3;
                         path_started = false;
                     }
@@ -316,14 +335,17 @@ public class BRTCloseAuto extends LinearOpMode {
                         }
                         if (timer.seconds() <= 1) {
                             outtakeMotor.auto_outtake_close();
+                            intakeMotor.intake_intake();
                         }
                         else if(timer.seconds() > 2.75){
+                            intakeMotor.intake_stop();
                             outtakeMotor.outtake_stop();
                             timer_has_started = false;
 
                             current_state = AutoStates.teleop_standby;
                         }
                         else if (timer.seconds() > 2) {
+                            intakeMotor.intake_intake();
                             outtakeMotor.auto_outtake_close();
                             triggerSpin2(spinMotor);
                         }
@@ -332,6 +354,7 @@ public class BRTCloseAuto extends LinearOpMode {
 
                 case teleop_standby:
                     if(!path_started){
+                        follower.setMaxPower(1);
                         follower.followPath(waitForTeleOp);
                         path_started = true;
                     }

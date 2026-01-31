@@ -111,7 +111,7 @@ public class MecanumTeleOp extends OpMode {
         boolean currentCircleBtn = (gamepad1.circle || gamepad1.b || gamepad2.circle || gamepad2.b);
 
         if (currentColorTarget && !colorSpinTriggered) {
-            if (spin_counter < 2) {
+            if (spin_counter < 2 && !gamepad1.circleWasPressed() && gamepad1.bWasPressed()) {
                 spin_motor.add120Degrees(1.0);
                 spin_counter++;
             }
@@ -135,34 +135,40 @@ public class MecanumTeleOp extends OpMode {
             }
         }
 
-        if (readyToFinalSpin && gamepad1.left_trigger > 0.1 && outtake_motor.getVel() > 1635) {
-            spin_motor.add360Degrees(0.55);
-            spin_counter = 0;
-            readyToFinalSpin = false;
-        }
-        else if(readyToFinalSpin && gamepad1.right_trigger > 0.1 && outtake_motor.getVel() > 1875){
-            spin_motor.add360Degrees(0.55);
-            spin_counter = 0;
-            readyToFinalSpin = false;
-        }
+//        if (readyToFinalSpin && gamepad1.left_trigger > 0.1 && outtake_motor.getVel() > 1635) {
+//            spin_motor.add360Degrees(0.55);
+//            spin_counter = 0;
+//            readyToFinalSpin = false;
+//        }
+//        else if(readyToFinalSpin && gamepad1.right_trigger > 0.1 && outtake_motor.getVel() > 1875){
+//            spin_motor.add360Degrees(0.55);
+//            spin_counter = 0;
+//            readyToFinalSpin = false;
+//        }
 
         lastCircleBtn = currentCircleBtn;
 
         if (gamepad2.left_trigger > 0.1 || gamepad1.left_trigger > 0.1) {
             outtake_motor.outtake_close();
+            if (outtake_motor.getVel()>1580) {
+                spin_counter = 0;
+            }
         } else if (gamepad2.right_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
             outtake_motor.outtake_far();
+            if (outtake_motor.getVel()>1720) {
+                spin_counter = 0;
+            }
         } else {
             outtake_motor.outtake_stop();
         }
 
         if(gamepad1.circleWasPressed() || gamepad2.circleWasPressed()){
             spin_motor.spin_forward();
-            spin_counter = 0;
+//            spin_counter = 0;
         }
         else if(gamepad1.triangleWasPressed() || gamepad2.triangleWasPressed()){
             spin_motor.spin_backward();
-            spin_counter = 0;
+//            spin_counter = 0;
         }
         else if(gamepad1.triangleWasReleased() || gamepad1.circleWasReleased() || gamepad2.triangleWasReleased() || gamepad2.circleWasReleased()){
             spin_motor.spin_stop();

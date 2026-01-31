@@ -16,7 +16,6 @@ import org.firstinspires.ftc.teamcode.pedroPathing.PanelsDrawing;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
-import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
 import org.firstinspires.ftc.teamcode.common.AutoStates;
 
 @Autonomous
@@ -28,7 +27,6 @@ public class SRTFarAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SpinServo spindexer = new SpinServo(this);
         IntakeMotor intakeMotor = new IntakeMotor(this);
         OuttakeMotor outtakeMotor = new OuttakeMotor(this);
         SpinMotor spinMotor = new SpinMotor(this);
