@@ -7,12 +7,15 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
-import org.firstinspires.ftc.teamcode.abstractions.SpinServo;
+import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.ServoStopper;
+import org.firstinspires.ftc.teamcode.abstractions.OuttakeServo;
 
 @TeleOp
 public class OuttakeTuningTeleOp extends OpMode {
     public DcMotorEx outtakeMotor;
-    SpinServo spindexer;
+
     private double close_rpm = 1745;
     private double far_rpm = 2150;
     double F = 0;
@@ -22,7 +25,7 @@ public class OuttakeTuningTeleOp extends OpMode {
     int step_index = 0;
     @Override
     public void init() {
-        spindexer = new SpinServo(this);
+
         outtakeMotor = hardwareMap.get(DcMotorEx.class, "outtakeMotor");
         outtakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         outtakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -39,15 +42,15 @@ public class OuttakeTuningTeleOp extends OpMode {
                 current_target_velocity = close_rpm;
             }
         }
-        if(gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
-            spindexer.spin_forward_2();
-        }
-        else if(gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
-            spindexer.spin_backward();
-        }
-        else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.triangleWasReleased() || gamepad1.yWasReleased()){
-            spindexer.spin_stop();
-        }
+//        if(gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
+//            spindexer.spin_forward_2();
+//        }
+//        else if(gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
+//            spindexer.spin_backward();
+//        }
+//        else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.triangleWasReleased() || gamepad1.yWasReleased()){
+//            spindexer.spin_stop();
+//        }
         if(gamepad1.xWasPressed()){
             step_index = (step_index+1)%step_sizes.length;
         }

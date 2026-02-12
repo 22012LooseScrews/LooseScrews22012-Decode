@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
@@ -17,9 +18,11 @@ public class MecanumTeleOp extends OpMode {
     RevColorSensor color_sensor = new RevColorSensor();
     RevColorSensor.DetectedColor detectedColor;
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor;
-    OuttakeMotor outtake_motor;
+    OuttakeMotor outtake_motor, outtake_motor2;
     IntakeMotor intake_motor;
-    SpinMotor spin_motor;
+
+    Servo spinStopper;
+
     private Limelight3A limelight;
     private static final double kp_turn = 0.03;
     private static final double max_speed = 1.0;
@@ -49,14 +52,11 @@ public class MecanumTeleOp extends OpMode {
 
         outtake_motor = new OuttakeMotor(this);
         intake_motor = new IntakeMotor(this);
-        spin_motor = new SpinMotor(this);
+
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.pipelineSwitch(2);
 
-        spin_counter = 0;
-        lastSpinTime = 0;
-        readyToFinalSpin = false;
     }
 
     @Override
@@ -109,31 +109,31 @@ public class MecanumTeleOp extends OpMode {
 
         boolean currentColorTarget = (detectedColor == RevColorSensor.DetectedColor.GREEN || detectedColor == RevColorSensor.DetectedColor.PURPLE);
         boolean currentCircleBtn = (gamepad1.circle || gamepad1.b || gamepad2.circle || gamepad2.b);
-
-        if (currentColorTarget && !colorSpinTriggered) {
-            if (spin_counter < 2 && !gamepad1.circleWasPressed() && gamepad1.bWasPressed()) {
-                spin_motor.add120Degrees(1.0);
-                spin_counter++;
-            }
-            else if (spin_counter == 2) {
-                readyToFinalSpin = true;
-            }
-            colorSpinTriggered = true;
-        }
-        else if (!currentColorTarget) {
-            colorSpinTriggered = false;
-        }
-
-        if ((currentCircleBtn && !lastCircleBtn) && System.currentTimeMillis() - lastSpinTime > 250) {
-            lastSpinTime = System.currentTimeMillis();
-            if (spin_counter < 2) {
-                spin_motor.add120Degrees(1.0);
-                spin_counter++;
-            }
-            else if (spin_counter == 2) {
-                readyToFinalSpin = true;
-            }
-        }
+//
+//        if (currentColorTarget && !colorSpinTriggered) {
+//            if (spin_counter < 2 && !gamepad1.circleWasPressed() && gamepad1.bWasPressed()) {
+//                spin_motor.add120Degrees(1.0);
+//                spin_counter++;
+//            }
+//            else if (spin_counter == 2) {
+//                readyToFinalSpin = true;
+//            }
+//            colorSpinTriggered = true;
+//        }
+//        else if (!currentColorTarget) {
+//            colorSpinTriggered = false;
+//        }
+//
+//        if ((currentCircleBtn && !lastCircleBtn) && System.currentTimeMillis() - lastSpinTime > 250) {
+//            lastSpinTime = System.currentTimeMillis();
+//            if (spin_counter < 2) {
+//                spin_motor.add120Degrees(1.0);
+//                spin_counter++;
+//            }
+//            else if (spin_counter == 2) {
+//                readyToFinalSpin = true;
+//            }
+//        }
 
 //        if (readyToFinalSpin && gamepad1.left_trigger > 0.1 && outtake_motor.getVel() > 1635) {
 //            spin_motor.add360Degrees(0.55);
@@ -162,24 +162,6 @@ public class MecanumTeleOp extends OpMode {
             outtake_motor.outtake_stop();
         }
 
-        if(gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
-            spin_motor.spin_forward();
-//            spin_counter = 0;
-        }
-        else if(gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
-            spin_motor.spin_backward();
-//            spin_counter = 0;
-        }
-        else if(gamepad1.triangleWasReleased() || gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.yWasReleased()){
-            spin_motor.spin_stop();
-        }
-
-        if(gamepad1.options){
-            spin_counter = 0;
-            readyToFinalSpin = false;
-            colorSpinTriggered = false;
-            last_sample_detected = false;
-        }
 
         telemetry.addData("Outtake Velocity", outtake_motor.getVel());
         telemetry.addData("Detected Color", detectedColor);
