@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.abstractions.OuttakeServo;
 @TeleOp
 public class OuttakeTuningTeleOp extends OpMode {
     public DcMotorEx outtakeMotor;
+    public DcMotorEx outtakeMotor2;
 
     private double close_rpm = 1745;
     private double far_rpm = 2150;
@@ -31,6 +32,11 @@ public class OuttakeTuningTeleOp extends OpMode {
         outtakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
         outtakeMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+
+        outtakeMotor2 = hardwareMap.get(DcMotorEx.class, "outtakeMotor2");
+        outtakeMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        outtakeMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
+        outtakeMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
     }
     @Override
     public void loop() {
@@ -75,6 +81,7 @@ public class OuttakeTuningTeleOp extends OpMode {
         outtakeMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
 
         outtakeMotor.setVelocity(current_target_velocity);
+        outtakeMotor2.setVelocity(current_target_velocity);
 
         double current_velocity = outtakeMotor.getVelocity();
         double error = current_target_velocity - current_velocity;
