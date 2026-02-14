@@ -10,13 +10,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 public class OuttakeTestingTele extends OpMode {
     OuttakeMotor outtake_motor, outtake_motor2;
-    OuttakeServo outtakeServo;
+    //OuttakeServo outtakeServo;
 
     @Override
     public void init() {
 
         outtake_motor = new OuttakeMotor(this);
-        outtakeServo = new OuttakeServo(this);
+        //outtakeServo = new OuttakeServo(this);
 
     }
 
@@ -31,10 +31,9 @@ public class OuttakeTestingTele extends OpMode {
         } else {
             outtake_motor.outtake_stop();
         }
-        if (gamepad1.a) {
-            outtakeServo.outtake_shift_far();
-        } else if (gamepad1.b) {
-            outtakeServo.outtake_shift_close();
+//        if (gamepad1.a) {
+            //outtakeServo.outtake_shift_far();
+//        } else if (gamepad1.b) {
+            //outtakeServo.outtake_shift_close();
         }
     }
-}
