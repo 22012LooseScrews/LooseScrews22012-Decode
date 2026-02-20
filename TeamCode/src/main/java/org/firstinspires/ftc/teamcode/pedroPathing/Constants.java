@@ -8,7 +8,9 @@ import com.pedropathing.ftc.FollowerBuilder;
 import com.pedropathing.ftc.drivetrains.MecanumConstants;
 import com.pedropathing.ftc.localization.Encoder;
 import com.pedropathing.ftc.localization.constants.ThreeWheelConstants;
+import com.pedropathing.ftc.localization.constants.TwoWheelConstants;
 import com.pedropathing.paths.PathConstraints;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -26,7 +28,7 @@ public class Constants {
             .xVelocity(66.70028277980974)
             .yVelocity(55.36111188046402);
     public static FollowerConstants follower_constants = new FollowerConstants()
-            .mass(11.34)
+            .mass(10.6)
             .centripetalScaling(0.0005)
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.3, 0, 0.002, 0.6, 0.025))
             .headingPIDFCoefficients(new PIDFCoefficients(0.6, 0, 0.01, 0.025))
@@ -39,24 +41,41 @@ public class Constants {
             1.2,
             1
     );
-    public static ThreeWheelConstants odo_wheel_constants = new ThreeWheelConstants()
-            .forwardTicksToInches(0.0020031719903638194)
+    public static ThreeWheelConstants three_wheel_constants = new ThreeWheelConstants()
+            .forwardTicksToInches(48.02418594678925)
             .strafeTicksToInches(0.002012573702528496)
             .turnTicksToInches(0.0019443986361740578)
-            .leftEncoder_HardwareMapName("frontLeftMotor")
-            .rightEncoder_HardwareMapName("backRightMotor")
-            .strafeEncoder_HardwareMapName("backLeftMotor")
-            .leftPodY(7)
-            .rightPodY(-7)
-            .strafePodX(-5.5)
-            .leftEncoderDirection(Encoder.REVERSE)
-            .rightEncoderDirection(Encoder.REVERSE)
+            .leftEncoder_HardwareMapName("backLeftMotor")
+            .rightEncoder_HardwareMapName("frontLeftMotor")
+            .strafeEncoder_HardwareMapName("frontRightMotor")
+            .leftPodY(3.75)
+            .rightPodY(-3.75)
+            .strafePodX(-7.25)
+            .leftEncoderDirection(Encoder.FORWARD)
+            .rightEncoderDirection(Encoder.FORWARD)
             .strafeEncoderDirection(Encoder.REVERSE);
+
+//    public static TwoWheelConstants two_wheel_constants = new TwoWheelConstants()
+//            .forwardEncoder_HardwareMapName("frontLeftMotor")
+//            .strafeEncoder_HardwareMapName("frontRightMotor")
+//            .forwardTicksToInches(-0.007524019991039439)
+//            .strafeTicksToInches()
+//            .forwardEncoderDirection(Encoder.FORWARD)
+//            .strafeEncoderDirection(Encoder.FORWARD)
+//            .forwardPodY(3.75)
+//            .strafePodX(7.25)
+//            .IMU_HardwareMapName("imu")
+//            .IMU_Orientation(
+//                    new RevHubOrientationOnRobot(
+//                            RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
+//                            RevHubOrientationOnRobot.UsbFacingDirection.RIGHT
+//                    )
+//            );
 
     public static Follower createFollower(HardwareMap hardwareMap){
         return new FollowerBuilder(follower_constants, hardwareMap)
                 .mecanumDrivetrain(drive_constants)
-                .threeWheelLocalizer(odo_wheel_constants)
+                .threeWheelLocalizer(three_wheel_constants)
                 .build();
     }
 }

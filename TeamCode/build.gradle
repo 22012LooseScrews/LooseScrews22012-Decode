@@ -28,13 +28,23 @@ android {
     }
 }
 
+repositories{
+    maven {
+        url "https://repo.dairy.foundation/releases"
+    }
+    maven {
+        url "https://repo.dairy.foundation/snapshots"
+    }
+}
+
 dependencies {
     implementation project(':FtcRobotController')
-    //noinspection Aligned16KB
-    implementation "org.openftc:easyopencv:1.7.3"
     implementation "com.pedropathing:ftc:2.0.6"
     implementation "com.bylazar:fullpanels:1.0.12"
     implementation 'com.acmerobotics.dashboard:dashboard:0.5.1'
     implementation "com.bylazar:docs:1.0.5"
     implementation 'com.pedropathing:telemetry:1.0.0'
+    implementation 'com.skeletonarmyftc.marrow:core:1.0.0'
+    implementation "org.solverslib:core:0.3.4-beta1"
+    implementation "org.solverslib:pedroPathing:0.3.3"
 }

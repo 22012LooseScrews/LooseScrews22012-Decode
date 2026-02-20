@@ -10,10 +10,10 @@ public class ServoStopper {
         spinStopper.setDirection(Servo.Direction.FORWARD);
     }
     public void gate_close(){
-        spinStopper.setPosition(1.0);
+        spinStopper.setPosition(0.8);
     }
     public void gate_open() {
-        spinStopper.setPosition(0.5);
+        spinStopper.setPosition(0.6);
     }
 
 }

@@ -8,16 +8,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
-import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
-import org.firstinspires.ftc.teamcode.abstractions.ServoStopper;
-import org.firstinspires.ftc.teamcode.abstractions.OuttakeServo;
 
 @TeleOp
 public class OuttakeTuningTeleOp extends OpMode {
-    public DcMotorEx outtakeMotor;
-
-    private double close_rpm = 1745;
-    private double far_rpm = 2150;
+    public DcMotorEx outtakeMotor, outtakeMotor2;
+    IntakeMotor intakeMotor;
+    private double close_rpm = 1650;
+    private double far_rpm = 1900;
     double F = 0;
     double P = 0;
     double current_target_velocity = close_rpm;
@@ -25,15 +22,30 @@ public class OuttakeTuningTeleOp extends OpMode {
     int step_index = 0;
     @Override
     public void init() {
-
         outtakeMotor = hardwareMap.get(DcMotorEx.class, "outtakeMotor");
+        outtakeMotor2 = hardwareMap.get(DcMotorEx.class, "outtakeMotor2");
         outtakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        outtakeMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         outtakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        outtakeMotor2.setDirection(DcMotorSimple.Direction.FORWARD);
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
         outtakeMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        outtakeMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+
+        intakeMotor = new IntakeMotor(this);
     }
     @Override
     public void loop() {
+        if(gamepad1.left_bumper){
+            intakeMotor.intake_intake();
+        }
+        else if(gamepad1.right_bumper){
+            intakeMotor.intake_outtake();
+        }
+        else{
+            intakeMotor.intake_stop();
+        }
+
         if(gamepad1.aWasPressed()){
             if(current_target_velocity == close_rpm){
                 current_target_velocity = far_rpm;
@@ -42,15 +54,6 @@ public class OuttakeTuningTeleOp extends OpMode {
                 current_target_velocity = close_rpm;
             }
         }
-//        if(gamepad1.circleWasPressed() || gamepad1.bWasPressed()){
-//            spindexer.spin_forward_2();
-//        }
-//        else if(gamepad1.triangleWasPressed() || gamepad1.yWasPressed()){
-//            spindexer.spin_backward();
-//        }
-//        else if(gamepad1.circleWasReleased() || gamepad1.bWasReleased() || gamepad1.triangleWasReleased() || gamepad1.yWasReleased()){
-//            spindexer.spin_stop();
-//        }
         if(gamepad1.xWasPressed()){
             step_index = (step_index+1)%step_sizes.length;
         }
@@ -73,8 +76,10 @@ public class OuttakeTuningTeleOp extends OpMode {
 
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
         outtakeMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        outtakeMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
 
         outtakeMotor.setVelocity(current_target_velocity);
+        outtakeMotor2.setVelocity(current_target_velocity);
 
         double current_velocity = outtakeMotor.getVelocity();
         double error = current_target_velocity - current_velocity;

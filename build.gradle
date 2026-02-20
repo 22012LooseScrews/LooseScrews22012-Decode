@@ -11,6 +11,7 @@ buildscript {
     }
     dependencies {
         // Note for FTC Teams: Do not modify this yourself.
+        //noinspection AndroidGradlePluginVersion
         classpath 'com.android.tools.build:gradle:8.7.0'
     }
 }
@@ -24,6 +25,8 @@ allprojects {
         maven {url = "https://mymaven.bylazar.com/releases"}
         maven {url = "https://jitpack.io"}
         maven {url = "https://maven.brott.dev/"}
+        maven {url = "https://repo.dairy.foundation/releases"}
+        maven {url = "https://repo.dairy.foundation/snapshots"}
     }
 }
 
