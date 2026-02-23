@@ -14,10 +14,10 @@ public class OuttakeTuningTeleOp extends OpMode {
     public DcMotorEx outtakeMotor, outtakeMotor2;
     IntakeMotor intakeMotor;
     private double close_rpm = 1650;
-    private double far_rpm = 1900;
+    private double far_rpm = 2200;
     double F = 0;
     double P = 0;
-    double current_target_velocity = close_rpm;
+    double current_target_velocity = far_rpm;
     double[] step_sizes = {10.0, 1.0, 0.1, 0.001, 0.0001};
     int step_index = 0;
     @Override

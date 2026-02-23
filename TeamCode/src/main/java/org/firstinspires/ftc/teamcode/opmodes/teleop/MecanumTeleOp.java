@@ -7,16 +7,16 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.OuttakeServo;
 import org.firstinspires.ftc.teamcode.abstractions.ServoStopper;
 
 @TeleOp
 public class MecanumTeleOp extends OpMode {
-//    RevColorSensor color_sensor = new RevColorSensor();
-//    RevColorSensor.DetectedColor detectedColor;
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor;
-    OuttakeMotor outtake_motor, outtake_motor2;
+    OuttakeMotor outtake_motor;
     IntakeMotor intake_motor;
     ServoStopper servo_Stopper;
+    OuttakeServo outtake_servo;
 //    private Limelight3A limelight;
     private static final double kp_turn = 0.03;
     private static final double max_speed = 1.0;
@@ -41,6 +41,7 @@ public class MecanumTeleOp extends OpMode {
         outtake_motor = new OuttakeMotor(this);
         intake_motor = new IntakeMotor(this);
         servo_Stopper = new ServoStopper(this);
+        outtake_servo = new OuttakeServo(this);
 
 //        limelight = hardwareMap.get(Limelight3A.class, "limelight");
 //        limelight.pipelineSwitch(2);
@@ -58,7 +59,6 @@ public class MecanumTeleOp extends OpMode {
         double rx = -gamepad1.right_stick_x;
         double final_rx = rx;
 
-//        detectedColor = color_sensor.getDetectedColor(telemetry);
 //        LLResult ll_result = limelight.getLatestResult();
 //
 //        if(ll_result != null && ll_result.isValid()){
@@ -94,17 +94,20 @@ public class MecanumTeleOp extends OpMode {
             intake_motor.intake_stop();
         }
 
-        if(gamepad1.dpad_left){
+        if(gamepad1.dpad_up){
             servo_Stopper.gate_open();
+            telemetry.addLine("Servo Open");
         }
-        else if(gamepad1.dpad_right){
+        else if(gamepad1.dpad_down){
             servo_Stopper.gate_close();
+            telemetry.addLine("Servo Closed");
         }
 
         if (gamepad2.left_trigger > 0.1 || gamepad1.left_trigger > 0.1) {
             outtake_motor.outtake_close();
         } else if (gamepad2.right_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
             outtake_motor.outtake_far();
+            outtake_servo.outtake_shift_far();
         } else {
             outtake_motor.outtake_stop();
         }

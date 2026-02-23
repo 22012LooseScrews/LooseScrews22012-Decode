@@ -9,11 +9,10 @@ public class ServoStopper {
         spinStopper = opMode.hardwareMap.get(Servo.class, "spinStopper");
         spinStopper.setDirection(Servo.Direction.FORWARD);
     }
-    public void gate_close(){
-        spinStopper.setPosition(0.8);
-    }
     public void gate_open() {
         spinStopper.setPosition(0.6);
     }
-
+    public void gate_close(){
+        spinStopper.setPosition(0.78);
+    }
 }
