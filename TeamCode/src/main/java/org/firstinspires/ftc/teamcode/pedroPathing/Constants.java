@@ -21,39 +21,38 @@ public class Constants {
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
             .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE);
-//            .maxPower(1.0)
-//            .xVelocity(66.70028277980974)
-//            .yVelocity(55.36111188046402);
+            .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .maxPower(1)
+            .xVelocity(90.36711618911659)
+            .yVelocity(62.76004559496336);
     public static FollowerConstants follower_constants = new FollowerConstants()
-            .mass(10.6);
-//            .centripetalScaling(0.0005)
-//            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.3, 0, 0.002, 0.6, 0.025))
-//            .headingPIDFCoefficients(new PIDFCoefficients(0.6, 0, 0.01, 0.025))
-//            .translationalPIDFCoefficients(new PIDFCoefficients(0.06, 0, 0.01, 0.02))
-//            .forwardZeroPowerAcceleration(-32.372163315984494)
-//            .lateralZeroPowerAcceleration(-78.47962665767436);
+            .mass(10.6)
+            .centripetalScaling(0.0005)
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.01, 0, 0, 0.6, 0.025))
+            .headingPIDFCoefficients(new PIDFCoefficients(0.59, 0, 0.02, 0.025))
+            .translationalPIDFCoefficients(new PIDFCoefficients(0.046, 0, 0, 0.025))
+            .forwardZeroPowerAcceleration(-39.12631581708491)
+            .lateralZeroPowerAcceleration(-80.6827746044343);
 
     public static PathConstraints path_constraints = new PathConstraints(
             0.995,
             100,
-            1.2,
+            1.67,
             1
     );
     public static ThreeWheelConstants three_wheel_constants = new ThreeWheelConstants()
-            .forwardTicksToInches(-43.5287932607343)
-            .strafeTicksToInches(-43.5287932607343)
-            .turnTicksToInches(-43.5287932607343)
+            .forwardTicksToInches(0.0019948597345897812)
+            .strafeTicksToInches(0.0019659617285042587)
+            .turnTicksToInches(0.0019686551902422284)
             .leftEncoder_HardwareMapName("backLeftMotor")
-            .rightEncoder_HardwareMapName("frontRightMotor")
-            .strafeEncoder_HardwareMapName("frontLeftMotor")
-            .leftPodY(3.75)
-            .rightPodY(-3.75)
-            .strafePodX(-7.25)
-            .leftEncoderDirection(Encoder.FORWARD)
-            .rightEncoderDirection(Encoder.FORWARD)
+            .rightEncoder_HardwareMapName("frontLeftMotor")
+            .strafeEncoder_HardwareMapName("backRightMotor")
+            .leftPodY(3.875)
+            .rightPodY(-3.875)
+            .strafePodX(-5.5)
+            .leftEncoderDirection(Encoder.REVERSE)
+            .rightEncoderDirection(Encoder.REVERSE)
             .strafeEncoderDirection(Encoder.FORWARD);
-
 
     public static Follower createFollower(HardwareMap hardwareMap){
         return new FollowerBuilder(follower_constants, hardwareMap)

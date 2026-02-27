@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,14 +12,16 @@ import org.firstinspires.ftc.teamcode.abstractions.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeServo;
 import org.firstinspires.ftc.teamcode.abstractions.ServoStopper;
 
+@Config
 @TeleOp
 public class MecanumTeleOp extends OpMode {
+    FtcDashboard dashboard;
     DcMotor frontRightMotor, backRightMotor, frontLeftMotor, backLeftMotor;
     OuttakeMotor outtake_motor;
     IntakeMotor intake_motor;
     ServoStopper servo_Stopper;
     OuttakeServo outtake_servo;
-//    private Limelight3A limelight;
+    //    private Limelight3A limelight;
     private static final double kp_turn = 0.03;
     private static final double max_speed = 1.0;
 
@@ -43,6 +47,7 @@ public class MecanumTeleOp extends OpMode {
         servo_Stopper = new ServoStopper(this);
         outtake_servo = new OuttakeServo(this);
 
+        dashboard = FtcDashboard.getInstance();
 //        limelight = hardwareMap.get(Limelight3A.class, "limelight");
 //        limelight.pipelineSwitch(2);
     }
@@ -94,25 +99,46 @@ public class MecanumTeleOp extends OpMode {
             intake_motor.intake_stop();
         }
 
-        if(gamepad1.dpad_up){
+        if (gamepad1.dpad_up) {
             servo_Stopper.gate_open();
             telemetry.addLine("Servo Open");
-        }
-        else if(gamepad1.dpad_down){
+        } else if (gamepad1.dpad_down) {
             servo_Stopper.gate_close();
             telemetry.addLine("Servo Closed");
         }
 
-        if (gamepad2.left_trigger > 0.1 || gamepad1.left_trigger > 0.1) {
-            outtake_motor.outtake_close();
-        } else if (gamepad2.right_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
+//        if (gamepad2.left_trigger > 0.1 || gamepad1.left_trigger > 0.1) {
+//            outtake_motor.outtake_close();
+//        } else if (gamepad2.right_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
+//            outtake_motor.outtake_far();
+//            outtake_servo.outtake_shift_far();
+//        } else {
+//            outtake_motor.outtake_stop();
+//        }
+
+        if (gamepad1.right_trigger > 0.1) {
             outtake_motor.outtake_far();
-            outtake_servo.outtake_shift_far();
+
+            if (outtake_motor.getVel() > 2175) {
+                servo_Stopper.gate_open();
+                intake_motor.intake_intake();
+                outtake_servo.outtake_shift_far();
+            }
+        } else if (gamepad1.left_trigger > 0.1) {
+            outtake_motor.outtake_close();
+
+            if (outtake_motor.getVel() > 1625) {
+                servo_Stopper.gate_open();
+                intake_motor.intake_intake();
+            }
         } else {
             outtake_motor.outtake_stop();
+            servo_Stopper.gate_close();
+            outtake_servo.outtake_shift_close();
         }
 
         telemetry.addData("Outtake Velocity", outtake_motor.getVel());
         telemetry.update();
     }
 }
+
