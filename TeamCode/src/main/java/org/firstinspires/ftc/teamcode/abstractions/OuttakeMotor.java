@@ -9,8 +9,8 @@ public class OuttakeMotor {
     private DcMotorEx outtakeMotor;
 
     private DcMotorEx outtakeMotor2;
-    private double auto_close_rpm = 1650;
-    private double close_rpm = 1650;
+    private double auto_close_rpm = 1620;
+    private double close_rpm = 1620;
     private double far_rpm = 2200;
 
     public OuttakeMotor(OpMode opMode) {
@@ -22,7 +22,7 @@ public class OuttakeMotor {
                 40,
                 0,
                 0,
-                12.8
+                12.6
         );
         outtakeMotor2 = opMode.hardwareMap.get(DcMotorEx.class, "outtakeMotor2");
         outtakeMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -32,7 +32,7 @@ public class OuttakeMotor {
                 40,
                 0,
                 0,
-                12.8
+                12.6
         );
     }
 

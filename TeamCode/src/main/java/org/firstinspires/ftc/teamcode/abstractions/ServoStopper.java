@@ -13,6 +13,6 @@ public class ServoStopper {
         spinStopper.setPosition(0.6);
     }
     public void gate_close(){
-        spinStopper.setPosition(0.78);
+        spinStopper.setPosition(0.75);
     }
 }
