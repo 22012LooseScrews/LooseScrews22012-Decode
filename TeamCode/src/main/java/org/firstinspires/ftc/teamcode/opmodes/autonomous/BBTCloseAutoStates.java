@@ -90,6 +90,7 @@ public class BBTCloseAutoStates extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(137), Math.toRadians(129.5))
+                .addParametricCallback(0.1, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.5, ()-> servoStopper.gate_open())
                 .build();
 
@@ -112,6 +113,7 @@ public class BBTCloseAutoStates extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(137), Math.toRadians(129.5))
+                .addParametricCallback(0.1, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.5, ()-> servoStopper.gate_open())
                 .build();
 
@@ -136,6 +138,7 @@ public class BBTCloseAutoStates extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(129.5))
+                .addParametricCallback(0.1, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.5, ()-> servoStopper.gate_open())
                 .build();
 
