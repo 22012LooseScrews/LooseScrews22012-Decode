@@ -12,7 +12,7 @@ public class OuttakeServo {
         outtakeServo.setPosition(0.95);
     }
     public void outtake_shift_far() {
-        outtakeServo.setPosition(0.65);
+        outtakeServo.setPosition(0.7);
     }
 
 }

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.abstractions;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class ServoStopper {
@@ -13,6 +12,6 @@ public class ServoStopper {
         spinStopper.setPosition(0.6);
     }
     public void gate_close(){
-        spinStopper.setPosition(0.75);
+        spinStopper.setPosition(0.825);
     }
 }

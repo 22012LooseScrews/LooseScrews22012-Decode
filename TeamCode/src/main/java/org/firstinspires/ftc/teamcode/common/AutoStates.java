@@ -18,5 +18,10 @@ public enum AutoStates {
     shoot4,
     wait_for_shot4,
     teleop_standby,
+    wait1,
+    wait2,
+    square1,
+    square2,
+    square3,
     end
 }

@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -98,6 +96,10 @@ public class MecanumTeleOp extends OpMode {
             intake_motor.intake_outtake();
         } else {
             intake_motor.intake_stop();
+        }
+
+        if(servo_stopper_position.equals("Closed")){
+            intake_motor.intake_slow();
         }
 
         is_dpad_up_pressed = gamepad1.dpad_up;
