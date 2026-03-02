@@ -9,8 +9,8 @@ public class OuttakeMotor {
     private DcMotorEx outtakeMotor;
 
     private DcMotorEx outtakeMotor2;
-    private double auto_close_rpm = 1695;
-    private double close_rpm = 1695;
+    private double auto_close_rpm = 1570;
+    private double close_rpm = 1570;
     private double far_rpm = 1930;
 
     public OuttakeMotor(OpMode opMode) {

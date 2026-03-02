@@ -9,7 +9,7 @@ public class OuttakeServo {
         outtakeServo.setDirection(Servo.Direction.FORWARD);
     }
     public void outtake_shift_close(){
-        outtakeServo.setPosition(0.95);
+        outtakeServo.setPosition(0.8);
     }
     public void outtake_shift_far() {
         outtakeServo.setPosition(0.7);

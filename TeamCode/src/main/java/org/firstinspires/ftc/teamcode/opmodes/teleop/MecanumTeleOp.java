@@ -116,6 +116,15 @@ public class MecanumTeleOp extends OpMode {
         was_dpad_up_pressed = is_dpad_up_pressed;
         was_dpad_down_pressed = is_dpad_down_pressed;
 
+        if (gamepad1.dpad_left) {
+            outtake_servo.outtake_shift_close();
+        }
+        else if(gamepad1.dpad_right){
+            outtake_servo.outtake_shift_far();
+        }
+
+
+
 //        if (gamepad2.left_trigger > 0.1 || gamepad1.left_trigger > 0.1) {
 //            outtake_motor.outtake_close();
 //        } else if (gamepad2.right_trigger > 0.1 || gamepad1.right_trigger > 0.1) {
