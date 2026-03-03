@@ -9,8 +9,8 @@ public class OuttakeMotor {
     private DcMotorEx outtakeMotor;
 
     private DcMotorEx outtakeMotor2;
-    private double auto_close_rpm = 1500;
-    private double close_rpm = 1500;
+    private double auto_close_rpm = 1615;
+    private double close_rpm = 1615;
     private double far_rpm = 1930;
 
     public OuttakeMotor(OpMode opMode) {
@@ -19,20 +19,20 @@ public class OuttakeMotor {
         outtakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         outtakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         outtakeMotor.setVelocityPIDFCoefficients(
-                40,
+                80,
                 0,
                 0,
-                12.6
+                13.0
         );
         outtakeMotor2 = opMode.hardwareMap.get(DcMotorEx.class, "outtakeMotor2");
         outtakeMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
         outtakeMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         outtakeMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         outtakeMotor2.setVelocityPIDFCoefficients(
-                40,
+                80,
                 0,
                 0,
-                12.6
+                13.0
         );
     }
 
@@ -54,17 +54,17 @@ public class OuttakeMotor {
     }
     public void outtake_close() {
         outtakeMotor.setVelocityPIDFCoefficients(
-                40,
+                80,
                 0,
                 0,
-                12.2
+                13.0
         );
         outtakeMotor.setVelocity(-close_rpm);
         outtakeMotor2.setVelocityPIDFCoefficients(
-                40,
+                80,
                 0,
                 0,
-                12.8
+                13.0
         );
         outtakeMotor2.setVelocity(-close_rpm);
     }

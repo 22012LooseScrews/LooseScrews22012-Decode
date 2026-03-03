@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.PanelsDrawing;
 @Autonomous
 public class BSTFarAutoStates extends LinearOpMode {
-    public PathChain preloads, intake1, shoot1, wait1, square1, wait2, square2, shoot2, square3, shoot3, waitForTeleOp;
+    public PathChain preloads, intake1, shoot1, wait1, square1, wait2, square2, shoot2, square3, shoot3, square4, shoot4, waitForTeleOp;
     boolean path_started = false;
     boolean timer_has_started = false;
 
@@ -39,7 +39,7 @@ public class BSTFarAutoStates extends LinearOpMode {
                 .addPath(
                         new BezierLine(new Pose(55.420, 9.085), new Pose(59.300, 17.300))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(112))
+                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(108))
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_far())
                 .addParametricCallback(0.1, ()-> servoStopper.gate_open())
                 .build();
@@ -53,7 +53,7 @@ public class BSTFarAutoStates extends LinearOpMode {
                                 new Pose(20.849, 35.659)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(112), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(108), Math.toRadians(180))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> servoStopper.gate_close())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
@@ -64,10 +64,10 @@ public class BSTFarAutoStates extends LinearOpMode {
                 .addPath(
                         new BezierLine(new Pose(20.849, 35.659), new Pose(59.300, 17.300))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(114))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(116))
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_stop())
-                .addParametricCallback(0.4, ()-> outtakeMotor.outtake_far())
+                .addParametricCallback(0, ()-> outtakeMotor.outtake_far())
 
                 .build();
 
@@ -82,8 +82,8 @@ public class BSTFarAutoStates extends LinearOpMode {
 
         square1 = follower
                 .pathBuilder()
-                .addPath(new BezierLine(new Pose(59.300, 17.300), new Pose(14, 4.000)))
-                .setLinearHeadingInterpolation(Math.toRadians(114), Math.toRadians(180))
+                .addPath(new BezierLine(new Pose(59.300, 17.300), new Pose(16, 4.000)))
+                .setLinearHeadingInterpolation(Math.toRadians(116), Math.toRadians(180))
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> servoStopper.gate_close())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
@@ -97,17 +97,16 @@ public class BSTFarAutoStates extends LinearOpMode {
 
         square2 = follower
                 .pathBuilder()
-                .addPath(new BezierLine(new Pose(14, 4.000), new Pose(11.00, 4)))
+                .addPath(new BezierLine(new Pose(16, 4.000), new Pose(11.00, 4)))
                 .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
-
                 .build();
 
         shoot2 = follower
                 .pathBuilder()
                 .addPath(new BezierLine(new Pose(11.00, 4), new Pose(59.300, 17.300)))
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(113))
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(117))
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_far())
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
@@ -116,9 +115,9 @@ public class BSTFarAutoStates extends LinearOpMode {
         square3 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(59.300, 17.300), new Pose(12.00, 4.00))
+                        new BezierLine(new Pose(59.300, 17.300), new Pose(16.00, 4.00))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(113), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(117), Math.toRadians(180))
                 .addParametricCallback(0.2, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .build();
@@ -126,7 +125,26 @@ public class BSTFarAutoStates extends LinearOpMode {
         shoot3 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(12.00, 4.00), new Pose(59.300, 17.300))
+                        new BezierLine(new Pose(16.00, 4.00), new Pose(59.300, 17.300))
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(112))
+                .addParametricCallback(0, ()-> outtakeMotor.outtake_far())
+                .build();
+
+        square4 = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierLine(new Pose(59.300, 17.300), new Pose(16.00, 4.00))
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(113), Math.toRadians(180))
+                .addParametricCallback(0.2, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(1, ()-> intakeMotor.intake_stop())
+                .build();
+        
+        shoot4 = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierLine(new Pose(16.00, 4.00), new Pose(59.300, 17.300))
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(112))
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_far())
@@ -323,6 +341,50 @@ public class BSTFarAutoStates extends LinearOpMode {
                     break;
 
                 case wait_for_shot3:
+                    if(!follower.isBusy()){
+                        if(!timer_has_started){
+                            timer.reset();
+                            timer_has_started = true;
+                        }
+
+                        if(timer.seconds() <= 0.75){
+                            servoStopper.gate_open();
+                        }
+                        else if(timer.seconds() >= 2.5){
+                            outtakeMotor.outtake_stop();
+                            intakeMotor.intake_stop();
+                            timer_has_started = false;
+                            current_state = AutoStates.square4;
+                        }
+                        else if(timer.seconds() > 1.5){
+                            intakeMotor.intake_intake();
+                        }
+                    }
+                    break;
+
+                case square4:
+                    if(!path_started){
+                        follower.followPath(square4);
+                        path_started = true;
+                    }
+                    if(!follower.isBusy()){
+                        path_started = false;
+                        current_state = AutoStates.shoot4;
+                    }
+                    break;
+
+                case shoot4:
+                    if(!path_started){
+                        follower.followPath(shoot4);
+                        path_started = true;
+                    }
+                    if(!follower.isBusy()){
+                        path_started = false;
+                        current_state = AutoStates.wait_for_shot4;
+                    }
+                    break;
+
+                case wait_for_shot4:
                     if(!follower.isBusy()){
                         if(!timer_has_started){
                             timer.reset();
