@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.PanelsDrawing;
 
 @Autonomous
 public class BBTCloseAutoStates extends LinearOpMode {
-    public PathChain preloads, intake1, shoot1, gate1, shoot2, gate2, shoot3, intake2, shoot4, waitForTeleOp;
+    public PathChain preloads, intake1, shoot1, gate1, swerve_to_capture, shoot2, gate2, shoot3, intake2, shoot4, waitForTeleOp;
     boolean path_started = false;
     boolean timer_has_started = false;
 
@@ -31,19 +31,19 @@ public class BBTCloseAutoStates extends LinearOpMode {
         AutoStates current_state = AutoStates.preloads;
         ElapsedTime timer = new ElapsedTime();
         Follower follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(new Pose(33, 134.7, Math.toRadians(90)));
+        follower.setStartingPose(new Pose(17.331, 112.145, Math.toRadians(180)));
         servoStopper.gate_close();
 
         preloads = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(33, 134.7),
+                                new Pose(17.331, 112.145),
                                 new Pose(60.413, 81.909)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(130.5))
-                .addParametricCallback(0, ()-> intakeMotor.intake_slow())
-                .addParametricCallback(0.1, ()-> outtakeMotor.outtake_close())
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(133.5))
+                .addParametricCallback(0, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.97, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(1, ()-> servoStopper.gate_open())
                 .build();
@@ -53,10 +53,10 @@ public class BBTCloseAutoStates extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(60.413, 81.909),
                                 new Pose(66.641, 53.760),
-                                new Pose(8.970, 55.451)
+                                new Pose(15.970, 47.451)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(130.5), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(133.5), Math.toRadians(180))
                 .addParametricCallback(0.1, ()-> servoStopper.gate_close())
                 .addParametricCallback(0.35, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(1, ()-> intakeMotor.intake_slow())
@@ -66,13 +66,13 @@ public class BBTCloseAutoStates extends LinearOpMode {
         shoot1 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(8.970, 55.451),
+                                new Pose(15.970, 47.451),
                                 new Pose(60.413, 81.909)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(137.5))
-                .addParametricCallback(0, ()-> intakeMotor.intake_slow())
-                .addParametricCallback(0.1, ()-> outtakeMotor.outtake_close())
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(139.5))
+                .addParametricCallback(0, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.97, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(0.98, ()-> servoStopper.gate_open())
                 .build();
@@ -81,26 +81,36 @@ public class BBTCloseAutoStates extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Pose(60.413, 81.909),
-                                new Pose(11.153, 59.768)
+                                new Pose(14.153, 52.768)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(137.5), Math.toRadians(165))
+                .setLinearHeadingInterpolation(Math.toRadians(139.5), Math.toRadians(175))
                 .addParametricCallback(0.1, ()-> servoStopper.gate_close())
                 .addParametricCallback(0.25, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .build();
 
+        swerve_to_capture = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(14.763, 52.326),
+                                new Pose(12.146, 50.216)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(175), Math.toRadians(160))
+                .build();
+
         shoot2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(11.153, 59.768),
+                                new Pose(9.153, 46.768),
                                 new Pose(60.413, 81.909)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(165), Math.toRadians(138.5))
+                .setLinearHeadingInterpolation(Math.toRadians(160), Math.toRadians(138.5))
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.1, ()-> intakeMotor.intake_stop())
-                .addParametricCallback(0.1, ()-> outtakeMotor.outtake_close())
+                .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.5, ()-> servoStopper.gate_open())
                 .build();
 
@@ -108,7 +118,7 @@ public class BBTCloseAutoStates extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Pose(60.413, 81.909),
-                                new Pose(13.624, 85.217)
+                                new Pose(13.624, 70.217)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(138.5), Math.toRadians(180))
@@ -120,13 +130,13 @@ public class BBTCloseAutoStates extends LinearOpMode {
         shoot3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(13.624, 85.217),
+                                new Pose(13.624, 70.217),
                                 new Pose(60.413, 81.909)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(138.5))
-                .addParametricCallback(0, ()-> intakeMotor.intake_slow())
-                .addParametricCallback(0.1, ()-> outtakeMotor.outtake_close())
+                .addParametricCallback(0, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.97, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(0.98, ()-> servoStopper.gate_open())
                 .build();
@@ -135,24 +145,24 @@ public class BBTCloseAutoStates extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Pose(60.413, 81.909),
-                                new Pose(11.153, 59.768)
+                                new Pose(11.153, 48.768)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(138.5), Math.toRadians(165))
+                .setLinearHeadingInterpolation(Math.toRadians(138.5), Math.toRadians(170))
                 .addParametricCallback(0.1, ()-> servoStopper.gate_close())
-                .addParametricCallback(0.75, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0.5, ()-> intakeMotor.intake_intake())
                 .build();
 
         shoot4 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(11.153, 59.768),
+                                new Pose(11.153, 48.768),
                                 new Pose(60.413, 81.909)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(165), Math.toRadians(138.5))
-                .addParametricCallback(0, ()-> intakeMotor.intake_slow())
-                .addParametricCallback(0.1, ()-> outtakeMotor.outtake_close())
+                .setLinearHeadingInterpolation(Math.toRadians(170), Math.toRadians(138.5))
+                .addParametricCallback(0, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.97, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(0.98, ()-> servoStopper.gate_open())
                 .build();
@@ -241,17 +251,17 @@ public class BBTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if(timer.seconds() <= 0.75){
+                        if(timer.seconds() <= 0.3){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() >= 1.25){
+                        else if(timer.seconds() >= 0.8){
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.gate1;
                         }
-                        else if(timer.seconds() > 0.75){
+                        else if(timer.seconds() > 0.3){
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
@@ -265,9 +275,19 @@ public class BBTCloseAutoStates extends LinearOpMode {
                     }
                     if(!follower.isBusy()){
                         path_started = false;
-                        current_state = AutoStates.wait_at_gate1;
+                        current_state = AutoStates.swerve;
                     }
                     break;
+
+                case swerve:
+                    if(!path_started){
+                        follower.followPath(swerve_to_capture);
+                        path_started = true;
+                    }
+                    if(!follower.isBusy()){
+                        path_started = false;
+                        current_state = AutoStates.wait_at_gate1;
+                    }
 
                 case wait_at_gate1:
                     if(!follower.isBusy()){
@@ -306,17 +326,17 @@ public class BBTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if(timer.seconds() <= 0.75){
+                        if(timer.seconds() <= 0.3){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() >= 1.25){
+                        else if(timer.seconds() >= 0.8){
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.intake2;
                         }
-                        else if(timer.seconds() > 0.75){
+                        else if(timer.seconds() > 0.3){
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
@@ -352,17 +372,17 @@ public class BBTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if(timer.seconds() <= 0.75){
+                        if(timer.seconds() <= 0.3){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() >= 1.25){
+                        else if(timer.seconds() >= 0.8){
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.gate2;
                         }
-                        else if(timer.seconds() > 0.75){
+                        else if(timer.seconds() > 0.3){
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
@@ -417,17 +437,17 @@ public class BBTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if(timer.seconds() <= 0.75){
+                        if(timer.seconds() <= 0.3){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() >= 1.25){
+                        else if(timer.seconds() >= 0.8){
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.teleop_standby;
                         }
-                        else if(timer.seconds() > 0.75){
+                        else if(timer.seconds() > 0.3){
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }

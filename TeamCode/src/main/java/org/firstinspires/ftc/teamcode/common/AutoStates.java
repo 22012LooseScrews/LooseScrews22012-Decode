@@ -7,6 +7,7 @@ public enum AutoStates {
     shoot1,
     wait_for_shot1,
     gate1,
+    swerve,
     wait_at_gate1,
     shoot2,
     wait_for_shot2,
