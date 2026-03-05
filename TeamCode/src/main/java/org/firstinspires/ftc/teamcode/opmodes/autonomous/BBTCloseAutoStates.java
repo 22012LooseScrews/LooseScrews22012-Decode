@@ -32,7 +32,6 @@ public class BBTCloseAutoStates extends LinearOpMode {
         ElapsedTime timer = new ElapsedTime();
         Follower follower = Constants.createFollower(hardwareMap);
         follower.setStartingPose(new Pose(17.331, 112.145, Math.toRadians(180)));
-        servoStopper.gate_close();
 
         preloads = follower.pathBuilder()
                 .addPath(
@@ -41,9 +40,10 @@ public class BBTCloseAutoStates extends LinearOpMode {
                                 new Pose(60.413, 81.909)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(133.5))
-                .addParametricCallback(0, ()-> intakeMotor.intake_intake())
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(136))
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
+                .addParametricCallback(0, ()-> servoStopper.gate_close())
+                .addParametricCallback(0.75, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.97, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(1, ()-> servoStopper.gate_open())
                 .build();
@@ -53,20 +53,19 @@ public class BBTCloseAutoStates extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(60.413, 81.909),
                                 new Pose(66.641, 53.760),
-                                new Pose(15.970, 47.451)
+                                new Pose(17.5, 47.451)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(133.5), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(136), Math.toRadians(180))
                 .addParametricCallback(0.1, ()-> servoStopper.gate_close())
                 .addParametricCallback(0.35, ()-> intakeMotor.intake_intake())
-                .addParametricCallback(1, ()-> intakeMotor.intake_slow())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .build();
 
         shoot1 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(15.970, 47.451),
+                                new Pose(17.5, 47.451),
                                 new Pose(60.413, 81.909)
                         )
                 )
@@ -81,7 +80,7 @@ public class BBTCloseAutoStates extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Pose(60.413, 81.909),
-                                new Pose(14.153, 52.768)
+                                new Pose(14.153, 52.268)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(139.5), Math.toRadians(175))
@@ -90,73 +89,36 @@ public class BBTCloseAutoStates extends LinearOpMode {
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .build();
 
-        swerve_to_capture = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Pose(14.763, 52.326),
-                                new Pose(12.146, 50.216)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(175), Math.toRadians(160))
-                .build();
-
         shoot2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(9.153, 46.768),
+                                new Pose(14.153, 52.268),
                                 new Pose(60.413, 81.909)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(160), Math.toRadians(138.5))
+                .setLinearHeadingInterpolation(Math.toRadians(175), Math.toRadians(141.5))
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.1, ()-> intakeMotor.intake_stop())
-                .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.5, ()-> servoStopper.gate_open())
-                .build();
-
-        intake2 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Pose(60.413, 81.909),
-                                new Pose(13.624, 70.217)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(138.5), Math.toRadians(180))
-                .addParametricCallback(0.1, ()-> servoStopper.gate_close())
-                .addParametricCallback(0.25, ()-> intakeMotor.intake_intake())
-                .addParametricCallback(1, ()-> intakeMotor.intake_stop())
-                .build();
-
-        shoot3 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Pose(13.624, 70.217),
-                                new Pose(60.413, 81.909)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(138.5))
-                .addParametricCallback(0, ()-> intakeMotor.intake_intake())
-                .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
-                .addParametricCallback(0.97, ()-> intakeMotor.intake_stop())
-                .addParametricCallback(0.98, ()-> servoStopper.gate_open())
                 .build();
 
         gate2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
                                 new Pose(60.413, 81.909),
-                                new Pose(11.153, 48.768)
+                                new Pose(14.153, 52.268)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(138.5), Math.toRadians(170))
+                .setLinearHeadingInterpolation(Math.toRadians(141.5), Math.toRadians(175))
                 .addParametricCallback(0.1, ()-> servoStopper.gate_close())
                 .addParametricCallback(0.5, ()-> intakeMotor.intake_intake())
                 .build();
 
-        shoot4 = follower.pathBuilder()
+        shoot3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(11.153, 48.768),
+                                new Pose(13.153, 55.268),
                                 new Pose(60.413, 81.909)
                         )
                 )
@@ -167,6 +129,33 @@ public class BBTCloseAutoStates extends LinearOpMode {
                 .addParametricCallback(0.98, ()-> servoStopper.gate_open())
                 .build();
 
+        intake2 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(60.413, 81.909),
+                                new Pose(13.624, 78.217)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(138.5), Math.toRadians(180))
+                .addParametricCallback(0.1, ()-> servoStopper.gate_close())
+                .addParametricCallback(0.25, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(1, ()-> intakeMotor.intake_stop())
+                .build();
+
+        shoot4 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(13.624, 78.217),
+                                new Pose(60.413, 81.909)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(143.5))
+                .addParametricCallback(0, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
+                .addParametricCallback(1, ()-> intakeMotor.intake_stop())
+                .addParametricCallback(0.98, ()-> servoStopper.gate_open())
+                .build();
+
         waitForTeleOp = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
@@ -174,7 +163,7 @@ public class BBTCloseAutoStates extends LinearOpMode {
                                 new Pose(50.000, 67.000)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(138.5), Math.toRadians(90))
+                .setLinearHeadingInterpolation(Math.toRadians(143.5), Math.toRadians(90))
                 .build();
 
         PanelsDrawing.init();
@@ -189,7 +178,6 @@ public class BBTCloseAutoStates extends LinearOpMode {
                 case preloads:
                     if(!path_started){
                         follower.followPath(preloads);
-                        intakeMotor.intake_slow();
                         path_started = true;
                     }
                     if(!follower.isBusy()){
@@ -275,19 +263,9 @@ public class BBTCloseAutoStates extends LinearOpMode {
                     }
                     if(!follower.isBusy()){
                         path_started = false;
-                        current_state = AutoStates.swerve;
-                    }
-                    break;
-
-                case swerve:
-                    if(!path_started){
-                        follower.followPath(swerve_to_capture);
-                        path_started = true;
-                    }
-                    if(!follower.isBusy()){
-                        path_started = false;
                         current_state = AutoStates.wait_at_gate1;
                     }
+                    break;
 
                 case wait_at_gate1:
                     if(!follower.isBusy()){
@@ -296,10 +274,10 @@ public class BBTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if(timer.seconds() <= 2.5){
+                        if(timer.seconds() <= 1.5){
                             intakeMotor.intake_intake();
                         }
-                        else if(timer.seconds() > 2.5){
+                        else if(timer.seconds() > 1.5){
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
@@ -320,52 +298,6 @@ public class BBTCloseAutoStates extends LinearOpMode {
                     break;
 
                 case wait_for_shot2:
-                    if(!follower.isBusy()){
-                        if(!timer_has_started){
-                            timer.reset();
-                            timer_has_started = true;
-                        }
-
-                        if(timer.seconds() <= 0.3){
-                            outtakeMotor.outtake_close();
-                        }
-                        else if(timer.seconds() >= 0.8){
-                            outtakeMotor.outtake_stop();
-                            intakeMotor.intake_stop();
-
-                            timer_has_started = false;
-                            current_state = AutoStates.intake2;
-                        }
-                        else if(timer.seconds() > 0.3){
-                            outtakeMotor.outtake_close();
-                            intakeMotor.intake_intake();
-                        }
-                    }
-                    break;
-
-                case intake2:
-                    if(!path_started){
-                        follower.followPath(intake2);
-                        path_started = true;
-                    }
-                    if(!follower.isBusy()){
-                        path_started = false;
-                        current_state = AutoStates.shoot3;
-                    }
-                    break;
-
-                case shoot3:
-                    if(!path_started){
-                        follower.followPath(shoot3);
-                        path_started = true;
-                    }
-                    if(!follower.isBusy()){
-                        path_started = false;
-                        current_state = AutoStates.wait_for_shot3;
-                    }
-                    break;
-
-                case wait_for_shot3:
                     if(!follower.isBusy()){
                         if(!timer_has_started){
                             timer.reset();
@@ -414,8 +346,54 @@ public class BBTCloseAutoStates extends LinearOpMode {
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
-                            current_state = AutoStates.shoot4;
+                            current_state = AutoStates.shoot3;
                         }
+                    }
+                    break;
+
+                case shoot3:
+                    if(!path_started){
+                        follower.followPath(shoot3);
+                        path_started = true;
+                    }
+                    if(!follower.isBusy()){
+                        path_started = false;
+                        current_state = AutoStates.wait_for_shot3;
+                    }
+                    break;
+
+                case wait_for_shot3:
+                    if(!follower.isBusy()){
+                        if(!timer_has_started){
+                            timer.reset();
+                            timer_has_started = true;
+                        }
+
+                        if(timer.seconds() <= 0.3){
+                            outtakeMotor.outtake_close();
+                        }
+                        else if(timer.seconds() >= 0.8){
+                            outtakeMotor.outtake_stop();
+                            intakeMotor.intake_stop();
+
+                            timer_has_started = false;
+                            current_state = AutoStates.intake2;
+                        }
+                        else if(timer.seconds() > 0.3){
+                            outtakeMotor.outtake_close();
+                            intakeMotor.intake_intake();
+                        }
+                    }
+                    break;
+
+                case intake2:
+                    if(!path_started){
+                        follower.followPath(intake2);
+                        path_started = true;
+                    }
+                    if(!follower.isBusy()){
+                        path_started = false;
+                        current_state = AutoStates.shoot4;
                     }
                     break;
 

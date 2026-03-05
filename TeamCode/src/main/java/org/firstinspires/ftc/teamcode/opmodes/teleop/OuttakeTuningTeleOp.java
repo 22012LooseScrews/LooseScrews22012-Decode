@@ -14,7 +14,7 @@ public class OuttakeTuningTeleOp extends OpMode {
     public DcMotorEx outtakeMotor, outtakeMotor2;
     IntakeMotor intakeMotor;
     private double close_rpm = 1650;
-    private double far_rpm = 2200;
+    private double far_rpm = 2000;
     double F = 0;
     double P = 0;
     double current_target_velocity = far_rpm;

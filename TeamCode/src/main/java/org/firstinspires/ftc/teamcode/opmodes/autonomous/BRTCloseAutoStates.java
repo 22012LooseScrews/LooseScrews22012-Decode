@@ -53,7 +53,7 @@ public class BRTCloseAutoStates extends LinearOpMode {
                         new BezierCurve(
                                 new Pose(83.587, 81.909),
                                 new Pose(77.359, 53.760),
-                                new Pose(130.53, 47.451)
+                                new Pose(128.53, 47.451)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(38.5), Math.toRadians(0))
@@ -65,7 +65,7 @@ public class BRTCloseAutoStates extends LinearOpMode {
         shoot1 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(128.03, 47.451),
+                                new Pose(128.53, 47.451),
                                 new Pose(83.587, 81.909)
                         )
                 )

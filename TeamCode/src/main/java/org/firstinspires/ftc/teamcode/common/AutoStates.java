@@ -18,13 +18,17 @@ public enum AutoStates {
     intake2,
     shoot4,
     square4,
-
     wait_for_shot4,
     teleop_standby,
     wait1,
+    wait_at_path1,
     wait2,
+    wait_at_path2,
     square1,
+    square1_intake,
     square2,
+    wait3,
+    wait_at_path3,
     square3,
     end
 }

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
@@ -17,7 +19,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.PanelsDrawing;
 @Autonomous
 public class RSTFarAutoStates extends LinearOpMode {
-    public PathChain preloads, intake1, shoot1, wait1, square1, wait2, square2, shoot2, square3, shoot3, waitForTeleOp;
+    public PathChain preloads, intake1, shoot1, wait1, square1, wait2, square2, shoot2, square3, shoot3, square4, shoot4, waitForTeleOp;
     boolean path_started = false;
     boolean timer_has_started = false;
 
@@ -37,7 +39,7 @@ public class RSTFarAutoStates extends LinearOpMode {
                 .addPath(
                         new BezierLine(new Pose(88.58, 9.085), new Pose(84.7, 17.300))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(68))
+                .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(65))
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_far())
                 .addParametricCallback(0.1, ()-> servoStopper.gate_open())
                 .build();
@@ -51,7 +53,7 @@ public class RSTFarAutoStates extends LinearOpMode {
                                 new Pose(123.151, 35.659)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(68), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(65), Math.toRadians(0))
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> servoStopper.gate_close())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
@@ -62,11 +64,10 @@ public class RSTFarAutoStates extends LinearOpMode {
                 .addPath(
                         new BezierLine(new Pose(123.151, 35.659), new Pose(84.7, 17.300))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(66))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(62))
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> intakeMotor.intake_stop())
-                .addParametricCallback(0.4, ()-> outtakeMotor.outtake_far())
-
+                .addParametricCallback(0, ()-> outtakeMotor.outtake_far())
                 .build();
 
 //        wait1 = follower
@@ -80,8 +81,8 @@ public class RSTFarAutoStates extends LinearOpMode {
 
         square1 = follower
                 .pathBuilder()
-                .addPath(new BezierLine(new Pose(84.7, 17.300), new Pose(130, 4.000)))
-                .setLinearHeadingInterpolation(Math.toRadians(66), Math.toRadians(0))
+                .addPath(new BezierLine(new Pose(84.7, 17.300), new Pose(132, 4.000)))
+                .setLinearHeadingInterpolation(Math.toRadians(62), Math.toRadians(0), 0.5)
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.3, ()-> servoStopper.gate_close())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
@@ -93,19 +94,20 @@ public class RSTFarAutoStates extends LinearOpMode {
 //                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
 //                .build();
 
-        square2 = follower
-                .pathBuilder()
-                .addPath(new BezierLine(new Pose(130, 4.000), new Pose(133, 4)))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
-                .addParametricCallback(0, ()-> intakeMotor.intake_intake())
-                .addParametricCallback(1, ()-> intakeMotor.intake_stop())
-
-                .build();
+//        square2 = follower
+//                .pathBuilder()
+//                .addPath(new BezierCurve(new Pose(12, 4.000),new Pose(35,20), new Pose(23.00, 4)))
+//                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
+//                .addParametricCallback(0, ()-> intakeMotor.intake_intake())
+//                .addParametricCallback(1, ()-> intakeMotor.intake_stop())
+//                .build();
 
         shoot2 = follower
                 .pathBuilder()
-                .addPath(new BezierLine(new Pose(133, 4), new Pose(84.7, 17.300)))
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(67))
+                .addPath(new BezierCurve(new Pose(132, 4.000),
+                        new Pose(109,20),
+                        new Pose(84.7, 17.3)))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(60))
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_far())
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
@@ -114,19 +116,42 @@ public class RSTFarAutoStates extends LinearOpMode {
         square3 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(84.7, 17.300), new Pose(132, 4.00))
+                        new BezierCurve(new Pose(84.7, 17.300), new Pose(118,34), new Pose(130, 2.00))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(67), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(60), Math.toRadians(310), 0.9)
                 .addParametricCallback(0.2, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(0, ()-> servoStopper.gate_close())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
                 .build();
 
         shoot3 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(new Pose(132, 4.00), new Pose(84.7, 17.300))
+                        new BezierLine(new Pose(130, 2.00), new Pose(84.7, 17.300))
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(68))
+                .setLinearHeadingInterpolation(Math.toRadians(310), Math.toRadians(77.5))
+                .addParametricCallback(1, ()-> servoStopper.gate_open())
+                .addParametricCallback(0, ()-> outtakeMotor.outtake_far())
+                .build();
+
+        square4 = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierCurve(new Pose(84.7, 17.300),new Pose(118,34), new Pose(129, 2.00))
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(77.5), Math.toRadians(310), 0.9)
+                .addParametricCallback(0., ()-> servoStopper.gate_close())
+                .addParametricCallback(0.2, ()-> intakeMotor.intake_intake())
+                .addParametricCallback(1, ()-> intakeMotor.intake_stop())
+                .build();
+
+        shoot4 = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierLine(new Pose(129, 2.00), new Pose(84.7, 17.300))
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(310), Math.toRadians(68))
+                .addParametricCallback(1, ()-> servoStopper.gate_open())
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_far())
                 .build();
 
@@ -237,9 +262,19 @@ public class RSTFarAutoStates extends LinearOpMode {
                         follower.followPath(square1);
                         path_started = true;
                     }
+//                    if(path_started){
+//                        if(!timer_has_started){
+//                            timer.reset();
+//                            timer_has_started = true;
+//                        }
+//                        if(timer.seconds() >= 5){
+//                            path_started = false;
+//                            current_state = AutoStates.square2;
+//                        }
+//                    }
                     if(!follower.isBusy()){
                         path_started = false;
-                        current_state = AutoStates.square2;
+                        current_state = AutoStates.shoot2;
                     }
                     break;
 
@@ -254,16 +289,16 @@ public class RSTFarAutoStates extends LinearOpMode {
 //                    }
 //                    break;
 
-                case square2:
-                    if(!path_started){
-                        follower.followPath(square2);
-                        path_started = true;
-                    }
-                    if(!follower.isBusy()){
-                        path_started = false;
-                        current_state = AutoStates.shoot2;
-                    }
-                    break;
+//                case square2:
+//                    if(!path_started){
+//                        follower.followPath(square2);
+//                        path_started = true;
+//                    }
+//                    if(!follower.isBusy()){
+//                        path_started = false;
+//                        current_state = AutoStates.shoot2;
+//                    }
+//                    break;
 
                 case shoot2:
                     if(!path_started){
@@ -303,6 +338,16 @@ public class RSTFarAutoStates extends LinearOpMode {
                         follower.followPath(square3);
                         path_started = true;
                     }
+//                    if(path_started){
+//                        if(!timer_has_started){
+//                            timer.reset();
+//                            timer_has_started = true;
+//                        }
+//                        if(timer.seconds() >= 5){
+//                            path_started = false;
+//                            current_state = AutoStates.shoot3;
+//                        }
+//                    }
                     if(!follower.isBusy()){
                         path_started = false;
                         current_state = AutoStates.shoot3;
@@ -321,6 +366,60 @@ public class RSTFarAutoStates extends LinearOpMode {
                     break;
 
                 case wait_for_shot3:
+                    if(!follower.isBusy()){
+                        if(!timer_has_started){
+                            timer.reset();
+                            timer_has_started = true;
+                        }
+
+                        if(timer.seconds() <= 0.75){
+                            servoStopper.gate_open();
+                        }
+                        else if(timer.seconds() >= 2.5){
+                            outtakeMotor.outtake_stop();
+                            intakeMotor.intake_stop();
+                            timer_has_started = false;
+                            current_state = AutoStates.square4;
+                        }
+                        else if(timer.seconds() > 1.5){
+                            intakeMotor.intake_intake();
+                        }
+                    }
+                    break;
+
+                case square4:
+                    if(!path_started){
+                        follower.followPath(square4);
+                        path_started = true;
+                    }
+//                    if(path_started){
+//                        if(!timer_has_started){
+//                            timer.reset();
+//                            timer_has_started = true;
+//                        }
+//                        if(timer.seconds() >= 5){
+//                            path_started = false;
+//                            current_state = AutoStates.shoot4;
+//                        }
+//                    }
+                    if(!follower.isBusy()){
+                        path_started = false;
+                        current_state = AutoStates.shoot4;
+                    }
+                    break;
+
+                case shoot4:
+                    if(!path_started){
+                        follower.followPath(shoot4);
+                        path_started = true;
+                    }
+                    if(!follower.isBusy()){
+                        path_started = false;
+                        current_state = AutoStates.wait_for_shot4;
+                    }
+                    break;
+
+                case wait_for_shot4:
                     if(!follower.isBusy()){
                         if(!timer_has_started){
                             timer.reset();

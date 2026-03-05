@@ -11,7 +11,7 @@ public class OuttakeMotor {
     private DcMotorEx outtakeMotor2;
     private double auto_close_rpm = 1615;
     private double close_rpm = 1615;
-    private double far_rpm = 1930;
+    private double far_rpm = 1980;
 
     public OuttakeMotor(OpMode opMode) {
         outtakeMotor = opMode.hardwareMap.get(DcMotorEx.class, "outtakeMotor");
@@ -73,14 +73,14 @@ public class OuttakeMotor {
                 90,
                 0,
                 0,
-                14
+                12.4
         );
         outtakeMotor.setVelocity(-far_rpm);
         outtakeMotor2.setVelocityPIDFCoefficients(
                 90,
                 0,
                 0,
-                14
+                12.4
         );
         outtakeMotor2.setVelocity(-far_rpm);
     }
