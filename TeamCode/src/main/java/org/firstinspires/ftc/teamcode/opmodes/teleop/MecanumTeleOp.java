@@ -25,7 +25,7 @@ public class MecanumTeleOp extends OpMode {
     private Limelight3A limelight;
     private static final double kp_turn = 0.03;
     private static final double max_speed = 1.0;
-    boolean was_dpad_up_pressed, was_dpad_down_pressed;
+    boolean was_a_pressed, was_b_pressed;
     String servo_stopper_position;
 
     @Override
@@ -104,10 +104,10 @@ public class MecanumTeleOp extends OpMode {
             }
         }
 
-        if (gamepad1.dpad_up && !was_dpad_up_pressed) {
+        if (gamepad1.a && !was_a_pressed) {
             servo_Stopper.gate_open();
             servo_stopper_position = "Open";
-        } else if (gamepad1.dpad_down && !was_dpad_down_pressed) {
+        } else if (gamepad1.b && !was_b_pressed) {
             servo_Stopper.gate_close();
             servo_stopper_position = "Closed";
         }
@@ -116,8 +116,8 @@ public class MecanumTeleOp extends OpMode {
             servo_Stopper.gate_open();
             servo_stopper_position = "Open";
         }
-        was_dpad_up_pressed = gamepad1.dpad_up;
-        was_dpad_down_pressed = gamepad1.dpad_down;
+        was_a_pressed = gamepad1.a;
+        was_b_pressed = gamepad1.b;
 
         if (gamepad1.left_bumper) {
             intake_motor.intake_intake();

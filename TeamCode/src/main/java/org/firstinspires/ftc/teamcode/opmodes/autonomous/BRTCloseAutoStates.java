@@ -40,7 +40,7 @@ public class BRTCloseAutoStates extends LinearOpMode {
                                 new Pose(83.587, 81.909)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(38.5))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(35.5))
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0, ()-> servoStopper.gate_close())
                 .addParametricCallback(0.75, ()-> intakeMotor.intake_intake())
@@ -56,7 +56,7 @@ public class BRTCloseAutoStates extends LinearOpMode {
                                 new Pose(128.53, 47.451)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(38.5), Math.toRadians(0))
+                .setLinearHeadingInterpolation(Math.toRadians(35.5), Math.toRadians(0))
                 .addParametricCallback(0.1, ()-> servoStopper.gate_close())
                 .addParametricCallback(0.35, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
@@ -70,8 +70,8 @@ public class BRTCloseAutoStates extends LinearOpMode {
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(42.5))
-                .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
+                .addParametricCallback(0.3, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0.97, ()-> intakeMotor.intake_stop())
                 .addParametricCallback(0.98, ()-> servoStopper.gate_open())
                 .build();
@@ -80,10 +80,10 @@ public class BRTCloseAutoStates extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Pose(83.587, 81.909),
-                                new Pose(129.847, 54.268)
+                                new Pose(129.847, 53.568)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(42.5), Math.toRadians(10))
+                .setLinearHeadingInterpolation(Math.toRadians(42.5), Math.toRadians(7))
                 .addParametricCallback(0.1, ()-> servoStopper.gate_close())
                 .addParametricCallback(0.25, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
@@ -92,11 +92,11 @@ public class BRTCloseAutoStates extends LinearOpMode {
         shoot2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(129.847, 54.268),
+                                new Pose(129.847, 53.568),
                                 new Pose(83.587, 81.909)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(10), Math.toRadians(41.5))
+                .setLinearHeadingInterpolation(Math.toRadians(7), Math.toRadians(41.5))
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.1, ()-> intakeMotor.intake_stop())
@@ -107,10 +107,10 @@ public class BRTCloseAutoStates extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Pose(83.587, 81.909),
-                                new Pose(130.847, 55.268)
+                                new Pose(127, 53.500)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(41.5), Math.toRadians(10))
+                .setLinearHeadingInterpolation(Math.toRadians(41.5), Math.toRadians(7))
                 .addParametricCallback(0.1, ()-> servoStopper.gate_close())
                 .addParametricCallback(0.5, ()-> intakeMotor.intake_intake())
                 .build();
@@ -118,11 +118,11 @@ public class BRTCloseAutoStates extends LinearOpMode {
         shoot3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(130.847, 55.268),
-                                new Pose(83.587, 81.909)
+                                new Pose(127, 53.500),
+                                new Pose( 83.587, 81.909)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(10), Math.toRadians(41.5))
+                .setLinearHeadingInterpolation(Math.toRadians(7), Math.toRadians(41.5))
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.97, ()-> intakeMotor.intake_stop())
@@ -149,7 +149,7 @@ public class BRTCloseAutoStates extends LinearOpMode {
                                 new Pose(83.587, 81.909)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(41.5))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(39.5))
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(1, ()-> intakeMotor.intake_stop())
@@ -163,7 +163,7 @@ public class BRTCloseAutoStates extends LinearOpMode {
                                 new Pose(94, 67.000)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(41.5), Math.toRadians(90))
+                .setLinearHeadingInterpolation(Math.toRadians(39.5), Math.toRadians(90))
                 .build();
 
         PanelsDrawing.init();
@@ -193,15 +193,15 @@ public class BRTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if (timer.seconds() <= 0.3) {
+                        if (timer.seconds() <= 0.2) {
                             outtakeMotor.outtake_close();
-                        } else if (timer.seconds() >= 0.8) {
+                        } else if (timer.seconds() >= 0.7) {
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.intake1;
-                        } else if (timer.seconds() > 0.3) {
+                        } else if (timer.seconds() > 0.2) {
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
@@ -237,15 +237,15 @@ public class BRTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if (timer.seconds() <= 0.3) {
+                        if (timer.seconds() <= 0.2) {
                             outtakeMotor.outtake_close();
-                        } else if (timer.seconds() >= 0.8) {
+                        } else if (timer.seconds() >= 0.7) {
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.gate1;
-                        } else if (timer.seconds() > 0.3) {
+                        } else if (timer.seconds() > 0.2) {
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
@@ -299,15 +299,15 @@ public class BRTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if (timer.seconds() <= 0.3) {
+                        if (timer.seconds() <= 0.2) {
                             outtakeMotor.outtake_close();
-                        } else if (timer.seconds() >= 0.8) {
+                        } else if (timer.seconds() >= 0.7) {
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.gate2;
-                        } else if (timer.seconds() > 0.3) {
+                        } else if (timer.seconds() > 0.2) {
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
@@ -361,17 +361,17 @@ public class BRTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if(timer.seconds() <= 0.3){
+                        if(timer.seconds() <= 0.2){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() >= 0.8){
+                        else if(timer.seconds() >= 0.7){
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.intake2;
                         }
-                        else if(timer.seconds() > 0.3){
+                        else if(timer.seconds() > 0.2){
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
@@ -388,8 +388,6 @@ public class BRTCloseAutoStates extends LinearOpMode {
                         current_state = AutoStates.shoot4;
                     }
                     break;
-
-
 
                 case shoot4:
                     if(!path_started){
@@ -409,15 +407,15 @@ public class BRTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if (timer.seconds() <= 0.3) {
+                        if (timer.seconds() <= 0.2) {
                             outtakeMotor.outtake_close();
-                        } else if (timer.seconds() >= 0.8) {
+                        } else if (timer.seconds() >= 0.7) {
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.teleop_standby;
-                        } else if (timer.seconds() > 0.3) {
+                        } else if (timer.seconds() > 0.2) {
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }

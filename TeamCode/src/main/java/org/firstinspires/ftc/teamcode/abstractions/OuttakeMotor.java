@@ -9,9 +9,9 @@ public class OuttakeMotor {
     private DcMotorEx outtakeMotor;
 
     private DcMotorEx outtakeMotor2;
-    private double auto_close_rpm = 1615;
-    private double close_rpm = 1615;
-    private double far_rpm = 1980;
+    private double auto_close_rpm = 1575;
+    private double close_rpm = 1575;
+    private double far_rpm = 1960;
 
     public OuttakeMotor(OpMode opMode) {
         outtakeMotor = opMode.hardwareMap.get(DcMotorEx.class, "outtakeMotor");

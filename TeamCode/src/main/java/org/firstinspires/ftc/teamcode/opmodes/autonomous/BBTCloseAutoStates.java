@@ -105,8 +105,9 @@ public class BBTCloseAutoStates extends LinearOpMode {
 
         gate2 = follower.pathBuilder()
                 .addPath(
-                        new BezierLine(
+                        new BezierCurve(
                                 new Pose(60.413, 81.909),
+                                new Pose(37.5, 52),
                                 new Pose(14.153, 52.268)
                         )
                 )
@@ -118,11 +119,11 @@ public class BBTCloseAutoStates extends LinearOpMode {
         shoot3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(13.153, 55.268),
+                                new Pose(14.153, 52.268),
                                 new Pose(60.413, 81.909)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(170), Math.toRadians(138.5))
+                .setLinearHeadingInterpolation(Math.toRadians(175), Math.toRadians(138.5))
                 .addParametricCallback(0, ()-> intakeMotor.intake_intake())
                 .addParametricCallback(0, ()-> outtakeMotor.outtake_close())
                 .addParametricCallback(0.97, ()-> intakeMotor.intake_stop())
@@ -133,7 +134,7 @@ public class BBTCloseAutoStates extends LinearOpMode {
                 .addPath(
                         new BezierLine(
                                 new Pose(60.413, 81.909),
-                                new Pose(13.624, 78.217)
+                                new Pose(13.624, 75.217)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(138.5), Math.toRadians(180))
@@ -145,7 +146,7 @@ public class BBTCloseAutoStates extends LinearOpMode {
         shoot4 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(13.624, 78.217),
+                                new Pose(13.624, 75.217),
                                 new Pose(60.413, 81.909)
                         )
                 )
@@ -193,17 +194,17 @@ public class BBTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if(timer.seconds() <= 0.3){
+                        if(timer.seconds() <= 0.2){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() >= 0.8){
+                        else if(timer.seconds() >= 0.7){
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.intake1;
                         }
-                        else if(timer.seconds() > 0.3){
+                        else if(timer.seconds() > 0.2){
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
@@ -239,17 +240,17 @@ public class BBTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if(timer.seconds() <= 0.3){
+                        if(timer.seconds() <= 0.2){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() >= 0.8){
+                        else if(timer.seconds() >= 0.7){
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.gate1;
                         }
-                        else if(timer.seconds() > 0.3){
+                        else if(timer.seconds() > 0.2){
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
@@ -304,17 +305,17 @@ public class BBTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if(timer.seconds() <= 0.3){
+                        if(timer.seconds() <= 0.2){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() >= 0.8){
+                        else if(timer.seconds() >= 0.7){
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.gate2;
                         }
-                        else if(timer.seconds() > 0.3){
+                        else if(timer.seconds() > 0.2){
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
@@ -369,17 +370,17 @@ public class BBTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if(timer.seconds() <= 0.3){
+                        if(timer.seconds() <= 0.2){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() >= 0.8){
+                        else if(timer.seconds() >= 0.7){
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.intake2;
                         }
-                        else if(timer.seconds() > 0.3){
+                        else if(timer.seconds() > 0.2){
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
@@ -415,17 +416,17 @@ public class BBTCloseAutoStates extends LinearOpMode {
                             timer_has_started = true;
                         }
 
-                        if(timer.seconds() <= 0.3){
+                        if(timer.seconds() <= 0.2){
                             outtakeMotor.outtake_close();
                         }
-                        else if(timer.seconds() >= 0.8){
+                        else if(timer.seconds() >= 0.7){
                             outtakeMotor.outtake_stop();
                             intakeMotor.intake_stop();
 
                             timer_has_started = false;
                             current_state = AutoStates.teleop_standby;
                         }
-                        else if(timer.seconds() > 0.3){
+                        else if(timer.seconds() > 0.2){
                             outtakeMotor.outtake_close();
                             intakeMotor.intake_intake();
                         }
